@@ -1,4 +1,5 @@
 from flask import Flask
+# from config import UPLOAD_FOLDER, ALLOWED_EXTENSIONS
 
 def create_app():
     app = Flask(__name__, instance_relative_config=True)
