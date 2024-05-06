@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 # init SQLAlchemy so we can use it later in our models
 db = SQLAlchemy()
 
+
 def create_app():
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object('ojlevapp.config')  # Charge la configuration par défaut

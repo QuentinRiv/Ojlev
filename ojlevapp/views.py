@@ -1,18 +1,22 @@
-from flask import Flask, render_template, request, json,jsonify
-from flask import Blueprint
+from flask import Flask, render_template, request, json,jsonify, redirect
+from flask import Blueprint, current_app
+import os
+from werkzeug.utils import secure_filename
+# from config import UPLOAD_FOLDER
 
 bp = Blueprint('main', __name__)
-app = Flask(__name__)
+
+# bp.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Config options - Make sure you created a 'config.py' file.
-app.config.from_object('ojlevapp.config')
+# bp.config.from_object('ojlevapp.config')
 # To get one variable, tape app.config['MY_VARIABLE']
 
-@app.route('/login')
+@bp.route('/login')
 def login_get():
     return render_template('login.html')
 
-@app.route('/login', methods=['POST'])
+@bp.route('/login', methods=['POST'])
 def login_post():
     data = json.loads(request.data)
     
@@ -34,9 +38,28 @@ def login_post():
         code = 500
     return jsonify(response), code
 
-@app.route('/')
+@bp.route('/')
 def index():
     return render_template('index.html')
 
-if __name__ == "__main__":
-    app.run(FLASK_DEBUG=1)
+@bp.route('/upload')
+def upload():
+    return render_template('upload.html') 
+
+@bp.route('/upload', methods=['POST'])
+def upload_file():
+    if 'image' not in request.files:
+        return redirect(request.url)
+    file = request.files['image']
+    if file.filename == '':
+        return redirect(request.url)
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+        return 'Image uploadée avec succès'
+    else:
+        return 'Type de fichier non autorisé'
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_EXTENSIONS']
