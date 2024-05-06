@@ -30,11 +30,17 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         },
         body: JSON.stringify({ email: email, password: password })
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Échec de la connexion');
+    .then(response => response.json()) // Convertir la réponse en JSON
+    .then(data => {
+        if (data.error) {
+            // Gérer l'erreur en fonction du contenu du dictionnaire
+            console.error('Erreur:', data.message);
+            alert(data.message); // Afficher l'erreur à l'utilisateur
+        } else {
+            // Traiter la réponse réussie
+            console.log('Succès:', data.message);
+            window.location = data.url;
         }
-        return response.json();
     })
     .catch(error => {
         console.error('Erreur :', error);

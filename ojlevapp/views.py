@@ -1,9 +1,11 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, json,jsonify
+from flask import Blueprint
 
+bp = Blueprint('main', __name__)
 app = Flask(__name__)
 
 # Config options - Make sure you created a 'config.py' file.
-app.config.from_object('config')
+app.config.from_object('ojlevapp.config')
 # To get one variable, tape app.config['MY_VARIABLE']
 
 @app.route('/login')
@@ -12,8 +14,25 @@ def login_get():
 
 @app.route('/login', methods=['POST'])
 def login_post():
-    print("***")
-    return 'Hello'
+    data = json.loads(request.data)
+    
+    if data['password'] == "1234":
+        response = {
+            'error': False,
+            'code': 202,
+            'message': 'Mot de passe correct !',
+            'url': '/',
+        }
+        code = 202
+    else:
+        response = {
+            'error': True,
+            'code': 400,
+            'message': 'Mot de passe incorrect',
+            'url': '/login'
+        }
+        code = 500
+    return jsonify(response), code
 
 @app.route('/')
 def index():
