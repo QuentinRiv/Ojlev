@@ -46,3 +46,38 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         console.error('Erreur :', error);
     });
 });
+
+
+
+document.getElementById("signupForm").addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    const name = document.getElementById("nameUp").value;
+    const email = document.getElementById("emailUp").value;
+    const password = document.getElementById("passwordUp").value;
+
+    data = {name, email, password};
+
+    console.log("Name : ", name);
+    console.log("Email : ", email);
+    console.log("Password : ", password);
+
+    await fetch("/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Échec de la connexion => " + response.message);
+        }
+        return response.json();
+      })
+      .catch((error) => {
+        console.error("Erreur :", error);
+      });
+
+      
+  });
