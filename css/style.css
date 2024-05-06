@@ -37,6 +37,7 @@ body {
     line-height: 1.5;
     font-size: 16px;
     font-weight: 400;
+    background-color: #f3f2f1;
 }
 
 *:not(i) {
@@ -54,6 +55,23 @@ body {
 
 .align-items-center {
     align-items: center;
+}
+
+.section-title {
+    flex: 0 0 100%;
+    max-width: 100%;
+    padding: 0 15px;
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.section-title h2 {
+    font-size: 45px;
+    color: #000000;
+    font-weight: 700;
+    font-family: "Great Vibes", cursive;
+    letter-spacing: 2px;
+    margin: 0;
 }
 
 /* header */
@@ -200,4 +218,83 @@ body {
     opacity: 0;
     animation: fadeInTop 1s ease forwards;
     animation-delay: 1s;
+}
+
+/* couple section */
+.couple-section {
+    padding: 80px 0 80px;
+}
+
+.couple-section .couple{
+    flex: 0 0 50%;
+    max-width: 50%;
+    padding: 0 60px;
+    text-align: center;
+    position: relative;
+}
+
+.couple-section .couple:nth-child(2):before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    background-color: #cccccc;
+}
+
+.couple-section .couple i.fa-heart {
+    position: absolute;
+    left: -15px;
+    width: 31px;
+    background-color: #f3f2f1;
+    padding: 5px;
+    text-align: center;
+    font-size: 18px;
+    top: 30%;
+}
+.couple-section .couple img {
+    max-width: 280px;
+    width: 100%;
+    border-radius: 50%;
+    border: 10px solid transparent;
+}
+
+.couple-section .couple h3 {
+    font-size: 40px;
+    margin: 15px 0;
+    font-family: 'Great Vibes', cursive;
+    font-weight: normal;
+    letter-spacing: 2px;
+}
+
+.couple-section .couple p {
+    font-size: 16px;
+    line-height: 26px;
+    color: #555555;
+    margin: 0;
+}
+
+.couple-section .social-links {
+    padding-top: 30px;
+}
+
+.couple-section .social-links a {
+    display: inline-block;
+    margin: 0 3px;
+}
+
+.couple-section .social-links a i {
+    height: 32px;
+    width: 32px;
+    line-height: 30px;
+    border: 1px solid transparent;
+    text-align: center;
+    display: block;
+    border-radius: 50%;
+    transition: all 0.5s ease;
+}
+
+.couple-section .social-links a:hover i {
+    color: #f3f2f1;
 }
