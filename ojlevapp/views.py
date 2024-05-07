@@ -5,13 +5,7 @@ from werkzeug.utils import secure_filename
 # from config import UPLOAD_FOLDER
 
 bp = Blueprint('main', __name__)
-
-# bp.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-# Config options - Make sure you created a 'config.py' file.
-# bp.config.from_object('ojlevapp.config')
-# To get one variable, tape app.config['MY_VARIABLE']
-
+y
 @bp.route('/login')
 def login_get():
     return render_template('login.html')
