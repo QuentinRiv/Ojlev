@@ -1,0 +1,27 @@
+.couple-section .couple:hover img{
+    opacity: 0.3;
+  }
+  
+  .couple-section .couple:hover .cover {
+    opacity: 0.5;
+  }
+
+.couple-section .couple .cover {
+    position: absolute;
+    top: 0;
+    left: 0; 
+    right: 0; 
+    margin-left: auto; 
+    margin-right: auto; 
+    max-width: 280px;
+    width: 100%;
+    max-height: 280px;
+    height: 100%;
+    border-radius: 50%;
+    border: 10px solid transparent;
+    transition: opacity 0.4s ease-in-out;
+    opacity: 0;
+    background-color: rgba(128, 128, 128, 0.658);
+  }
+
+ 

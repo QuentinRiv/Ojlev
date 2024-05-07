@@ -253,11 +253,13 @@ body {
     font-size: 18px;
     top: 30%;
 }
+
 .couple-section .couple img {
     max-width: 280px;
     width: 100%;
     border-radius: 50%;
     border: 10px solid transparent;
+    transition: opacity 0.4s ease-in-out;
 }
 
 .couple-section .couple h3 {
