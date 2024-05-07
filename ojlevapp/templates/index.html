@@ -1,208 +1,268 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Wedding</title>
-    <link rel="stylesheet" type="text/css" href="../static/css/font-awesome.css">
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="../static/css/font-awesome.css"
+    />
     <!-- font awesome -->
-    <link rel="stylesheet" type="text/css" href="../static/css/style.css">
-    <link rel="stylesheet" type="text/css" href="../static/css/admin.css">
-    <link rel="stylesheet" type="text/css" href="../static/css/pink.css">
-    <link rel="icon" type="image/png" href="../static/img/background.jpg">
-</head>
-<body>
-
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../static/css/admin.css" />
+    <link rel="stylesheet" type="text/css" href="../static/css/pink.css" />
+    <link rel="icon" type="image/png" href="../static/img/background.jpg" />
+  </head>
+  <body>
     <!-- header start -->
     <header class="header">
-        <div class="container">
-            <div class="row align-items-center justify-content-between">
-                <div class="logo">
-                    <a href="index.html">S & S</a>
-                </div>
-                <div class="nav">
-                    <ul>
-                        <li><a href="#" class="active">Home</a></li>
-                        <li><a href="#">Couple</a></li>
-                        <li><a href="#">Story</a></li>
-                        <li><a href="#">Events</a></li>
-                        <li><a href="#">People</a></li>
-                        <li><a href="#">Gallery</a></li>
-                    </ul>
-                </div>
-            </div>
+      <div class="container">
+        <div class="row align-items-center justify-content-between">
+          <div class="logo">
+            {% if connected %}
+            <a id="name_connected" href="index.html">Chapeau</a>
+            {% else %}
+            <a href="index.html">S & S</a>
+            {% endif %}
+          </div>
+          <div class="nav">
+            <ul>
+              <li><a href="#" class="active">Home</a></li>
+              <li><a href="#">Couple</a></li>
+              <li><a href="#">Story</a></li>
+              <li><a href="#">Events</a></li>
+              <li><a href="#">People</a></li>
+              <li><a href="#">Gallery</a></li>
+            </ul>
+          </div>
         </div>
+      </div>
     </header>
     <!-- header end -->
 
     <!-- home section start -->
     <section class="home-section">
-        <!-- slide start -->
-        <div class="slide active" style="background-image: url('../static/img/slides/slide-1.jpg');">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="home-content">
-                        <p>We are getting married</p>
-                        <h1>Jean & Jeanne</h1>
-                        <span>30 Feb 2024</span>
-                    </div>
-                </div>
+      <!-- slide start -->
+      <div
+        class="slide active"
+        style="background-image: url('../static/img/slides/slide-1.jpg')"
+      >
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="home-content">
+              <p>We are getting married</p>
+              <h1>{{ groom['first_name'] }} & Jeanne</h1>
+              <span>30 Feb 2024</span>
             </div>
+          </div>
         </div>
-        <!-- slide end -->
+      </div>
+      <!-- slide end -->
 
-        <!-- slide start -->
-        <div class="slide" style="background-image: url('../static/img/slides/slide-2.jpg');">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="home-content">
-                        <p>We are getting married</p>
-                        <h1>Jean & Jeanne</h1>
-                        <span>30 Feb 2024</span>
-                    </div>
-                </div>
+      <!-- slide start -->
+      <div
+        class="slide"
+        style="background-image: url('../static/img/slides/slide-2.jpg')"
+      >
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="home-content">
+              <p>We are getting married</p>
+              <h1>{{ groom['first_name'] }} & Jeanne</h1>
+              <span>30 Feb 2024</span>
             </div>
+          </div>
         </div>
-        <!-- slide end -->
-        <!-- slide start -->
-        <div class="slide" style="background-image: url('../static/img/slides/slide-3.jpg');">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="home-content">
-                        <p>We are getting married</p>
-                        <h1>Jean & Jeanne</h1>
-                        <span>30 Feb 2024</span>
-                    </div>
-                </div>
+      </div>
+      <!-- slide end -->
+      <!-- slide start -->
+      <div
+        class="slide"
+        style="background-image: url('../static/img/slides/slide-3.jpg')"
+      >
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="home-content">
+              <p>We are getting married</p>
+              <h1>{{ groom['first_name'] }} & Jeanne</h1>
+              <span>30 Feb 2024</span>
             </div>
+          </div>
         </div>
-        <!-- slide end -->
+      </div>
+      <!-- slide end -->
     </section>
     <!-- home section end -->
 
     <!-- couple section end -->
     <section class="couple-section">
-        <div class="container">
-            <div class="row">
-                <div class="section-title">
-                    <h2>Happy couple</h2>
-                </div>
-            </div>
-            <div class="row">
-                <div class="couple">
-                    <img id="groomImg" src="../static/img/groom.jpg" alt="happy couple">
-                    <div class="cover">
-                        <!-- <i class="fas fa-camera"></i> -->
-                    </div>
-                    <h3>Jean Bonbeurre</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum est, eaque reprehenderit dolor, doloremque non deserunt expedita, eveniet numquam asperiores facilis fugit! Aperiam placeat excepturi minus, odio accusantium quidem velit?</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-                <div class="couple">
-                    <i class="fas fa-heart"></i>
-                    <img src="../static/img/bride.jpg" alt="happy couple">
-                    <h3>Jeanne Haite</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum est, eaque reprehenderit dolor, doloremque non deserunt expedita, eveniet numquam asperiores facilis fugit! Aperiam placeat excepturi minus, odio accusantium quidem velit?</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-            </div>
+      <div class="container">
+        <div class="row">
+          <div class="section-title">
+            <h2>Happy couple</h2>
+          </div>
         </div>
+        <div class="row">
+          <div class="couple">
+            <div class="image-container">
+              <img
+                id="groomImg"
+                src="../static/img/groom.png"
+                alt="happy couple"
+              />
+              <div class="cover" id="groom">
+                <i class="fas fa-camera"></i>
+              </div>
+            </div>
+            <h3 data-gender="groom">{{ groom['first_name'] }} {{ groom['last_name'] }}</h3>
+            <p>
+                {{ groom['description'] }}
+            </p>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-facebook-f"></i></a>
+              <a href="#"><i class="fab fa-linkedin-in"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+          </div>
+          <div class="couple">
+            <i class="fas fa-heart"></i>
+            <div class="image-container">
+                <input type="file" id="hiddenImageInput" style="display: none;" name="image">
+                <img
+                  id="bride"
+                  src="../static/img/bride.png"
+                  alt="happy couple"
+                />
+                <div class="cover" id="bride">
+                  <i class="fas fa-camera"></i>
+                </div>
+              </div>
+            <h3>Jeanne Haite</h3>
+            <p>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum est,
+              eaque reprehenderit dolor, doloremque non deserunt expedita,
+              eveniet numquam asperiores facilis fugit! Aperiam placeat
+              excepturi minus, odio accusantium quidem velit?
+            </p>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-facebook-f"></i></a>
+              <a href="#"><i class="fab fa-linkedin-in"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
     <!-- couple section end -->
 
     <!-- story section start -->
     <section class="story-section">
-        <div class="container">
-            <div class="row">
-                <div class="section-title">
-                    <h2>Our Love Story</h2>
-                </div>
-            </div>
-            <div class="row">
-                <div class="story-content">
-                    <div class="row">
-                        <!-- story item start -->
-                        <div class="story-item">
-                            <i class="fas fa-heart"></i>
-                            <div class="story-text">
-                                <h3>First Meet</h3>
-                                <span class="date">
-                                    29 Feb 2020
-                                </span>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam officiis doloribus nulla placeat voluptatibus eum quidem fugit eius impedit, asperiores molestiae natus saepe doloremque, exercitationem quo error iure optio debitis.</p>
-                            </div>
-                            <div class="story-img">
-                                <img src="../static/img/story/story-1.jpg" alt="couple love story">
-                            </div>
-                        </div>
-                        <!-- story item end -->
-                        <!-- story item start -->
-                        <div class="story-item">
-                            <i class="fas fa-heart"></i>
-                            <div class="story-text">
-                                <h3>First Date</h3>
-                                <span class="date">
-                                    29 Feb 2021
-                                </span>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam officiis doloribus nulla placeat voluptatibus eum quidem fugit eius impedit, asperiores molestiae natus saepe doloremque, exercitationem quo error iure optio debitis.</p>
-                            </div>
-                            <div class="story-img">
-                                <img src="../static/img/story/story-2.jpg" alt="couple love story">
-                            </div>
-                        </div>
-                        <!-- story item end -->
-                        <!-- story item start -->
-                        <div class="story-item">
-                            <i class="fas fa-heart"></i>
-                            <div class="story-text">
-                                <h3>Proposal</h3>
-                                <span class="date">
-                                    29 Feb 2022
-                                </span>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam officiis doloribus nulla placeat voluptatibus eum quidem fugit eius impedit, asperiores molestiae natus saepe doloremque, exercitationem quo error iure optio debitis.</p>
-                            </div>
-                            <div class="story-img">
-                                <img src="../static/img/story/story-3.jpg" alt="couple love story">
-                            </div>
-                        </div>
-                        <!-- story item end -->
-                        <!-- story item start -->
-                        <div class="story-item">
-                            <i class="fas fa-heart"></i>
-                            <div class="story-text">
-                                <h3>Engagement</h3>
-                                <span class="date">
-                                    29 Feb 2023
-                                </span>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam officiis doloribus nulla placeat voluptatibus eum quidem fugit eius impedit, asperiores molestiae natus saepe doloremque, exercitationem quo error iure optio debitis.</p>
-                            </div>
-                            <div class="story-img">
-                                <img src="../static/img/story/story-4.jpg" alt="couple love story">
-                            </div>
-                        </div>
-                        <!-- story item end -->
-                    </div>
-                </div>
-            </div>
+      <div class="container">
+        <div class="row">
+          <div class="section-title">
+            <h2>Our Love Story</h2>
+          </div>
         </div>
+        <div class="row">
+          <div class="story-content">
+            <div class="row">
+              <!-- story item start -->
+              <div class="story-item">
+                <i class="fas fa-heart"></i>
+                <div class="story-text">
+                  <h3>First Meet</h3>
+                  <span class="date"> 29 Feb 2020 </span>
+                  <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Quibusdam officiis doloribus nulla placeat voluptatibus eum
+                    quidem fugit eius impedit, asperiores molestiae natus saepe
+                    doloremque, exercitationem quo error iure optio debitis.
+                  </p>
+                </div>
+                <div class="story-img">
+                  <img
+                    src="../static/img/story/story-1.jpg"
+                    alt="couple love story"
+                  />
+                </div>
+              </div>
+              <!-- story item end -->
+              <!-- story item start -->
+              <div class="story-item">
+                <i class="fas fa-heart"></i>
+                <div class="story-text">
+                  <h3>First Date</h3>
+                  <span class="date"> 29 Feb 2021 </span>
+                  <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Quibusdam officiis doloribus nulla placeat voluptatibus eum
+                    quidem fugit eius impedit, asperiores molestiae natus saepe
+                    doloremque, exercitationem quo error iure optio debitis.
+                  </p>
+                </div>
+                <div class="story-img">
+                  <img
+                    src="../static/img/story/story-2.jpg"
+                    alt="couple love story"
+                  />
+                </div>
+              </div>
+              <!-- story item end -->
+              <!-- story item start -->
+              <div class="story-item">
+                <i class="fas fa-heart"></i>
+                <div class="story-text">
+                  <h3>Proposal</h3>
+                  <span class="date"> 29 Feb 2022 </span>
+                  <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Quibusdam officiis doloribus nulla placeat voluptatibus eum
+                    quidem fugit eius impedit, asperiores molestiae natus saepe
+                    doloremque, exercitationem quo error iure optio debitis.
+                  </p>
+                </div>
+                <div class="story-img">
+                  <img
+                    src="../static/img/story/story-3.jpg"
+                    alt="couple love story"
+                  />
+                </div>
+              </div>
+              <!-- story item end -->
+              <!-- story item start -->
+              <div class="story-item">
+                <i class="fas fa-heart"></i>
+                <div class="story-text">
+                  <h3>Engagement</h3>
+                  <span class="date"> 29 Feb 2023 </span>
+                  <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Quibusdam officiis doloribus nulla placeat voluptatibus eum
+                    quidem fugit eius impedit, asperiores molestiae natus saepe
+                    doloremque, exercitationem quo error iure optio debitis.
+                  </p>
+                </div>
+                <div class="story-img">
+                  <img
+                    src="../static/img/story/story-4.jpg"
+                    alt="couple love story"
+                  />
+                </div>
+              </div>
+              <!-- story item end -->
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
     <!-- story section end -->
-
-
 
     <!-- jquery -->
     <script src="../static/js/jquery.min.js"></script>
     <!-- main -->
     <script src="../static/js/main.js"></script>
     <script src="../static/js/admin.js"></script>
-    
-</body>
+  </body>
 </html>
