@@ -2,15 +2,55 @@ from flask import Flask, render_template, request, json,jsonify, redirect
 from flask import Blueprint, current_app
 import os
 from werkzeug.utils import secure_filename
+from flask_login import login_required, current_user
+# from config import UPLOAD_FOLDER
 
 bp = Blueprint('main', __name__)
+
+# bp.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# Config options - Make sure you created a 'config.py' file.
+# bp.config.from_object('ojlevapp.config')
+# To get one variable, tape app.config['MY_VARIABLE']
+
+# @bp.route('/login')
+# def login_get():
+#     return render_template('login.html')
+
+# @bp.route('/login', methods=['POST'])
+# def login_post():
+#     data = json.loads(request.data)
+    
+#     if data['password'] == "1234":
+#         response = {
+#             'error': False,
+#             'code': 202,
+#             'message': 'Mot de passe correct !',
+#             'url': '/',
+#         }
+#         code = 202
+#     else:
+#         response = {
+#             'error': True,
+#             'code': 400,
+#             'message': 'Mot de passe incorrect',
+#             'url': '/login'
+#         }
+#         code = 500
+#     return jsonify(response), code
+
 @bp.route('/')
 def index():
+    if(current_user.is_authenticated):
+        print("\nYou are authenticated\n")
+    else:
+        print("\nYou are not authenticated\n")
     return render_template('index.html')
 
 @bp.route('/upload')
+@login_required
 def upload():
-    return render_template('upload.html') 
+    return render_template('upload.html', name=current_user.name) 
 
 @bp.route('/upload', methods=['POST'])
 def upload_file():
