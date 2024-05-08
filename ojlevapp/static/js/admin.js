@@ -55,7 +55,8 @@ $(window).on("load", function () {
     elements.on('blur', function() {
         console.log($(this).data('gender') === 'groom')
         var id = ($(this).data('gender') === 'groom') ? 1 : 2;
-        let data = {id: id, 
+        let data = {info: 'names',
+                    id: id, 
                     names: $(this).text(),
 
                 }
@@ -74,5 +75,34 @@ $(window).on("load", function () {
             }
         });
     });
+    // Modif des noms END
+
+    // Modif des descrptions START
+    let descriptions = $(".couple p");
+    descriptions.attr('contenteditable','true');
+    descriptions.css("border", "1px dashed black");
+    descriptions.on('blur', function() {
+        console.log($(this).data('gender') === 'groom')
+        var id = ($(this).data('gender') === 'groom') ? 1 : 2;
+        let data = {info: 'description',
+                    id: id, 
+                    text: $(this).text(),
+                }
+
+        console.log('Modification à faire :', data);
+        $.ajax({
+            url: '/partners',
+            type: 'POST',
+            data: data,
+            success: function(response) {
+                console.log('Names updated successfully!');
+                // Vous pouvez ici ajouter des actions à exécuter après un upload réussi
+            },
+            error: function(xhr, status, error) {
+                console.error('Failed to update name:', error);
+            }
+        });
+    });
+    // Modif des descrptions END
 
 });

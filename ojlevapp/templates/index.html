@@ -53,7 +53,7 @@
           <div class="row align-items-center">
             <div class="home-content">
               <p>We are getting married</p>
-              <h1>{{ groom['first_name'] }} & Jeanne</h1>
+              <h1>{{ groom['first_name'] }} & {{ bride['first_name'] }}</h1>
               <span>30 Feb 2024</span>
             </div>
           </div>
@@ -86,7 +86,7 @@
           <div class="row align-items-center">
             <div class="home-content">
               <p>We are getting married</p>
-              <h1>{{ groom['first_name'] }} & Jeanne</h1>
+              <h1>{{ groom['first_name'] }} & {{ bride['first_name'] }}</h1>
               <span>30 Feb 2024</span>
             </div>
           </div>
@@ -117,7 +117,7 @@
               </div>
             </div>
             <h3 data-gender="groom">{{ groom['first_name'] }} {{ groom['last_name'] }}</h3>
-            <p>
+            <p data-gender="groom">
                 {{ groom['description'] }}
             </p>
             <div class="social-links">
@@ -139,12 +139,9 @@
                   <i class="fas fa-camera"></i>
                 </div>
               </div>
-            <h3>Jeanne Haite</h3>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum est,
-              eaque reprehenderit dolor, doloremque non deserunt expedita,
-              eveniet numquam asperiores facilis fugit! Aperiam placeat
-              excepturi minus, odio accusantium quidem velit?
+              <h3 data-gender="bride">{{ bride['first_name'] }} {{ bride['last_name'] }}</h3>
+              <p data-gender="bride">
+              {{ bride['description'] }}
             </p>
             <div class="social-links">
               <a href="#"><i class="fab fa-facebook-f"></i></a>
@@ -254,6 +251,9 @@
               <!-- story item end -->
             </div>
           </div>
+          <div class="addStoryItem">
+            <i class="fas fa-plus-circle"></i>
+          </div> 
         </div>
       </div>
     </section>

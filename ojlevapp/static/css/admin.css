@@ -33,3 +33,23 @@
   color: blue;
   font-size: 300%;
 }
+
+.story-section .row {
+  justify-content: center; 
+}
+
+.story-section .addStoryItem {
+  /* position: relative; */
+  background-color: #ccc;
+  color: blue;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.story-section .addStoryItem i {
+  font-size: 200%;
+  color: blue;
+}

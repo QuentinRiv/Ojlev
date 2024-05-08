@@ -5,22 +5,19 @@ from werkzeug.utils import secure_filename
 from flask_login import login_required, current_user
 from .models import User, Partner
 from . import db
-
+from sqlalchemy.exc import SQLAlchemyError
 
 bp = Blueprint('main', __name__)
 
 @bp.route('/')
 def index():
     groom = Partner.query.filter_by(id=1).first()
-    print(groom)
-    legroom = {'first_name': groom.first_name, 
-               'last_name': groom.last_name, 
-               'description': groom.description}
+    bride = Partner.query.filter_by(id=2).first()
     if(current_user.is_authenticated):
         print("\nYou are authenticated\n")
     else:
         print("\nYou are not authenticated\n")
-    return render_template('index.html', connected=current_user.is_authenticated, groom=legroom)
+    return render_template('index.html', connected=current_user.is_authenticated, groom=groom, bride=bride)
 
 @bp.route('/upload')
 @login_required
@@ -52,19 +49,31 @@ def allowed_file(filename):
 def partners():
 
     data = request.form.to_dict()
-    print("\n\n", data)
     id = data['id']
-    names = data['names']
-    
-    
-    # new_partner = Partner(id=id, 
-    #                    first_name=first_name, 
-    #                    last_name=last_name, 
-    #                    description="A very nice lad")
+    partner = db.session.query(Partner).filter_by(id=id).first()
 
-    # # add the new user to the database
-    # db.session.add(new_partner)
-    # db.session.commit()
+
+    if data["info"] == 'names':
+        names = data['names'].split(' ')
+        first_name = names[0]
+
+        try: last_name = names[1]
+        except: last_name = ""
+
+        partner.first_name = first_name
+        partner.last_name = last_name
+
+    elif data['info'] == 'description':
+        text = data['text']
+        partner.description = text
+    
+    try: 
+        db.session.commit()
+    except SQLAlchemyError as e:
+        error = str(e.__dict__['orig'])
+        print(error)
+        return error
+
     return "ok", 202
 
 @bp.route('/generate_partners', methods=['GET'])
