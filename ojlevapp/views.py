@@ -1,26 +1,25 @@
 from flask import Flask, render_template, request, json,jsonify, redirect
-from flask import Blueprint, current_app
+from flask import Blueprint, current_app, url_for
 import os
 from werkzeug.utils import secure_filename
 from flask_login import login_required, current_user
-from .models import User, Partner
+from .models import Partner, Lovestory, Program
 from . import db
-
+from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy import func 
 
 bp = Blueprint('main', __name__)
 
 @bp.route('/')
 def index():
     groom = Partner.query.filter_by(id=1).first()
-    print(groom)
-    legroom = {'first_name': groom.first_name, 
-               'last_name': groom.last_name, 
-               'description': groom.description}
+    bride = Partner.query.filter_by(id=2).first()
+    stories = Lovestory.query.all()
     if(current_user.is_authenticated):
         print("\nYou are authenticated\n")
     else:
         print("\nYou are not authenticated\n")
-    return render_template('index.html', connected=current_user.is_authenticated, groom=legroom)
+    return render_template('index.html', connected=current_user.is_authenticated, groom=groom, bride=bride, stories=stories)
 
 @bp.route('/upload')
 @login_required
@@ -34,12 +33,13 @@ def upload_file():
     
     file = request.files['image']
     filename = request.form['filename']
+    path = request.form['path']
 
     if file.filename == '':
         return redirect(request.url)
     if file and allowed_file(filename):
         filename = secure_filename(filename)
-        file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+        file.save(os.path.join(path, filename))
         return 'Image uploadée avec succès'
     else:
         return 'Type de fichier non autorisé'
@@ -52,19 +52,31 @@ def allowed_file(filename):
 def partners():
 
     data = request.form.to_dict()
-    print("\n\n", data)
     id = data['id']
-    names = data['names']
-    
-    
-    # new_partner = Partner(id=id, 
-    #                    first_name=first_name, 
-    #                    last_name=last_name, 
-    #                    description="A very nice lad")
+    partner = db.session.query(Partner).filter_by(id=id).first()
 
-    # # add the new user to the database
-    # db.session.add(new_partner)
-    # db.session.commit()
+
+    if data["info"] == 'names':
+        names = data['names'].split(' ')
+        first_name = names[0]
+
+        try: last_name = names[1]
+        except: last_name = ""
+
+        partner.first_name = first_name
+        partner.last_name = last_name
+
+    elif data['info'] == 'description':
+        text = data['text']
+        partner.description = text
+    
+    try: 
+        db.session.commit()
+    except SQLAlchemyError as e:
+        error = str(e.__dict__['orig'])
+        print(error)
+        return error
+
     return "ok", 202
 
 @bp.route('/generate_partners', methods=['GET'])
@@ -84,4 +96,85 @@ def generate_partners():
     db.session.add(partner1)
     db.session.add(partner2)
     db.session.commit()
+    return "ok", 202
+
+@bp.route('/generate_story', methods=['GET'])
+def generate_story():
+    data = request.form.to_dict()
+    Lovestory.query.delete()
+    db.session.commit()
+
+    titles = ["First Meet", "First Date", "Proposal", "Engagement"]
+    dates = ["10 Jan 2020", "13 Mar 2021", "16 Jun 2022", "19 Sep 2023"]
+    for i in range(4):
+        lovepart = Lovestory(id=i,
+                             title=titles[i], 
+                             date=dates[i], 
+                             description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam officiis doloribus nulla placeat voluptatibus eum quidem fugit eius impedit, asperiores molestiae natus saepe doloremque, exercitationem quo error iure optio debitis.",
+                             image_name="story-"+str(i)+".jpg")
+        db.session.add(lovepart)
+        db.session.commit()
+        
+    return "ok", 202
+
+
+@bp.route('/story', methods=['POST'])
+def story():
+    data = request.form.to_dict()
+    print(data)
+    story = db.session.query(Lovestory).filter_by(id=data['id']).first()
+    if data['type'] == 'title':
+        story.title = data['text']
+    elif data['type'] == 'date':
+        story.date = data['text']
+    elif data['type'] == 'description':
+        story.description = data['text']
+    
+    db.session.commit()
+        
+    return "ok", 202
+
+@bp.route('/story/new', methods=['GET'])
+def new_story():
+    high_id = len(Lovestory.query.all())
+    lovepart = Lovestory(id=high_id,
+                            title="New love step", 
+                            date="01 Jan 2050", 
+                            description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam officiis doloribus nulla placeat voluptatibus eum quidem fugit eius impedit, asperiores molestiae natus saepe doloremque, exercitationem quo error iure optio debitis.",
+                            image_name="story-"+str(high_id)+".jpg")
+
+    db.session.add(lovepart)
+    db.session.commit()
+
+    return redirect(url_for("main.index"))
+
+
+@bp.route('/story/remove', methods=['GET'])
+def remove_story():
+    highest_id = len(Lovestory.query.all()) - 1
+
+    last_story = Lovestory.query.filter_by(id=highest_id).delete()
+
+    db.session.commit()
+
+    return redirect(url_for("main.index"))
+
+
+@bp.route('/generate_program', methods=['GET'])
+def generate_program():
+    Program.query.delete()
+    db.session.commit()
+
+    names = ["Ceremony", "Engagement"]
+    dates = ["16 Jun 2022", "19 Sep 2023"]
+    hours = ["5:00 - 7:00 PM", "5:00 - 7:30 PM"]
+    for i in range(2):
+        program = Program(  id=i,
+                            name=names[i], 
+                            date=dates[i], 
+                            time=hours[i],
+                            description="Machin truc muche")
+        db.session.add(program)
+        db.session.commit()
+        
     return "ok", 202
