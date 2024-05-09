@@ -166,94 +166,36 @@
           <div class="story-content">
             <div class="row">
               <!-- story item start -->
-              <div class="story-item">
+              {% for story in stories %}
+              <div class="story-item" data-index={{story['id']}}>
                 <i class="fas fa-heart"></i>
                 <div class="story-text">
-                  <h3>First Meet</h3>
-                  <span class="date"> 29 Feb 2020 </span>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Quibusdam officiis doloribus nulla placeat voluptatibus eum
-                    quidem fugit eius impedit, asperiores molestiae natus saepe
-                    doloremque, exercitationem quo error iure optio debitis.
-                  </p>
+                  <h3 class="title">{{ story['title'] }}</h3>
+                  <span class="date"> {{ story['date'] }} </span>
+                  <p class="description">{{ story['description'] }}</p>
                 </div>
                 <div class="story-img">
-                  <img
-                    src="../static/img/story/story-1.jpg"
+                    <img
+                    src={{"../static/img/story/"+story['image_name']}}
                     alt="couple love story"
                   />
+                <input type="file" id="hiddenLoveImageInput" style="display: none;" name="image">
+                  <div class="new-image-story">
+                    <i class="fas fa-camera"></i>
+                  </div>
                 </div>
               </div>
+              {% endfor %}
               <!-- story item end -->
-              <!-- story item start -->
-              <div class="story-item">
-                <i class="fas fa-heart"></i>
-                <div class="story-text">
-                  <h3>First Date</h3>
-                  <span class="date"> 29 Feb 2021 </span>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Quibusdam officiis doloribus nulla placeat voluptatibus eum
-                    quidem fugit eius impedit, asperiores molestiae natus saepe
-                    doloremque, exercitationem quo error iure optio debitis.
-                  </p>
-                </div>
-                <div class="story-img">
-                  <img
-                    src="../static/img/story/story-2.jpg"
-                    alt="couple love story"
-                  />
-                </div>
-              </div>
-              <!-- story item end -->
-              <!-- story item start -->
-              <div class="story-item">
-                <i class="fas fa-heart"></i>
-                <div class="story-text">
-                  <h3>Proposal</h3>
-                  <span class="date"> 29 Feb 2022 </span>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Quibusdam officiis doloribus nulla placeat voluptatibus eum
-                    quidem fugit eius impedit, asperiores molestiae natus saepe
-                    doloremque, exercitationem quo error iure optio debitis.
-                  </p>
-                </div>
-                <div class="story-img">
-                  <img
-                    src="../static/img/story/story-3.jpg"
-                    alt="couple love story"
-                  />
-                </div>
-              </div>
-              <!-- story item end -->
-              <!-- story item start -->
-              <div class="story-item">
-                <i class="fas fa-heart"></i>
-                <div class="story-text">
-                  <h3>Engagement</h3>
-                  <span class="date"> 29 Feb 2023 </span>
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Quibusdam officiis doloribus nulla placeat voluptatibus eum
-                    quidem fugit eius impedit, asperiores molestiae natus saepe
-                    doloremque, exercitationem quo error iure optio debitis.
-                  </p>
-                </div>
-                <div class="story-img">
-                  <img
-                    src="../static/img/story/story-4.jpg"
-                    alt="couple love story"
-                  />
-                </div>
-              </div>
-              <!-- story item end -->
+              
             </div>
           </div>
-          <div class="addStoryItem">
-            <i class="fas fa-plus-circle"></i>
+          <div class="addStoryItem plus">
+            <i class="fas fa-plus"></i>
           </div> 
+          <div class="addStoryItem minus">
+            <i class="fas fa-minus"></i>
+          </div>  
         </div>
       </div>
     </section>
@@ -274,7 +216,6 @@
                         <h3>Ceremony</h3>
                         <span class="date">3 Sep 2024</span>
                         <span class="time">5:00 - 7:00 PM</span>
-                        <p>{ Shagun Farm }</p>
                         <p>Rue du Bout du Monde, Quelque part à Satigny</p>
                         <img src="../static/img/icons/flower.svg" alt="event">
                     </div>
@@ -286,7 +227,6 @@
                         <h3>Reception</h3>
                         <span class="date">3 Sep 2024</span>
                         <span class="time">5:00 - 7:00 PM</span>
-                        <p>{ Shagun Farm }</p>
                         <p>Rue du Bout du Monde, Quelque part à Satigny</p>
                         <img src="../static/img/icons/flower.svg" alt="event">
                     </div>

@@ -40,16 +40,59 @@
 
 .story-section .addStoryItem {
   /* position: relative; */
-  background-color: #ccc;
+  background-color: #e4e4e4;
   color: blue;
   width: 100px;
   height: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 50%;
+  border: 1px green dashed;
+  cursor: pointer;
+  margin: 30px 10px;
 }
 
 .story-section .addStoryItem i {
-  font-size: 200%;
-  color: blue;
+  font-size: 250%; 
+  color: rgb(71, 55, 55);
+  padding: 10px;
+}
+
+
+.story-content .story-img .new-image-story {
+  background-color: rgb(117, 128, 143);
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100% - 75px);
+  height: 100%;
+  transition: opacity 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.story-content .story-img .new-image-story:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+.story-content .story-item:nth-child(odd) .new-image-story {
+    margin: 0 15px 0 60px;
+}
+
+.story-content .story-item:nth-child(even) .new-image-story {
+  margin: 0 60px 0 15px;
+}
+
+.story-content .story-img {
+  position: relative;
+}
+
+
+.story-content .story-img .fa-camera {
+  color: black;
+  font-size: 300%;
 }

@@ -328,7 +328,7 @@ body {
     background-color: #cccccc;
 }
 
-.story-content .story-item i {
+.story-content .story-item > i {
     position: absolute;
     left: 50%;
     width: 31px;
@@ -353,6 +353,11 @@ body {
 .story-content .story-img {
     flex: 0 0 50%;
     max-width: 50%;
+}
+
+.story-content .story-img img {
+    border-radius: 3%;
+    filter: drop-shadow(3px 3px 10px black);
 }
 
 .story-section .story-item:last-child {
