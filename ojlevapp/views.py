@@ -49,97 +49,43 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_EXTENSIONS']
 
-def update_partner(data):
 
+
+@bp.route('/update', methods=['POST'])
+def update_db():
+    data = request.form.to_dict()
+    table = data['table']
     id = data['id']
-    partner = db.session.query(Partner).filter_by(id=id).first()
+    attribute_name = data['attribute_name']
+    new_value = data['new_value']
+    # Need : Table, id, key, value
+    if (table == "Program"): tablequery = db.session.query(Program)
+    if (table == "Lovestory"): tablequery = db.session.query(Lovestory)
+    if (table == "Partner"): tablequery = db.session.query(Partner)
 
+    element = tablequery.filter_by(id=id).first()
 
-    if data["info"] == 'names':
-        names = data['names'].split(' ')
-        first_name = names[0]
-
-        try: last_name = names[1]
-        except: last_name = ""
-
-        partner.first_name = first_name
-        partner.last_name = last_name
-
-    elif data['info'] == 'description':
-        text = data['text']
-        partner.description = text
-    
+    setattr(element, attribute_name, new_value)
     try: 
         db.session.commit()
     except SQLAlchemyError as e:
         error = str(e.__dict__['orig'])
         print(error)
         return error
-    
-    return
 
-def update_story(data):
-    story = db.session.query(Lovestory).filter_by(id=data['id']).first()
-    if data['type'] == 'title':
-        story.title = data['text']
-    elif data['type'] == 'date':
-        story.date = data['text']
-    elif data['type'] == 'description':
-        story.description = data['text']
-    
-    db.session.commit()
-
-    return
-
-def update_program(data):
-    program = db.session.query(Program).filter_by(id=data['id']).first()
-    if data['info'] == 'name':
-        program.name = data['texte']
-    elif data['info'] == 'date':
-        program.date = data['texte']
-    elif data['info'] == 'time':
-        program.time = data['texte']
-    elif data['info'] == 'description':
-        program.description = data['texte']
-
-    
-    db.session.commit()
-
-    return
-
-def update_db(data, table, id, attribute_name, new_value):
-    # Need : Table, id, key, value
-    if (table == "Program"): tablequery = db.session.query(Program)
-    if (table == "Lovestory"): tablequery = db.session.query(Lovestory)
-    if (table == "Partner"): tablequery = db.session.query(Partner)
-
-    element = tablequery.filter_by(id=data['id']).first()
-
-    setattr(element, attribute_name, new_value)
-
-    return
+    return "Success", 202
 
 
-@bp.route('/partners', methods=['POST'])
-def partners():
-
-    data = request.form.to_dict()
-
-    update_partner(data)
-
-    return "ok", 202
 
 @bp.route('/generate_partners', methods=['GET'])
 def generate_partners():
     Partner.query.delete()
     db.session.commit()
     partner1 = Partner(id=1, 
-                       first_name="Jean", 
-                       last_name="Bonbeurre", 
+                       full_name="Jean Bonbeurre" ,
                        description="A very nice lad")
     partner2 = Partner(id=2, 
-                       first_name="Jeanne", 
-                       last_name="Haitte", 
+                       full_name="Jeanne Haitte", 
                        description="A very nice girl")
 
     # add the new user to the database
@@ -168,13 +114,6 @@ def generate_story():
     return "ok", 202
 
 
-@bp.route('/story', methods=['POST'])
-def story():
-    data = request.form.to_dict()
-    
-    update_story(data)
-        
-    return "ok", 202
 
 @bp.route('/story/new', methods=['GET'])
 def new_story():
@@ -218,15 +157,6 @@ def generate_program():
                             description="Machin truc muche")
         db.session.add(program)
         db.session.commit()
-        
-    return "ok", 202
-
-
-@bp.route('/program', methods=['POST'])
-def program():
-    data = request.form.to_dict()
-    
-    update_program(data)
         
     return "ok", 202
 
