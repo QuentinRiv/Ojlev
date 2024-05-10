@@ -107,10 +107,15 @@ def update_program(data):
 
     return
 
-def update_db(table, id):
+def update_db(data, table, id, attribute_name, new_value):
     # Need : Table, id, key, value
-    if (table == "Program"):
-        program = db.session.query(Program)
+    if (table == "Program"): tablequery = db.session.query(Program)
+    if (table == "Lovestory"): tablequery = db.session.query(Lovestory)
+    if (table == "Partner"): tablequery = db.session.query(Partner)
+
+    element = tablequery.filter_by(id=data['id']).first()
+
+    setattr(element, attribute_name, new_value)
 
     return
 
