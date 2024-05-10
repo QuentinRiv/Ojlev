@@ -15,11 +15,12 @@ def index():
     groom = Partner.query.filter_by(id=1).first()
     bride = Partner.query.filter_by(id=2).first()
     stories = Lovestory.query.all()
+    programs = Program.query.all()
     if(current_user.is_authenticated):
         print("\nYou are authenticated\n")
     else:
         print("\nYou are not authenticated\n")
-    return render_template('index.html', connected=current_user.is_authenticated, groom=groom, bride=bride, stories=stories)
+    return render_template('index.html', connected=current_user.is_authenticated, groom=groom, bride=bride, stories=stories, programs=programs)
 
 @bp.route('/upload')
 @login_required
@@ -48,10 +49,8 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_EXTENSIONS']
 
-@bp.route('/partners', methods=['POST'])
-def partners():
+def update_partner(data):
 
-    data = request.form.to_dict()
     id = data['id']
     partner = db.session.query(Partner).filter_by(id=id).first()
 
@@ -76,6 +75,52 @@ def partners():
         error = str(e.__dict__['orig'])
         print(error)
         return error
+    
+    return
+
+def update_story(data):
+    story = db.session.query(Lovestory).filter_by(id=data['id']).first()
+    if data['type'] == 'title':
+        story.title = data['text']
+    elif data['type'] == 'date':
+        story.date = data['text']
+    elif data['type'] == 'description':
+        story.description = data['text']
+    
+    db.session.commit()
+
+    return
+
+def update_program(data):
+    program = db.session.query(Program).filter_by(id=data['id']).first()
+    if data['info'] == 'name':
+        program.name = data['texte']
+    elif data['info'] == 'date':
+        program.date = data['texte']
+    elif data['info'] == 'time':
+        program.time = data['texte']
+    elif data['info'] == 'description':
+        program.description = data['texte']
+
+    
+    db.session.commit()
+
+    return
+
+def update_db(table, id):
+    # Need : Table, id, key, value
+    if (table == "Program"):
+        program = db.session.query(Program)
+
+    return
+
+
+@bp.route('/partners', methods=['POST'])
+def partners():
+
+    data = request.form.to_dict()
+
+    update_partner(data)
 
     return "ok", 202
 
@@ -121,16 +166,8 @@ def generate_story():
 @bp.route('/story', methods=['POST'])
 def story():
     data = request.form.to_dict()
-    print(data)
-    story = db.session.query(Lovestory).filter_by(id=data['id']).first()
-    if data['type'] == 'title':
-        story.title = data['text']
-    elif data['type'] == 'date':
-        story.date = data['text']
-    elif data['type'] == 'description':
-        story.description = data['text']
     
-    db.session.commit()
+    update_story(data)
         
     return "ok", 202
 
@@ -169,7 +206,7 @@ def generate_program():
     dates = ["16 Jun 2022", "19 Sep 2023"]
     hours = ["5:00 - 7:00 PM", "5:00 - 7:30 PM"]
     for i in range(2):
-        program = Program(  id=i,
+        program = Program(  id=i+1,
                             name=names[i], 
                             date=dates[i], 
                             time=hours[i],
@@ -178,3 +215,20 @@ def generate_program():
         db.session.commit()
         
     return "ok", 202
+
+
+@bp.route('/program', methods=['POST'])
+def program():
+    data = request.form.to_dict()
+    
+    update_program(data)
+        
+    return "ok", 202
+
+
+@bp.route('/test', methods=['GET'])
+def test():
+    program = db.session.query(Program)
+    print(program.filter_by(id=1).first())
+
+    return "OuiTest", 200

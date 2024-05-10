@@ -212,22 +212,22 @@
             <div class="row justify-content-center ">
                 <!-- item start -->
                 <div class="event-item">
-                    <div class="event-item-inner">
-                        <h3>Ceremony</h3>
-                        <span class="date">3 Sep 2024</span>
-                        <span class="time">5:00 - 7:00 PM</span>
-                        <p>Rue du Bout du Monde, Quelque part à Satigny</p>
+                    <div class="event-item-inner" data-index="1">
+                        <h3 name="name">{{ programs[0]['name']}}</h3>
+                        <span name="date">{{ programs[0]['date']}}</span>
+                        <span name="time">{{ programs[0]['time']}}</span>
+                        <p name="description">{{ programs[0]['description']}}</p>
                         <img src="../static/img/icons/flower.svg" alt="event">
                     </div>
                 </div>
                 <!-- item end -->
                 <!-- item start -->
                 <div class="event-item">
-                    <div class="event-item-inner">
-                        <h3>Reception</h3>
-                        <span class="date">3 Sep 2024</span>
-                        <span class="time">5:00 - 7:00 PM</span>
-                        <p>Rue du Bout du Monde, Quelque part à Satigny</p>
+                    <div class="event-item-inner" data-index="2">
+                        <h3 name="name">{{ programs[1]['name']}}</h3>
+                        <span name="date">{{ programs[1]['date']}}</span>
+                        <span name="time">{{ programs[1]['time']}}</span>
+                        <p name="description">{{ programs[1]['description']}}</p>
                         <img src="../static/img/icons/flower.svg" alt="event">
                     </div>
                 </div>

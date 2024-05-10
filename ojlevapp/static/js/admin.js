@@ -223,6 +223,30 @@ $(window).on("load", function () {
     cards.attr('contenteditable','true');
     cards.css("border", "1px dashed black");
 
+    cards.on("blur", function() {
+        // Déclenche le clic sur l'input file caché
+        var id = $(this).parent().attr("data-index");
+        var texte = $(this).text();
+        var info = $(this).attr("name");
+        let data = {id, texte, info};
+
+        $.ajax({
+            url: '/program',
+            type: 'POST',
+            data: data,
+            success: function(response) {
+                console.log('Program updated successfully!');
+                // Vous pouvez ici ajouter des actions à exécuter après un upload réussi
+            },
+            error: function(xhr, status, error) {
+                console.error('Failed to update Program:', error);
+            }
+        });
+
+    });
+
+    
+
     // Modif du programme END
 
 
