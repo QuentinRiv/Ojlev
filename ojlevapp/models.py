@@ -26,3 +26,10 @@ class Program(db.Model):
     date = db.Column(db.String(100))
     time = db.Column(db.String(100))
     description = db.Column(db.String(100))
+
+
+class Witness(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    side = db.Column(db.String(100))
+    full_name = db.Column(db.String(100))
+    description = db.Column(db.String(1000))

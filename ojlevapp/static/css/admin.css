@@ -96,3 +96,25 @@
   color: black;
   font-size: 300%;
 }
+
+/* People */
+.people-section .addWitnessItem {
+  /* position: relative; */
+  background-color: #e4e4e4;
+  color: blue;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: 1px green dashed;
+  cursor: pointer;
+  margin: 30px 10px;
+}
+
+.people-section .addWitnessItem i {
+  font-size: 250%; 
+  color: rgb(71, 55, 55);
+  padding: 10px;
+}
