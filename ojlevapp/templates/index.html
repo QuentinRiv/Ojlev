@@ -70,7 +70,7 @@
           <div class="row align-items-center">
             <div class="home-content">
               <p>We are getting married</p>
-              <h1>{{ groom['first_name'] }} & Jeanne</h1>
+              <h1>{{ groom['first_name'] }} & bride['first_name']</h1>
               <span>30 Feb 2024</span>
             </div>
           </div>
@@ -96,8 +96,8 @@
     </section>
     <!-- home section end -->
 
-    <!-- couple section end -->
-    <section class="couple-section">
+    <!-- couple section start -->
+    <section class="couple-section" data-db="Partner">
       <div class="container">
         <div class="row">
           <div class="section-title">
@@ -105,7 +105,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="couple">
+          <div class="couple item" data-index="1">
             <div class="image-container">
               <img
                 id="groomImg"
@@ -116,17 +116,15 @@
                 <i class="fas fa-camera"></i>
               </div>
             </div>
-            <h3 data-gender="groom">{{ groom['first_name'] }} {{ groom['last_name'] }}</h3>
-            <p data-gender="groom">
-                {{ groom['description'] }}
-            </p>
+            <h3 name="full_name">{{ groom['first_name'] }} {{ groom['last_name'] }}</h3>
+            <p name="description">{{ groom['description'] }}</p>
             <div class="social-links">
               <a href="#"><i class="fab fa-facebook-f"></i></a>
               <a href="#"><i class="fab fa-linkedin-in"></i></a>
               <a href="#"><i class="fab fa-instagram"></i></a>
             </div>
           </div>
-          <div class="couple">
+          <div class="couple item" data-index="2">
             <i class="fas fa-heart"></i>
             <div class="image-container">
                 <input type="file" id="hiddenImageInput" style="display: none;" name="image">
@@ -139,10 +137,8 @@
                   <i class="fas fa-camera"></i>
                 </div>
               </div>
-              <h3 data-gender="bride">{{ bride['first_name'] }} {{ bride['last_name'] }}</h3>
-              <p data-gender="bride">
-              {{ bride['description'] }}
-            </p>
+              <h3 name="full_name">{{ bride['first_name'] }} {{ bride['last_name'] }}</h3>
+              <p name="description">{{ bride['description'] }}</p>
             <div class="social-links">
               <a href="#"><i class="fab fa-facebook-f"></i></a>
               <a href="#"><i class="fab fa-linkedin-in"></i></a>
@@ -155,7 +151,7 @@
     <!-- couple section end -->
 
     <!-- story section start -->
-    <section class="story-section">
+    <section class="story-section" data-db="Lovestory">
       <div class="container">
         <div class="row">
           <div class="section-title">
@@ -167,12 +163,12 @@
             <div class="row">
               <!-- story item start -->
               {% for story in stories %}
-              <div class="story-item" data-index={{story['id']}}>
+              <div class="story-item item" data-index={{story['id']}}>
                 <i class="fas fa-heart"></i>
                 <div class="story-text">
-                  <h3 class="title">{{ story['title'] }}</h3>
-                  <span class="date"> {{ story['date'] }} </span>
-                  <p class="description">{{ story['description'] }}</p>
+                  <h3 name="title">{{ story['title'] }}</h3>
+                  <span name="date"> {{ story['date'] }} </span>
+                  <p name="description">{{ story['description'] }}</p>
                 </div>
                 <div class="story-img">
                     <img
@@ -201,8 +197,8 @@
     </section>
     <!-- story section end -->
 
-    <!-- couple section end -->
-    <section class="event-section">
+    <!-- Event section end -->
+    <section class="event-section" data-db="Program">
         <div class="container">
             <div class="row">
                 <div class="section-title">
@@ -211,8 +207,8 @@
             </div>
             <div class="row justify-content-center ">
                 <!-- item start -->
-                <div class="event-item">
-                    <div class="event-item-inner" data-index="1">
+                <div class="event-item item" data-index="1">
+                    <div class="event-item-inner">
                         <h3 name="name">{{ programs[0]['name']}}</h3>
                         <span name="date">{{ programs[0]['date']}}</span>
                         <span name="time">{{ programs[0]['time']}}</span>
@@ -222,8 +218,8 @@
                 </div>
                 <!-- item end -->
                 <!-- item start -->
-                <div class="event-item">
-                    <div class="event-item-inner" data-index="2">
+                <div class="event-item item" data-index="2">
+                    <div class="event-item-inner">
                         <h3 name="name">{{ programs[1]['name']}}</h3>
                         <span name="date">{{ programs[1]['date']}}</span>
                         <span name="time">{{ programs[1]['time']}}</span>
@@ -235,7 +231,7 @@
             </div>
         </div>
     </section>
-    <!-- couple section end -->
+    <!-- Event section end -->
 
     <!-- people section start -->
     <section class="people-section">

@@ -48,62 +48,37 @@ $(window).on("load", function () {
     });
 // Upload d'une image FIN
 
-// Modif des noms START
-    let elements = $(".couple h3");
+// Modif des partenaires START
+    let elements = $(".couple h3, .couple p, .story-content .row h3, .story-content .row span, .story-content .row p, .event-item-inner h3, .event-item-inner span, .event-item-inner p");
     elements.attr('contenteditable','true');
     elements.css("border", "1px dashed black");
     elements.on('blur', function() {
-        console.log($(this).data('gender') === 'groom')
-        var id = ($(this).data('gender') === 'groom') ? 1 : 2;
-        let data = {info: 'names',
+        var id = $(this).closest('.item').attr("data-index"); // On trouve le 1er parent avec la classe .item, pour on récupère son id
+        var text_value = $(this).text();
+        var attribute_name = $(this).attr("name");
+        var table = $(this).closest('section').attr("data-db");
+        let data = {table: table,
                     id: id, 
-                    names: $(this).text(),
-
+                    attribute_name: attribute_name,
+                    new_value: text_value,
                 }
 
-        console.log('Modification terminée :', data.names);
+        console.log("Data : ", data);
+
         $.ajax({
-            url: '/partners',
+            url: '/update',
             type: 'POST',
             data: data,
             success: function(response) {
-                console.log('Names updated successfully!');
+                console.log(`-${table}- table updated successfully! => New Value : -${text_value}- for the attribute -${attribute_name}-`);
                 // Vous pouvez ici ajouter des actions à exécuter après un upload réussi
             },
             error: function(xhr, status, error) {
-                console.error('Failed to update name:', error);
+                console.error(`Failed to update -${table}-:`, error);
             }
         });
     });
-    // Modif des noms END
-
-    // Modif des descrptions START
-    let descriptions = $(".couple p");
-    descriptions.attr('contenteditable','true');
-    descriptions.css("border", "1px dashed black");
-    descriptions.on('blur', function() {
-        console.log($(this).data('gender') === 'groom')
-        var id = ($(this).data('gender') === 'groom') ? 1 : 2;
-        let data = {info: 'description',
-                    id: id, 
-                    text: $(this).text(),
-                }
-
-        console.log('Modification à faire :', data);
-        $.ajax({
-            url: '/partners',
-            type: 'POST',
-            data: data,
-            success: function(response) {
-                console.log('Names updated successfully!');
-                // Vous pouvez ici ajouter des actions à exécuter après un upload réussi
-            },
-            error: function(xhr, status, error) {
-                console.error('Failed to update name:', error);
-            }
-        });
-    });
-    // Modif des descrptions END
+    // Modif des partenaires END
 
     // Ajout/Retrait d'une histoire START
     // Ajout
@@ -152,33 +127,6 @@ $(window).on("load", function () {
     });
     // Ajout/Retrait d'une histoire END
 
-    // Modif d'une histoire START
-    let histoires = $(".story-content .row h3, .story-content .row span, .story-content .row p");
-    histoires.attr('contenteditable','true');
-    histoires.css("border", "1px dashed black");
-
-    histoires.on("blur", function() {
-        let type = $(this).attr("class");
-        let id = $(this).parent().parent().attr("data-index");
-        let text = $(this).text();
-        let data = {id, type, text}
-
-        console.log('Modification à faire :', data);
-        $.ajax({
-            url: '/story',
-            type: 'POST',
-            data: data,
-            success: function(response) {
-                console.log('Story updated successfully!');
-                // Vous pouvez ici ajouter des actions à exécuter après un upload réussi
-            },
-            error: function(xhr, status, error) {
-                console.error('Failed to update story:', error);
-            }
-        });
-    })
-    // Modif d'une histoire END
-
     // Upload d'une image LoveStory START
     var id = ""
     $('.new-image-story').click(function() {
@@ -218,36 +166,6 @@ $(window).on("load", function () {
     });
     // Upload d'une image LoveStory FIN
 
-    // Modif du programme START
-    let cards = $(".event-item-inner h3, .event-item-inner span, .event-item-inner p");
-    cards.attr('contenteditable','true');
-    cards.css("border", "1px dashed black");
-
-    cards.on("blur", function() {
-        // Déclenche le clic sur l'input file caché
-        var id = $(this).parent().attr("data-index");
-        var texte = $(this).text();
-        var info = $(this).attr("name");
-        let data = {id, texte, info};
-
-        $.ajax({
-            url: '/program',
-            type: 'POST',
-            data: data,
-            success: function(response) {
-                console.log('Program updated successfully!');
-                // Vous pouvez ici ajouter des actions à exécuter après un upload réussi
-            },
-            error: function(xhr, status, error) {
-                console.error('Failed to update Program:', error);
-            }
-        });
-
-    });
-
-    
-
-    // Modif du programme END
 
 
 });

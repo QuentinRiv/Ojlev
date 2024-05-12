@@ -49,20 +49,29 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_EXTENSIONS']
 
-
-
-
-def update_db(data, table, id, attribute_name, new_value):
+@bp.route('/update', methods=['POST'])
+def update_db():
+    data = request.form.to_dict()
+    table = data['table']
+    id = data['id']
+    attribute_name = data['attribute_name']
+    new_value = data['new_value']
     # Need : Table, id, key, value
     if (table == "Program"): tablequery = db.session.query(Program)
     if (table == "Lovestory"): tablequery = db.session.query(Lovestory)
     if (table == "Partner"): tablequery = db.session.query(Partner)
 
-    element = tablequery.filter_by(id=data['id']).first()
+    element = tablequery.filter_by(id=id).first()
 
     setattr(element, attribute_name, new_value)
+    try: 
+        db.session.commit()
+    except SQLAlchemyError as e:
+        error = str(e.__dict__['orig'])
+        print(error)
+        return error
 
-    return
+    return "Success", 202
 
 
 @bp.route('/generate_partners', methods=['GET'])
@@ -70,12 +79,10 @@ def generate_partners():
     Partner.query.delete()
     db.session.commit()
     partner1 = Partner(id=1, 
-                       first_name="Jean", 
-                       last_name="Bonbeurre", 
+                       full_name="Jean Bonbeurre" ,
                        description="A very nice lad")
     partner2 = Partner(id=2, 
-                       first_name="Jeanne", 
-                       last_name="Haitte", 
+                       full_name="Jeanne Haitte", 
                        description="A very nice girl")
 
     # add the new user to the database
@@ -104,13 +111,6 @@ def generate_story():
     return "ok", 202
 
 
-@bp.route('/story', methods=['POST'])
-def story():
-    data = request.form.to_dict()
-    
-    update_story(data)
-        
-    return "ok", 202
 
 @bp.route('/story/new', methods=['GET'])
 def new_story():
