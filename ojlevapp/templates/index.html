@@ -33,7 +33,7 @@
               <li><a href="#">Couple</a></li>
               <li><a href="#">Story</a></li>
               <li><a href="#">Events</a></li>
-              <li><a href="#">People</a></li>
+              <li><a href="#">Witness</a></li>
               <li><a href="#">Gallery</a></li>
             </ul>
           </div>
@@ -233,81 +233,49 @@
     </section>
     <!-- Event section end -->
 
-    <!-- people section start -->
-    <section class="people-section">
+    <!-- witness section start -->
+    <section class="witness-section">
       <div class="container">
         <div class="row">
           <div class="section-title">
-            <h2>People</h2>
+            <h2>Witness</h2>
           </div>
         </div>
         <div class="row">
-          <div class="people-filter">
-            <a href="javascricpt:void(0)" class="filter-btn" data-target="groomsmen">Gromsmen</a>
+          <div class="witness-filter">
+            <a href="javascricpt:void(0)" class="filter-btn" data-target="Groomsman">Groomsmen</a>
             <a href="javascricpt:void(0)" class="filter-btn active" data-target="bridesmaid">Bridesmaid</a>
           </div>
         </div>
         <!-- groomsmen  start -->
-        <div class="row justify-content-center">
-          <!-- people item start -->
-          <div class="people-item" data-target="groomsmen">
-            <div class="people-item-inner">
-              <img src="../static/img/groomsmen/1.jpg" alt="groomsmen">
-              <h4>Albert Einstein</h4>
-              <p>Best Friend</p>
+        <div class="row justify-content-center filter-img" data-target="Groomsman">
+          <!-- witness item start -->
+          {% for Groomsman in groomsmen %}
+          <div class="witness-item" data-target="Groomsman" data-index={{loop.index0|string}}>
+            <div class="witness-item-inner">
+              <img src={{"../static/img/witness/Groomsman_"+loop.index0|string+".jpg"}} alt="Groomsman">
+              <h4>{{ Groomsman['full_name'] }}</h4>
+              <p>{{ Groomsman['description'] }}</p>
             </div>
           </div>
-          <!-- people item end -->
-          <!-- people item start -->
-          <div class="people-item" data-target="groomsmen">
-            <div class="people-item-inner">
-              <img src="../static/img/groomsmen/2.jpg" alt="groomsmen">
-              <h4>Thierry Lermit</h4>
-              <p>Best Friend</p>
-            </div>
-          </div>
-          <!-- people item end -->
-          <!-- people item start -->
-          <div class="people-item" data-target="groomsmen">
-            <div class="people-item-inner">
-              <img src="../static/img/groomsmen/3.jpg" alt="groomsmen">
-              <h4>Igor Meideleyeiv</h4>
-              <p>Best Friend</p>
-            </div>
-          </div>
-          <!-- people item end -->
+          {% endfor %}
+          <!-- witness item end -->
         </div>
         <!-- groomsmen  end -->
 
         <!-- bridesmaid start -->
-        <div class="row justify-content-center">
-          <!-- people item start -->
-          <div class="people-item" data-target="bridesmaid">
-            <div class="people-item-inner">
-              <img src="../static/img/bridesmaid/1.jpg" alt="bridesmaid">
-              <h4>Marie Curie</h4>
-              <p>Best Friend</p>
+        <div class="row justify-content-center filter-img active" data-target="bridesmaid">
+          <!-- witness item start -->
+          {% for bridesmaid in bridesmaids %}
+          <div class="witness-item" data-target="bridesmaid" data-index={{loop.index0|string}}>
+            <div class="witness-item-inner">
+              <img src={{"../static/img/witness/bridesmaid_"+loop.index0|string+".jpg"}} alt="bridesmaid">
+              <h4>{{ bridesmaid['full_name'] }}</h4>
+              <p>{{ bridesmaid['description'] }}</p>
             </div>
           </div>
-          <!-- people item end -->
-          <!-- people item start -->
-          <div class="people-item" data-target="bridesmaid">
-            <div class="people-item-inner">
-              <img src="../static/img/bridesmaid/2.jpg" alt="bridesmaid">
-              <h4>Frida Khalo</h4>
-              <p>Best Friend</p>
-            </div>
-          </div>
-          <!-- people item end -->
-          <!-- people item start -->
-          <div class="people-item" data-target="bridesmaid">
-            <div class="people-item-inner">
-              <img src="../static/img/bridesmaid/3.jpg" alt="bridesmaid">
-              <h4>Mahitée</h4>
-              <p>Best Friend</p>
-            </div>
-          </div>
-          <!-- people item end -->
+          {% endfor %}
+          <!-- witness item end -->
         </div>
         <!-- bridesmaid end -->
         <div class="row justify-content-center">
@@ -320,7 +288,7 @@
         </div>
       </div>
     </section>
-    <!-- people section end -->
+    <!-- witness section end -->
 
 
     <!-- gallery section start -->

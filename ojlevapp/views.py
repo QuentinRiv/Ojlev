@@ -1,9 +1,9 @@
-from flask import Flask, render_template, request, json,jsonify, redirect
+from flask import Flask, render_template, request, redirect
 from flask import Blueprint, current_app, url_for
 import os
 from werkzeug.utils import secure_filename
 from flask_login import login_required, current_user
-from .models import Partner, Lovestory, Program
+from .models import Partner, Lovestory, Program, Witness
 from . import db
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import func 
@@ -16,11 +16,14 @@ def index():
     bride = Partner.query.filter_by(id=2).first()
     stories = Lovestory.query.all()
     programs = Program.query.all()
+    groomsmen = Witness.query.filter_by(side="Groomsman").all()
+    bridesmaids = Witness.query.filter_by(side="Bridesmaid").all()
+    print("=> ", groomsmen)
     if(current_user.is_authenticated):
         print("\nYou are authenticated\n")
     else:
         print("\nYou are not authenticated\n")
-    return render_template('index.html', connected=current_user.is_authenticated, groom=groom, bride=bride, stories=stories, programs=programs)
+    return render_template('index.html', connected=current_user.is_authenticated, groom=groom, bride=bride, stories=stories, programs=programs, groomsmen=groomsmen, bridesmaids=bridesmaids)
 
 @bp.route('/upload')
 @login_required
@@ -74,7 +77,6 @@ def update_db():
     return "Success", 202
 
 
-@bp.route('/generate_partners', methods=['GET'])
 def generate_partners():
     Partner.query.delete()
     db.session.commit()
@@ -91,9 +93,8 @@ def generate_partners():
     db.session.commit()
     return "ok", 202
 
-@bp.route('/generate_story', methods=['GET'])
+
 def generate_story():
-    data = request.form.to_dict()
     Lovestory.query.delete()
     db.session.commit()
 
@@ -110,6 +111,30 @@ def generate_story():
         
     return "ok", 202
 
+def generate_witness():
+    Witness.query.delete()
+    db.session.commit()
+
+    side = ["Groomsman", "Groomsman", "Groomsman", "Bridesmaid", "Bridesmaid", "Bridesmaid", ]
+    full_name = ["Albert Einstein", "Thierry Lermit", "Igor Meideleyeiv", "Marie Curie", "Frida Khalo", "Mahitée"]
+    for i in range(len(full_name)):
+        witness = Witness(  id=i,
+                            side=side[i], 
+                            full_name=full_name[i],
+                            description="Best Friend")
+        db.session.add(witness)
+        db.session.commit()
+        
+    return "ok", 202
+
+@bp.route('/generate', methods=['GET'])
+def generate():
+    generate_program()
+    generate_partners()
+    generate_story()
+    generate_witness()
+
+    return "ok", 200
 
 
 @bp.route('/story/new', methods=['GET'])
@@ -138,7 +163,6 @@ def remove_story():
     return redirect(url_for("main.index"))
 
 
-@bp.route('/generate_program', methods=['GET'])
 def generate_program():
     Program.query.delete()
     db.session.commit()
@@ -159,9 +183,31 @@ def generate_program():
 
 
 
-@bp.route('/test', methods=['GET'])
-def test():
-    program = db.session.query(Program)
-    print(program.filter_by(id=1).first())
+@bp.route('/witness/new', methods=['GET'])
+def new_witness():
+    side = request.args.get("side")
+    high_id = len(Witness.query.filter_by().all())
+    lovepart = Witness(id=high_id,
+                            side=side, 
+                            full_name="John Doe", 
+                            description="Best Friend")
 
-    return "OuiTest", 200
+    db.session.add(lovepart)
+    db.session.commit()
+
+    return redirect(url_for("main.index"))
+
+
+@bp.route('/witness/remove', methods=['GET'])
+def remove_witness():
+    side = request.args.get("side")
+
+    highest_id_item = db.session.query(Witness).filter(Witness.side == side).order_by(Witness.id.desc()).first()
+
+    if highest_id_item:
+        db.session.delete(highest_id_item)
+        db.session.commit()
+    else:
+        print("Aucun élément trouvé avec le critère spécifié.")
+
+    return redirect(url_for("main.index"))

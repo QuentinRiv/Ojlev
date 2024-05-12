@@ -97,8 +97,8 @@
   font-size: 300%;
 }
 
-/* People */
-.people-section .addWitnessItem {
+/* Witness */
+.witness-section .addWitnessItem {
   /* position: relative; */
   background-color: #e4e4e4;
   color: blue;
@@ -113,7 +113,7 @@
   margin: 30px 10px;
 }
 
-.people-section .addWitnessItem i {
+.witness-section .addWitnessItem i {
   font-size: 250%; 
   color: rgb(71, 55, 55);
   padding: 10px;
