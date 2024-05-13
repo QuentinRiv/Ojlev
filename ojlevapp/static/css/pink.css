@@ -1,5 +1,6 @@
 /* pink color style */
 
+.btn-1:hover,
 .event-section .event-item-inner span, 
 .story-content .story-item i,
 .story-content .story-text h3,
@@ -17,6 +18,8 @@
     border-color: #fb839e;
 }
 
+.btn-1,
+.rsvp-section,
 .witness-section .filter-btn.active,
 .event-section,
 .couple-section .social-links a:hover i {
