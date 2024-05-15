@@ -63,6 +63,7 @@ def update_db():
     if (table == "Program"): tablequery = db.session.query(Program)
     if (table == "Lovestory"): tablequery = db.session.query(Lovestory)
     if (table == "Partner"): tablequery = db.session.query(Partner)
+    if (table == "Witness"): tablequery = db.session.query(Witness)
 
     element = tablequery.filter_by(id=id).first()
 

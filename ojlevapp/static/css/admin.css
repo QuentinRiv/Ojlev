@@ -1,4 +1,11 @@
 
+/* Nav Bar */
+.user {
+  background-color: grey;
+  padding: 12px;
+  border-radius: 50%;
+}
+
 .couple-section .couple:hover .cover {
   opacity: 0.5;
 }
@@ -29,8 +36,8 @@
   visibility: hidden;
 }
 
-.couple-section .couple .fa-camera {
-  color: blue;
+.fa-camera {
+  color: rgb(59, 42, 3);
   font-size: 300%;
 }
 
@@ -95,6 +102,7 @@
 .story-content .story-img .fa-camera {
   color: black;
   font-size: 300%;
+  width: auto
 }
 
 /* Witness */
@@ -117,4 +125,101 @@
   font-size: 250%; 
   color: rgb(71, 55, 55);
   padding: 10px;
+}
+
+.witness-section .witness-img {
+  position: relative;
+}
+
+
+.witness-section .witness-img .new-image-witness {
+  background-color: rgb(117, 128, 143);
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100% + 40px);
+  transition: opacity 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -40px;
+}
+
+.witness-section .witness-img .new-image-witness:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+
+/* Gallery */
+.gallery-section .photo_library {
+  margin: 40px;
+  width: 150px;
+  height: auto;
+  border: 3px solid #000000;
+  padding: 10px;
+  border-radius: 10%;
+  background-color: #c7c7c7;
+  text-align: center;
+}
+
+.witness-section .photo_library p {
+  font-weight: 500;
+}
+
+#menu-btn{
+    font-size: 1rem;
+    border-radius: .5rem;
+    background: #918c8c80;
+    color: var(--green);
+    padding: 15px 20px;
+    cursor: pointer;
+    display: none;
+}
+
+@media (max-width:768px){
+
+    #menu-btn {
+        display: initial;
+    }
+
+    .header .navbar {
+        position: absolute;
+        top: 115%; right: 2rem;
+        border-radius: .5rem;
+        box-shadow: var(--box-shadow);
+        width: 300px;
+        /* width: 30rem; */
+        border: var(--border);
+        background: #fff;
+        transform: scale(0);
+        opacity: 0;
+        transform-origin: top right;
+        transition: none;
+    }
+
+    .header .navbar.active {
+        transform: scale(1);
+        opacity: 1;
+        transition: .2s linear;
+    }
+
+    .header .navbar a {
+        font-size: 2rem;
+        display: block;
+        margin: 1.5rem;
+    }
+
+
+    .event-section .row.justify-content-center {
+      background-color: blue !important;
+      display: flex;
+      display: column;
+    }
+
+    .event-section .event-item {
+      max-width: 80%;
+    }
 }

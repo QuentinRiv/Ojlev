@@ -54,7 +54,7 @@ $(window).on("load", function () {
 
   // Modif des partenaires START
   let elements = $(
-    ".couple h3, .couple p, .story-content .row h3, .story-content .row span, .story-content .row p, .event-item-inner h3, .event-item-inner span, .event-item-inner p"
+    ".couple h3, .couple p, .story-content .row h3, .story-content .row span, .story-content .row p, .event-item-inner h3, .event-item-inner span, .event-item-inner p, .witness-item-inner h4, .witness-item-inner p"
   );
   elements.attr("contenteditable", "true");
   elements.css("border", "1px dashed black");
@@ -184,7 +184,6 @@ $(window).on("load", function () {
     let nbrChildren = newStep.children().length;
     console.log("Enfant num :", nbrChildren);
     let nouv = lastChild.clone();
-    nouv.find(".witness-item").attr("data-index", nbrChildren);
     nouv.find("img").attr("src", "../static/img/upcloud.png");
     nouv.find("h4").html("Witness' name");
     nouv.find("p").html("Role");
@@ -226,3 +225,18 @@ $(window).on("load", function () {
   });
   // Ajout/Retrait d'une histoire END
 });
+
+
+
+let menu = document.querySelector("#menu-btn");
+let navbar = document.querySelector(".navbar");
+
+menu.onclick = () => {
+  menu.classList.toggle("fa-times");
+  navbar.classList.toggle("active");
+};
+
+window.onscroll = () => {
+  menu.classList.remove("fa-times");
+  navbar.classList.remove("active");
+};
