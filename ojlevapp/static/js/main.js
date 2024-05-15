@@ -17,10 +17,20 @@ $(window).on("load", function() {
         setTimeout(slideShow, 5000);
     }
 
-    // slideShow();
+    slideShow();
 });
 
 $(document).ready( function() {
+
+    // fixed header
+    $(window).scroll(function() {
+        if ($(this).scrollTop() > 100) {
+            $(".header").addClass("fixed");
+        } else {
+            $(".header").removeClass("fixed");
+        }
+    });
+
 
     // witness filter
     witnessFilter($(".filter-btn.active").attr("data-target"));
