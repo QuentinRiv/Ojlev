@@ -18,27 +18,31 @@
   <body>
     <!-- header start -->
     <header class="header">
-      <div class="container">
-        <div class="row align-items-center justify-content-between">
+      <!-- <div class="container">
+        <div class="row align-items-center justify-content-between"> -->
+
           <div class="logo">
             {% if connected %}
-            <a id="name_connected" href="index.html">Chapeau</a>
+            <a id="name_connected" href="index.html">Wedding</a>
             {% else %}
             <a href="index.html">S & S</a>
             {% endif %}
           </div>
-          <div class="nav">
-            <ul>
-              <li><a href="#" class="active">Home</a></li>
-              <li><a href="#">Couple</a></li>
-              <li><a href="#">Story</a></li>
-              <li><a href="#">Events</a></li>
-              <li><a href="#">Witness</a></li>
-              <li><a href="#">Gallery</a></li>
-            </ul>
-          </div>
+
+          <nav class="navbar">
+              <a href="#" class="active">Home</a>
+              <a href="#">Couple</a>
+              <a href="#">Story</a>
+              <a href="#">Events</a>
+              <a href="#">Witness</a>
+              <a href="#">Gallery</a>
+              <a href="/connect"><i class="fas fa-user user"></i></a>
+          </nav>
+
+          <div id="menu-btn" class="fas fa-bars"></div>
+<!-- 
         </div>
-      </div>
+      </div> -->
     </header>
     <!-- header end -->
 
@@ -70,7 +74,7 @@
           <div class="row align-items-center">
             <div class="home-content">
               <p>We are getting married</p>
-              <h1>{{ groom['first_name'] }} & bride['first_name']</h1>
+              <h1>{{ groom['first_name'] }} & {{ bride['first_name'] }}</h1>
               <span>30 Feb 2024</span>
             </div>
           </div>
@@ -234,7 +238,7 @@
     <!-- Event section end -->
 
     <!-- witness section start -->
-    <section class="witness-section">
+    <section class="witness-section" data-db="Witness">
       <div class="container">
         <div class="row">
           <div class="section-title">
@@ -248,14 +252,19 @@
           </div>
         </div>
         <!-- groomsmen  start -->
-        <div class="row justify-content-center filter-img" data-target="Groomsman">
+        <div class="row justify-content-center filter-img witnesses" data-target="Groomsman">
           <!-- witness item start -->
           {% for Groomsman in groomsmen %}
-          <div class="witness-item" data-target="Groomsman" data-index={{loop.index0|string}}>
+          <div class="witness-item item" data-target="Groomsman" data-index={{Groomsman['id']}}>
             <div class="witness-item-inner">
-              <img src={{"../static/img/witness/Groomsman_"+loop.index0|string+".jpg"}} alt="Groomsman">
-              <h4>{{ Groomsman['full_name'] }}</h4>
-              <p>{{ Groomsman['description'] }}</p>
+              <div class="witness-img">
+                <img src={{"../static/img/witness/Groomsman_"+loop.index0|string+".jpg"}} alt="Groomsman">
+                <div class="new-image-witness">
+                  <i class="fas fa-camera"></i>
+                </div>
+              </div>
+              <h4 name="full_name">{{ Groomsman['full_name'] }}</h4>
+              <p name="description">{{ Groomsman['description'] }}</p>
             </div>
           </div>
           {% endfor %}
@@ -264,14 +273,19 @@
         <!-- groomsmen  end -->
 
         <!-- bridesmaid start -->
-        <div class="row justify-content-center filter-img active" data-target="bridesmaid">
+        <div class="row justify-content-center filter-img active witnesses" data-target="bridesmaid">
           <!-- witness item start -->
           {% for bridesmaid in bridesmaids %}
-          <div class="witness-item" data-target="bridesmaid" data-index={{loop.index0|string}}>
+          <div class="witness-item item" data-target="bridesmaid" data-index={{bridesmaid['id']}}>
             <div class="witness-item-inner">
-              <img src={{"../static/img/witness/bridesmaid_"+loop.index0|string+".jpg"}} alt="bridesmaid">
-              <h4>{{ bridesmaid['full_name'] }}</h4>
-              <p>{{ bridesmaid['description'] }}</p>
+              <div class="witness-img">
+                  <img src={{"../static/img/witness/bridesmaid_"+loop.index0|string+".jpg"}} alt="bridesmaid">
+                  <div class="new-image-witness">
+                    <i class="fas fa-camera"></i>
+                  </div>
+                </div>
+              <h4 name="full_name">{{ bridesmaid['full_name'] }}</h4>
+              <p name="description">{{ bridesmaid['description'] }}</p>
             </div>
           </div>
           {% endfor %}
@@ -299,7 +313,7 @@
             <h2>Our Memories</h2>
           </div>
         </div>
-        <div class="row">
+        <div class="row images">
           <!-- gallery item start -->
           <div class="gallery-item">
             <div class="gallery-item-inner">
@@ -343,6 +357,13 @@
           </div>
           <!-- gallery item end -->
         </div>
+      </div>
+
+      <div class="row justify-content-center">
+        <a href="/gallery_lib" class="photo_library">
+          <img src="../static/img/morephoto.svg" alt="">
+          <p>Manage the photo gallery</p>
+        </a>
       </div>
     </section>
     <!-- gallery section end -->
@@ -430,9 +451,9 @@
           <div class="footer-content">
             <div class="couple-name">
               <img src="../static/img/flower-circle.png" alt="Wedding couple">
-              <h2>Jean
+              <h2>{{ groom['first_name'] }}
                 <span>&</span>
-                Jeanne
+                {{ bride['first_name'] }}
               </h2>
             </div>
             <p>Thank you</p>

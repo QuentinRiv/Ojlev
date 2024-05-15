@@ -17,7 +17,7 @@ $(window).on("load", function() {
         setTimeout(slideShow, 5000);
     }
 
-    slideShow();
+    // slideShow();
 });
 
 $(document).ready( function() {
