@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="../static/css/style.css" />
     <link rel="stylesheet" type="text/css" href="../static/css/admin.css" />
     <link rel="stylesheet" type="text/css" href="../static/css/pink.css" />
+    <link rel="stylesheet" type="text/css" href="../static/css/responsive.css" />
     <link rel="icon" type="image/png" href="../static/img/background.jpg" />
   </head>
   <body>
@@ -23,20 +24,20 @@
 
           <div class="logo">
             {% if connected %}
-            <a id="name_connected" href="index.html">Wedding</a>
+            <a id="name_connected" href="index.html"  data-scroll-nav="0">A & B</a>
             {% else %}
-            <a href="index.html">S & S</a>
+            <a href="index.html"  data-scroll-nav="0">S & S</a>
             {% endif %}
           </div>
 
           <nav class="navbar">
-              <a href="#" class="active">Home</a>
-              <a href="#">Couple</a>
-              <a href="#">Story</a>
-              <a href="#">Events</a>
-              <a href="#">Witness</a>
-              <a href="#">Gallery</a>
-              <a href="/connect"><i class="fas fa-user user"></i></a>
+              <a data-scroll-nav="0" href="#" class="active">Home</a>
+              <a data-scroll-nav="1" href="#">Couple</a>
+              <a data-scroll-nav="2" href="#">Story</a>
+              <a data-scroll-nav="3" href="#">Events</a>
+              <a data-scroll-nav="4" href="#">Witness</a>
+              <a data-scroll-nav="5" href="#">Gallery</a>
+              <a data-scroll-nav="6" href="/connect"><i class="fas fa-user user"></i></a>
           </nav>
 
           <div id="menu-btn" class="fas fa-bars"></div>
@@ -47,7 +48,7 @@
     <!-- header end -->
 
     <!-- home section start -->
-    <section class="home-section">
+    <section class="home-section" data-scroll-nav="0">
       <!-- slide start -->
       <div
         class="slide active"
@@ -101,7 +102,7 @@
     <!-- home section end -->
 
     <!-- couple section start -->
-    <section class="couple-section" data-db="Partner">
+    <section class="couple-section" data-db="Partner" data-scroll-nav='1'>
       <div class="container">
         <div class="row">
           <div class="section-title">
@@ -155,7 +156,7 @@
     <!-- couple section end -->
 
     <!-- story section start -->
-    <section class="story-section" data-db="Lovestory">
+    <section class="story-section" data-db="Lovestory" data-scroll-nav="2">
       <div class="container">
         <div class="row">
           <div class="section-title">
@@ -202,7 +203,7 @@
     <!-- story section end -->
 
     <!-- Event section end -->
-    <section class="event-section" data-db="Program">
+    <section class="event-section" data-db="Program" data-scroll-nav="3">
         <div class="container">
             <div class="row">
                 <div class="section-title">
@@ -238,7 +239,7 @@
     <!-- Event section end -->
 
     <!-- witness section start -->
-    <section class="witness-section" data-db="Witness">
+    <section class="witness-section" data-db="Witness" data-scroll-nav="4">
       <div class="container">
         <div class="row">
           <div class="section-title">
@@ -306,7 +307,7 @@
 
 
     <!-- gallery section start -->
-    <section class="gallery-section">
+    <section class="gallery-section" data-scroll-nav="5">
       <div class="container">
         <div class="row">
           <div class="section-title">
@@ -388,7 +389,7 @@
     <!-- gallery popup end -->
 
     <!-- rsvp section start -->
-    <section class="rsvp-section">
+    <!-- <section class="rsvp-section" data-scroll-nav="6">
       <div class="container">
         <div class="row">
           <div class="section-title">
@@ -441,7 +442,7 @@
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
     <!-- rsvp section end -->
 
     <!-- footer start -->

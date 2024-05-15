@@ -7,10 +7,10 @@
 .couple-section .social-links a i,
 .couple-section .couple i.fa-heart,
 .couple-section .couple h3,
-.header .nav ul li a.active,
-.header .nav ul li a:hover {
+.header .navbar a.active,
+.header .navbar a:hover {
     color: #fb839e;
-}
+} 
 
 .event-section .event-item-inner::before,
 .couple-section .social-links a i,

@@ -102,17 +102,20 @@ body {
 
 /* header */
 .header {
-    position: absolute; 
+    position: fixed; 
     left: 0;
     top: 0;
     z-index: 99;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.5s ease;
     display: flex;
     align-items: center;
+    justify-content: space-between;
 }
 
-.header {
+.header.fixed {
     background-color: #ffffff;
+    box-shadow: 0 0 8px #cccccc;
 }
 
 .header .logo {
@@ -127,38 +130,67 @@ body {
     letter-spacing: 2px;
     text-transform: uppercase;
     transition: all 0.5s ease;
+    /* margin: ; */
 }
 
 .header.fixed .logo a {
     color: #000000; 
 }
 
-
 .header .navbar {
-    padding: 0 15px ;
-}
-
-.header .navbar ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.header .navbar ul li {
-    display: inline-block;
-    margin-left: 25px;
+    padding: 20px 15px ;
 }
 
 .header .navbar a {
     /* display: block; */
     padding: 25px;
-    color: red;
+    color: #e6e6e6;
     font-size: 15px;
     text-transform: uppercase;
     text-decoration: none;
     transition: color 0.5s ease;
+    font-weight: 500;
 }
 
+.header.fixed .navbar a {
+    color: #000000; 
+}
+
+
+.header .hamburger-btn {
+    display: inline-block;
+    height: 34px;
+    width: 40px;
+    border-radius: 3px; 
+    border: 1px solid #ffffff;
+    cursor: pointer; 
+}
+
+.header .hamburger-btn span {
+    display: block;
+    height: 1px;
+    width: 16px;
+    background-color: #ffffff;
+    position: relative;
+}
+
+.header .hamburger-btn span::before,
+.header .hamburger-btn span::after {
+    content: '';
+    position: absolute;
+    height: 1px;
+    width: 100%;
+    left: 0;
+    background-color: #ffffff;
+}
+
+.header .hamburger-btn span::before {
+    top: -6px;
+}
+
+.header .hamburger-btn span::after {
+    top: 6px;
+}
 
 /* home section */
 .home-section {
@@ -800,6 +832,7 @@ body {
     align-items: center;
     justify-content: center;
     position: relative;
+    overflow: hidden;
     z-index: 1;
 }
 
@@ -847,3 +880,5 @@ p.copyright-text {
     padding: 20px 0;
     border-top: 1px solid #cccccc;
 }
+
+/* responsive */
