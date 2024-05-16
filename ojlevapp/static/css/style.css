@@ -100,6 +100,65 @@ body {
     border: 2px solid;
 }
 
+/* preloader */
+.preloader {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #111111;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preloader .loader {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.preloader .loader:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    animation: loaderSpin 2s linear infinite;
+}
+
+@keyframes loaderSpin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.preloader .loader i {
+    font-size: 20px;
+    animation: loader 2s linear infinite;
+}
+
+@keyframes loader {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.7);
+    }
+}
+
 /* header */
 .header {
     position: fixed; 
@@ -881,4 +940,58 @@ p.copyright-text {
     border-top: 1px solid #cccccc;
 }
 
-/* responsive */
+/* dark mode */
+body.dark .rsvp-form .form,
+body.dark .event-section .event-item-inner,
+body.dark, .story-content .story-item i.fa-heart,
+body.dark .couple-section .couple i.fa-heart, 
+body.dark {
+    background-color: #111111;
+}
+
+body.dark .rsvp-form .form .input-control,
+body.dark .witness-section .witness-item-inner,
+body.dark .witness-section .filter-btn {
+    background-color: #222222;
+}
+
+body.dark .footer .footer-content p,
+body.dark .footer .footer-content .couple-name h2,
+body.dark .rsvp-form .form .input-control,
+body.dark .witness-section .witness-item-inner h4,
+body.dark .witness-section .filter-btn.active,
+body.dark .event-section .event-item-inner h3,
+body.dark .section-title h2,
+body.dark .header .navbar a,
+body.dark .header.fixed .navbar a,
+body.dark .header.fixed .logo a{
+    color: #ffffff;
+}
+
+body.dark p.copyright-text,
+body.dark .witness-section .witness-item-inner p,
+body.dark .witness-section .filter-btn,
+body.dark .event-section .event-item-inner p,
+body.dark .story-section .story-text span.date,
+body.dark .story-section .story-text p,
+body.dark .couple-section .couple p {
+    color: #bbbbbb;
+}
+
+
+
+body.dark .witness-section .witness-item-inner img,
+body.dark .header.fixed {
+    box-shadow: 0 0 10px #000000;
+}
+
+
+body.dark p.copyright-text,
+body.dark .rsvp-form .form .input-control,
+body.dark .couple-section .couple:nth-child(2)::before {
+    border-color: #333333;
+}
+
+body.dark .header.fixed {
+    border-color: transparent;
+}

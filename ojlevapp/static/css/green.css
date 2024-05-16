@@ -12,18 +12,17 @@ body.dark .header .navbar a.active,
 .header .navbar a.active,
 body.dark .header .navbar a:hover,
 .header .navbar a:hover {
-    color: #fb839e;
+    color: #0dcebd;
 } 
 
-.btn-1,
 .event-section .event-item-inner::before,
 .couple-section .social-links a i,
 .couple-section .couple img {
-    border-color: #fb839e;
+    border-color: #0dcebd;
 }
 
 .preloader .loader:before {
-    border-right: 3px solid #fb839e;
+    border-right-color: #0dcebd;
 }
 
 .setting .s-toggle-btn,
@@ -33,5 +32,10 @@ body.dark .witness-section .filter-btn.active,
 .witness-section .filter-btn.active,
 .event-section,
 .couple-section .social-links a:hover i {
-    background-color: #fb839e;
+    background-color: #0dcebd;
+}
+
+.event-section .event-item-inner img,
+.footer .footer-content .couple-name img {
+    filter: hue-rotate(190deg);
 }

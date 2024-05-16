@@ -12,11 +12,22 @@
     <!-- font awesome -->
     <link rel="stylesheet" type="text/css" href="../static/css/style.css" />
     <link rel="stylesheet" type="text/css" href="../static/css/admin.css" />
-    <link rel="stylesheet" type="text/css" href="../static/css/pink.css" />
+    <link rel="stylesheet" class="alternate-style" type="text/css" href="../static/css/pink.css" />
     <link rel="stylesheet" type="text/css" href="../static/css/responsive.css" />
+    <link rel="stylesheet" type="text/css" href="../static/css/settings.css" />
     <link rel="icon" type="image/png" href="../static/img/background.jpg" />
   </head>
   <body>
+
+    <!-- preloader start -->
+    <div class="preloader">
+      <div class="loader">
+        <i class="fas fa-heart"></i>
+      </div>
+    </div>
+    <!-- preloader end -->
+
+
     <!-- header start -->
     <header class="header">
       <!-- <div class="container">
@@ -388,6 +399,24 @@
     </div>
     <!-- gallery popup end -->
 
+    <div class="setting">
+      <div class="s-toggle-btn">
+        <i class="fas fa-cog fa-spin"></i> 
+      </div>
+      <h4>Theme Colors</h4>
+      <div class="colors"></div>
+      <!-- Light / Dark mode -->
+      <h4>Theme Mode</h4>
+      <label>
+        <input type="radio" name="ld" value="light" class="theme-mode">
+        Light
+      </label>
+      <label>
+        <input type="radio" name="ld" value="dark" class="theme-mode">
+        Dark
+      </label>
+    </div>
+
     <!-- rsvp section start -->
     <section class="rsvp-section" data-scroll-nav="6">
       <div class="container">
@@ -469,10 +498,13 @@
     <!-- copyright end -->
 
 
+
+
     <!-- jquery -->
     <script src="../static/js/jquery.min.js"></script>
     <!-- main -->
     <script src="../static/js/main.js"></script>
     <script src="../static/js/admin.js"></script>
+    <script src="../static/js/settings.js"></script>
   </body>
 </html>
