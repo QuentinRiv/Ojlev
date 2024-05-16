@@ -49,7 +49,6 @@
 .story-section .addStoryItem {
   /* position: relative; */
   background-color: #e4e4e4;
-  color: blue;
   width: 100px;
   height: 100px;
   display: flex;
@@ -110,7 +109,6 @@
 .witness-section .addWitnessItem {
   /* position: relative; */
   background-color: #e4e4e4;
-  color: blue;
   width: 100px;
   height: 100px;
   display: flex;
