@@ -224,6 +224,7 @@ $(window).on("load", function () {
       });
   });
   // Ajout/Retrait d'une histoire END
+
 });
 
 

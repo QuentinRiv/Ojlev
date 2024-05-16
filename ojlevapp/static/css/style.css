@@ -200,8 +200,7 @@ body {
     padding: 20px 15px ;
 }
 
-.header .navbar a {
-    /* display: block; */
+.header .navbar a.part {
     padding: 25px;
     color: #e6e6e6;
     font-size: 15px;

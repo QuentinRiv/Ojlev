@@ -3,7 +3,13 @@
 $(window).on("load", function() {
 
     // preloader
-    $(".preloader").delay(600).fadeOut("slow");
+    let isconnected = $("#name_connected").length > 0;
+    if (!isconnected) {
+        $(".preloader").delay(600).fadeOut("slow");
+    }
+    else {
+        $(".preloader").fadeOut(10);
+    }
     
     // home section slideshow
     let slideIndex = $(".slide.active").index();

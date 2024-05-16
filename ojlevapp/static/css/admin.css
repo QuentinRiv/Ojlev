@@ -1,10 +1,16 @@
 
 /* Nav Bar */
-.user {
+a.user {
   background-color: grey;
-  padding: 12px;
   border-radius: 50%;
   scroll-behavior: smooth;
+}
+
+.user img {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
 }
 
 .couple-section .couple:hover .cover {
@@ -170,3 +176,34 @@
 
 
 
+.home-section .small_diapo {
+  background-color: red;
+  width: 200px;
+  position: absolute;
+  right: 0;
+  top: 30%;
+  z-index: 1000;
+}
+
+.home-section .small_diapo_item {
+  position: relative;
+}
+
+.home-section .small_diapo_item .new-image-diapo {
+  background-color: rgb(117, 128, 143);
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100%);
+  height: 100%;
+  transition: opacity 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-section .small_diapo_item .new-image-diapo:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}

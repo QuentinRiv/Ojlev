@@ -18,12 +18,14 @@ def index():
     programs = Program.query.all()
     groomsmen = Witness.query.filter_by(side="Groomsman").all()
     bridesmaids = Witness.query.filter_by(side="Bridesmaid").all()
+    diapo = os.listdir('./ojlevapp/static/img/slides')
+    print(diapo)
     print("=> ", groomsmen)
     if(current_user.is_authenticated):
         print("\nYou are authenticated\n")
     else:
         print("\nYou are not authenticated\n")
-    return render_template('index.html', connected=current_user.is_authenticated, groom=groom, bride=bride, stories=stories, programs=programs, groomsmen=groomsmen, bridesmaids=bridesmaids)
+    return render_template('index.html', connected=current_user.is_authenticated, groom=groom, bride=bride, stories=stories, programs=programs, groomsmen=groomsmen, bridesmaids=bridesmaids, diapo=diapo)
 
 @bp.route('/upload')
 @login_required
