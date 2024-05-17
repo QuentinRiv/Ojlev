@@ -39,12 +39,14 @@ def upload_file():
     
     file = request.files['image']
     filename = request.form['filename']
-    path = request.form['path']
+    path = ".\ojlevapp\static\img" + request.form['path']
 
     if file.filename == '':
         return redirect(request.url)
     if file and allowed_file(filename):
         filename = secure_filename(filename)
+        print("path = %s" % path)
+        print("filename = %s" % filename)
         file.save(os.path.join(path, filename))
         return 'Image uploadée avec succès'
     else:
@@ -165,6 +167,24 @@ def remove_story():
 
     return redirect(url_for("main.index"))
 
+import shutil
+@bp.route('/slide/new', methods=['GET'])
+def slide():
+
+    result = shutil.copyfile('./ojlevapp/static/img/upcloud.png', './ojlevapp/static/img/slides/slide-3.jpg')
+    print("--->", result)
+
+    return redirect(url_for("main.index"))
+
+
+@bp.route('/slide/remove', methods=['GET'])
+def slide_remove():
+
+    diapo = os.listdir('./ojlevapp/static/img/slides')
+    os.remove('./ojlevapp/static/img/slides/' + diapo[-1])
+
+    return redirect(url_for("main.index"))
+
 
 def generate_program():
     Program.query.delete()
@@ -214,3 +234,14 @@ def remove_witness():
         print("Aucun élément trouvé avec le critère spécifié.")
 
     return redirect(url_for("main.index"))
+
+
+@bp.route('/remove', methods=['POST'])
+def remove():
+    data = request.form.to_dict()
+    print("---->", data)
+
+    diapo = os.listdir("./ojlevapp/static/img" + data["folder_path"])
+    os.remove("./ojlevapp/static/img" + data["folder_path"] + "/" + diapo[-1])
+
+    return "OK", 202

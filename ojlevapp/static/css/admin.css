@@ -1,3 +1,14 @@
+/* Icones */
+.fa-camera {
+  color: rgb(59, 42, 3);
+  font-size: 300%;
+}
+
+.plus i, .minus i {
+  font-size: 250%; 
+  color: rgb(71, 55, 55);
+  padding: 10px;
+}
 
 /* Nav Bar */
 a.user {
@@ -43,17 +54,10 @@ a.user {
   visibility: hidden;
 }
 
-.fa-camera {
-  color: rgb(59, 42, 3);
-  font-size: 300%;
-}
 
-.story-section .row {
-  justify-content: center; 
-}
+
 
 .story-section .addStoryItem {
-  /* position: relative; */
   background-color: #e4e4e4;
   width: 100px;
   height: 100px;
@@ -66,14 +70,9 @@ a.user {
   margin: 30px 10px;
 }
 
-.story-section .addStoryItem i {
-  font-size: 250%; 
-  color: rgb(71, 55, 55);
-  padding: 10px;
-}
 
 
-.story-content .story-img .new-image-story {
+.story-content .story-img .update_image {
   background-color: rgb(117, 128, 143);
   opacity: 0;
   position: absolute;
@@ -87,16 +86,16 @@ a.user {
   justify-content: center;
 }
 
-.story-content .story-img .new-image-story:hover {
+.story-content .story-img .update_image:hover {
   opacity: 0.6;
   cursor: pointer;
 }
 
-.story-content .story-item:nth-child(odd) .new-image-story {
+.story-content .story-item:nth-child(odd) .update_image {
     margin: 0 15px 0 60px;
 }
 
-.story-content .story-item:nth-child(even) .new-image-story {
+.story-content .story-item:nth-child(even) .update_image {
   margin: 0 60px 0 15px;
 }
 
@@ -104,12 +103,6 @@ a.user {
   position: relative;
 }
 
-
-.story-content .story-img .fa-camera {
-  color: black;
-  font-size: 300%;
-  width: auto
-}
 
 /* Witness */
 .witness-section .addWitnessItem {
@@ -126,33 +119,32 @@ a.user {
   margin: 30px 10px;
 }
 
-.witness-section .addWitnessItem i {
-  font-size: 250%; 
-  color: rgb(71, 55, 55);
-  padding: 10px;
-}
 
 .witness-section .witness-img {
   position: relative;
 }
 
 
-.witness-section .witness-img .new-image-witness {
+.update_image{
   background-color: rgb(117, 128, 143);
   opacity: 0;
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: calc(100% + 40px);
+  height: 100%;
   transition: opacity 0.3s ease-in-out;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: -40px;
 }
 
-.witness-section .witness-img .new-image-witness:hover {
+.witness-section .update_image {
+  margin-top: -40px;
+  height: calc(100% + 40px);
+}
+
+.update_image:hover {
   opacity: 0.6;
   cursor: pointer;
 }
@@ -177,19 +169,18 @@ a.user {
 
 
 .home-section .small_diapo {
-  background-color: red;
-  width: 200px;
+  width: 150px;
   position: absolute;
   right: 0;
-  top: 30%;
-  z-index: 1000;
+  top: 40%;
+  z-index: 98;
 }
 
 .home-section .small_diapo_item {
   position: relative;
 }
 
-.home-section .small_diapo_item .new-image-diapo {
+.home-section .small_diapo_item .update_image {
   background-color: rgb(117, 128, 143);
   opacity: 0;
   position: absolute;
@@ -203,7 +194,34 @@ a.user {
   justify-content: center;
 }
 
-.home-section .small_diapo_item .new-image-diapo:hover {
+.home-section .small_diapo_item .update_image:hover {
   opacity: 0.6;
   cursor: pointer;
+}
+
+.diapo_img.active {
+  border: 3px solid purple;
+}
+
+.add_remove {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-section .addDiapoItem {
+  display: flex;
+  width: 50px;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: 1px dashed green;
+  cursor: pointer;
+  margin: 20px 10px;
+}
+
+.home-section .addDiapoItem:hover {
+  background-color: #000000;
 }

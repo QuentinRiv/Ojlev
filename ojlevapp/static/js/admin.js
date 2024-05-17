@@ -6,53 +6,12 @@ $(window).on("load", function () {
   let isconnected = $("#name_connected").length > 0;
   if (!isconnected) {
     console.warn("User pas connecté !");
+    $(".add_remove").css("display", "none");
     return;
   }
+  
 
-  let cover = $(".cover");
-  cover.css("visibility", "visible");
-  console.log("is connected : ", isconnected);
-  var side = "";
-  console.log(cover);
-
-  $(".cover").click(function () {
-    // Déclenche le clic sur l'input file caché
-    side = this.id;
-    $("#hiddenImageInput").click();
-  });
-
-  // Upload d'une image START
-  $("#hiddenImageInput").change(function () {
-    var fileData = new FormData();
-    var imageFile = $(this)[0].files[0];
-
-    if (imageFile) {
-      fileData.append("image", imageFile);
-      fileData.append("filename", side + ".png");
-      fileData.append("path", "ojlevapp/static/img");
-
-      // Envoie le fichier en AJAX à l'URL '/upload'
-      $.ajax({
-        url: "/upload",
-        type: "POST",
-        data: fileData,
-        processData: false,
-        contentType: false,
-        success: function (response) {
-          console.log("Image uploaded successfully!");
-          // Vous pouvez ici ajouter des actions à exécuter après un upload réussi
-        },
-        error: function (xhr, status, error) {
-          console.error("Failed to upload image:", error);
-        },
-      });
-    } else {
-      console.log("No file selected.");
-    }
-  });
-  // Upload d'une image FIN
-
-  // Modif des partenaires START
+  // Modif des champ modifiables START
   let elements = $(
     ".couple h3, .couple p, .story-content .row h3, .story-content .row span, .story-content .row p, .event-item-inner h3, .event-item-inner span, .event-item-inner p, .witness-item-inner h4, .witness-item-inner p"
   );
@@ -70,8 +29,6 @@ $(window).on("load", function () {
       new_value: text_value,
     };
 
-    console.log("Data : ", data);
-
     $.ajax({
       url: "/update",
       type: "POST",
@@ -80,14 +37,14 @@ $(window).on("load", function () {
         console.log(
           `-${table}- table updated successfully! => New Value : -${text_value}- for the attribute -${attribute_name}-`
         );
-        // Vous pouvez ici ajouter des actions à exécuter après un upload réussi
+        location.reload();
       },
       error: function (xhr, status, error) {
         console.error(`Failed to update -${table}-:`, error);
       },
     });
   });
-  // Modif des partenaires END
+  // Modif des champ modifiables END
 
   // Ajout/Retrait d'une histoire START
   // Ajout
@@ -109,7 +66,7 @@ $(window).on("load", function () {
       type: "GET",
       success: function (response) {
         console.log("Story added successfully!");
-        // Vous pouvez ici ajouter des actions à exécuter après un upload réussi
+        location.reload();
       },
       error: function (xhr, status, error) {
         console.error("Failed to add story:", error);
@@ -127,7 +84,7 @@ $(window).on("load", function () {
       type: "GET",
       success: function (response) {
         console.log("Story removed successfully!");
-        // Vous pouvez ici ajouter des actions à exécuter après un upload réussi
+        location.reload();
       },
       error: function (xhr, status, error) {
         console.error("Failed to remove story:", error);
@@ -136,23 +93,31 @@ $(window).on("load", function () {
   });
   // Ajout/Retrait d'une histoire END
 
-  // Upload d'une image LoveStory START
+  // Upload d'une image Witness START
   var id = "";
-  $(".new-image-story").click(function () {
+  var folder_path = "";
+  var image_name = "";
+  $(".update_image").click(function () {
     // Déclenche le clic sur l'input file caché
     id = $(this).parent().parent().attr("data-index");
+    console.log("-------------------");
+    folder_path = $(this).closest("div[data-image-path]").attr("data-image-path");
+    console.log($(this).closest("div[data-image-path]"));
+    image_name = $(this).parent().children("img").attr("src").split("/").pop();
     $("#hiddenLoveImageInput").click();
   });
 
   $("#hiddenLoveImageInput").change(function () {
     var fileData = new FormData();
     var imageFile = $(this)[0].files[0];
-    console.log(this);
+
 
     if (imageFile) {
       fileData.append("image", imageFile);
-      fileData.append("filename", "story-" + id + ".jpg");
-      fileData.append("path", "ojlevapp/static/img/story");
+      fileData.append("filename", image_name);
+      fileData.append("path", folder_path);
+
+      console.log("=> ", fileData);
 
       // Envoie le fichier en AJAX à l'URL '/upload'
       $.ajax({
@@ -163,7 +128,7 @@ $(window).on("load", function () {
         contentType: false,
         success: function (response) {
           console.log("Image uploaded successfully!");
-          // Vous pouvez ici ajouter des actions à exécuter après un upload réussi
+          location.reload();
         },
         error: function (xhr, status, error) {
           console.error("Failed to upload image:", error);
@@ -182,7 +147,6 @@ $(window).on("load", function () {
 
     let lastChild = newStep.children().last().clone();
     let nbrChildren = newStep.children().length;
-    console.log("Enfant num :", nbrChildren);
     let nouv = lastChild.clone();
     nouv.find("img").attr("src", "../static/img/upcloud.png");
     nouv.find("h4").html("Witness' name");
@@ -192,11 +156,11 @@ $(window).on("load", function () {
     const side = capitalizeFirstLetter($(nouv).attr("data-target"));
 
     $.ajax({
-      url: "/witness/new?side="+side,
+      url: "/witness/new?side=" + side,
       type: "GET",
       success: function (response) {
         console.log("Witness added successfully!");
-        // Vous pouvez ici ajouter des actions à exécuter après un upload réussi
+        location.reload();
       },
       error: function (xhr, status, error) {
         console.error("Failed to add witness:", error);
@@ -210,25 +174,74 @@ $(window).on("load", function () {
     const side = capitalizeFirstLetter($(newStep).attr("data-target"));
     newStep.last().remove();
 
-
-      $.ajax({
-        url: "/witness/remove?side=" + side,
-        type: "GET",
-        success: function (response) {
-          console.log("Witness removed successfully!");
-          // Vous pouvez ici ajouter des actions à exécuter après un upload réussi
-        },
-        error: function (xhr, status, error) {
-          console.error("Failed to remove witness:", error);
-        },
-      });
+    $.ajax({
+      url: "/witness/remove?side=" + side,
+      type: "GET",
+      success: function (response) {
+        console.log("Witness removed successfully!");
+        location.reload();
+      },
+      error: function (xhr, status, error) {
+        console.error("Failed to remove witness:", error);
+      },
+    });
   });
   // Ajout/Retrait d'une histoire END
 
+  
+
+  // Ajout/Retrait d'une diapo START
+  // Ajout
+  $(".addDiapoItem.plus").on("click", function () {
+    let newStep = $(".home-section .small_diapo");
+
+    let lastChild = newStep.children(".small_diapo_item").last().clone();
+    let nbrChildren = newStep.children().length;
+    console.log("Enfant num :", nbrChildren);
+    let nouv = lastChild.clone();
+    nouv.find(".new-image-diapo").attr("data-index", nbrChildren);
+    nouv.find("img").attr("src", "../static/img/upcloud.png");
+    newStep.children(".small_diapo_item").last().after(nouv);
+
+    $.ajax({
+      url: "/slide/new",
+      type: "GET",
+      success: function (response) {
+        console.log("Story added successfully!");
+        location.reload();
+      },
+      error: function (xhr, status, error) {
+        console.error("Failed to add story:", error);
+      },
+    });
+  });
+
+  // Retrait
+  $(".addDiapoItem.minus").on("click", function () {
+    const folder_path = $(this).closest("div[data-image-path]").attr("data-image-path");
+    console.log("==>", folder_path);
+    let newStep = $(".home-section .small_diapo").children(".small_diapo_item");
+    newStep.last().remove();
+
+    $.ajax({
+      url: "/remove",
+      type: "POST",
+      data: { folder_path: folder_path },
+      success: function (response) {
+        console.log("Witness removed successfully!");
+        location.reload();
+      },
+      error: function (xhr, status, error) {
+        console.error("Failed to remove witness:", error);
+      },
+    });
+  });
+  // Ajout/Retrait d'une diapo END
 });
 
 
 
+// Menu burger
 let menu = document.querySelector("#menu-btn");
 let navbar = document.querySelector(".navbar");
 
@@ -241,3 +254,6 @@ window.onscroll = () => {
   menu.classList.remove("fa-times");
   navbar.classList.remove("active");
 };
+
+
+// TODO : avec .plus et .minus, des div sont ajoutés/supprimés dynamiquement ; mais si on fait location.reload, c'est pas nécessaire... C'est l'un ou l'autre

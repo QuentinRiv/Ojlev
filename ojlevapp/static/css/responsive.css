@@ -45,6 +45,11 @@
         color: black;
     }
 
+    /* Cas spécial pour l'image du profil*/
+    .header .navbar a.user {
+        display: initial;
+    }
+
     .header .navbar a:hover {
         border-bottom: 3px solid #004e66;
     }

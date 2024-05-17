@@ -49,7 +49,7 @@
               <a class="part" data-scroll-nav="4" href="#">Witness</a>
               <a class="part" data-scroll-nav="5" href="#">Gallery</a>
               {% if connected %}
-              <a data-scroll-nav="6" class="user"><img src="../static/img/bride.png"></i></a>
+              <a data-scroll-nav="6" class="user"><img src="../static/img/couple/bride.png"></i></a>
               {% else %}
               <a class="part" href="/connect">Login</a>
               {% endif %}
@@ -64,28 +64,10 @@
 
     <!-- home section start -->
     <section class="home-section" data-scroll-nav="0">
-      <!-- slide start -->
-      <div
-        class="slide active"
-        style="background-image: url('../static/img/slides/slide-1.jpg')"
-      >
-        <div class="container">
-          <div class="row align-items-center">
-            <div class="home-content">
-              <p>We are getting married</p>
-              <h1>{{ groom['first_name'] }} & {{ bride['first_name'] }}</h1>
-              <span>30 Feb 2024</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- slide end -->
 
+      {% for path in diapo %}
       <!-- slide start -->
-      <div
-        class="slide"
-        style="background-image: url('../static/img/slides/slide-2.jpg')"
-      >
+      <div class="slide active" style='background-image: url("../static/img/slides/{{ path }}")'>
         <div class="container">
           <div class="row align-items-center">
             <div class="home-content">
@@ -97,34 +79,30 @@
         </div>
       </div>
       <!-- slide end -->
-      <!-- slide start -->
-      <div
-        class="slide"
-        style="background-image: url('../static/img/slides/slide-3.jpg')"
-      >
-        <div class="container">
-          <div class="row align-items-center">
-            <div class="home-content">
-              <p>We are getting married</p>
-              <h1>{{ groom['first_name'] }} & {{ bride['first_name'] }}</h1>
-              <span>30 Feb 2024</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- slide end -->
+      {% endfor %}
 
       <!-- smaller image diapo start -->
-      <div class="small_diapo">
+      <div class="small_diapo" data-image-path="\slides">
+
         {% for path in diapo %}
         <div class="small_diapo_item">
-          <img src={{"../static/img/slides/"+path}} alt="">
-          <input type="file" id="hiddenL88oveImageInput" style="display: none;" name="image">
-          <div class="new-image-diapo">
+          <img src={{"../static/img/slides/"+path}} class="diapo_img">
+          <input type="file" id="hiddenDiapoImageInput" style="display: none;" name="image">
+          <div class="update_image" data-index={{loop.index0}}>
             <i class="fas fa-camera"></i>
           </div>
         </div>
         {% endfor %}
+
+        <div class="add_remove" data-image-path="/slides">
+          <div class="addDiapoItem minus">
+            <i class="fas fa-minus"></i>
+          </div>
+          <div class="addDiapoItem plus">
+            <i class="fas fa-plus"></i>
+          </div>
+        </div>
+
       </div>
       <!-- smaller image diapo end -->
 
@@ -140,15 +118,15 @@
             <h2>Happy couple</h2>
           </div>
         </div>
-        <div class="row">
+        <div class="row" data-image-path="\couple">
           <div class="couple item" data-index="1">
             <div class="image-container">
               <img
                 id="groomImg"
-                src="../static/img/groom.png"
+                src="../static/img/couple/groom.png"
                 alt="happy couple"
               />
-              <div class="cover" id="groom">
+              <div class="update_image" id="groom">
                 <i class="fas fa-camera"></i>
               </div>
             </div>
@@ -166,10 +144,10 @@
                 <input type="file" id="hiddenImageInput" style="display: none;" name="image">
                 <img
                   id="bride"
-                  src="../static/img/bride.png"
+                  src="../static/img/couple/bride.png"
                   alt="happy couple"
                 />
-                <div class="cover" id="bride">
+                <div class="update_image" id="bride">
                   <i class="fas fa-camera"></i>
                 </div>
               </div>
@@ -194,9 +172,9 @@
             <h2>Our Love Story</h2>
           </div>
         </div>
-        <div class="row">
+        <div class="row justify-content-center" data-image-path="\story">
           <div class="story-content">
-            <div class="row">
+            <div class="row justify-content-center">
               <!-- story item start -->
               {% for story in stories %}
               <div class="story-item item" data-index={{story['id']}}>
@@ -211,8 +189,8 @@
                     src={{"../static/img/story/"+story['image_name']}}
                     alt="couple love story"
                   />
-                <input type="file" id="hiddenLoveImageInput" style="display: none;" name="image">
-                  <div class="new-image-story">
+                  <input type="file" id="hiddenLoveImageInput" style="display: none;" name="image">
+                  <div class="update_image">
                     <i class="fas fa-camera"></i>
                   </div>
                 </div>
@@ -222,12 +200,14 @@
               
             </div>
           </div>
-          <div class="addStoryItem minus">
-            <i class="fas fa-minus"></i>
+          <div class="add_remove">
+            <div class="addStoryItem minus">
+              <i class="fas fa-minus"></i>
+            </div>
+            <div class="addStoryItem plus">
+              <i class="fas fa-plus"></i>
+            </div> 
           </div>
-          <div class="addStoryItem plus">
-            <i class="fas fa-plus"></i>
-          </div>   
         </div>
       </div>
     </section>
@@ -284,14 +264,14 @@
           </div>
         </div>
         <!-- groomsmen  start -->
-        <div class="row justify-content-center filter-img witnesses" data-target="Groomsman">
+        <div class="row justify-content-center filter-img witnesses" data-target="Groomsman" data-image-path="\witness\groomsmen">
           <!-- witness item start -->
           {% for Groomsman in groomsmen %}
           <div class="witness-item item" data-target="Groomsman" data-index={{Groomsman['id']}}>
             <div class="witness-item-inner">
               <div class="witness-img">
-                <img src={{"../static/img/witness/Groomsman_"+loop.index0|string+".jpg"}} alt="Groomsman">
-                <div class="new-image-witness">
+                <img src={{"../static/img/witness/groomsmen/Groomsman_"+loop.index0|string+".jpg"}} alt="Groomsman" class="updateable">
+                <div class="update_image">
                   <i class="fas fa-camera"></i>
                 </div>
               </div>
@@ -305,14 +285,14 @@
         <!-- groomsmen  end -->
 
         <!-- bridesmaid start -->
-        <div class="row justify-content-center filter-img active witnesses" data-target="bridesmaid">
+        <div class="row justify-content-center filter-img active witnesses" data-target="bridesmaid" data-image-path="\witness\bridesmaids">
           <!-- witness item start -->
           {% for bridesmaid in bridesmaids %}
           <div class="witness-item item" data-target="bridesmaid" data-index={{bridesmaid['id']}}>
             <div class="witness-item-inner">
               <div class="witness-img">
-                  <img src={{"../static/img/witness/bridesmaid_"+loop.index0|string+".jpg"}} alt="bridesmaid">
-                  <div class="new-image-witness">
+                  <img src={{"../static/img/witness/bridesmaids/bridesmaid_"+loop.index0|string+".jpg"}} alt="bridesmaid">
+                  <div class="update_image">
                     <i class="fas fa-camera"></i>
                   </div>
                 </div>
@@ -324,7 +304,7 @@
           <!-- witness item end -->
         </div>
         <!-- bridesmaid end -->
-        <div class="row justify-content-center">
+        <div class="add_remove" data-image-path="/witness">
           <div class="addWitnessItem minus">
             <i class="fas fa-minus"></i>
           </div>
@@ -332,6 +312,7 @@
             <i class="fas fa-plus"></i>
           </div>  
         </div>
+
       </div>
     </section>
     <!-- witness section end -->
@@ -528,3 +509,8 @@
     <script src="../static/js/settings.js"></script>
   </body>
 </html>
+
+
+<!-- TODO :
+- le menu burguer : regler l'icone de la mariée
+- la Story, regler pour mieux voir sur petit écran --> 

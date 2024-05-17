@@ -942,7 +942,7 @@ p.copyright-text {
 /* dark mode */
 body.dark .rsvp-form .form,
 body.dark .event-section .event-item-inner,
-body.dark, .story-content .story-item i.fa-heart,
+body.dark .story-content .story-item i.fa-heart,
 body.dark .couple-section .couple i.fa-heart, 
 body.dark {
     background-color: #111111;

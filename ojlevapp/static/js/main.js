@@ -17,6 +17,7 @@ $(window).on("load", function() {
 
     function slideShow(){
         $(".slide").removeClass("active").eq(slideIndex).addClass("active");
+        $(".diapo_img").removeClass("active").eq(slideIndex).addClass("active");
         if(slideIndex == slideLen-1) {
             slideIndex = 0;
         }
