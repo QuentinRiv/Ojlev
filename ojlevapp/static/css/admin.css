@@ -225,3 +225,63 @@ a.user {
 .home-section .addDiapoItem:hover {
   background-color: #000000;
 }
+
+
+.story-item:nth-child(odd) .story-img,
+.story-item:nth-child(even) .story-text, 
+.couple.item:nth-child(2) {
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.story-item:nth-child(even) .story-img,
+.story-item:nth-child(odd) .story-text,
+.couple.item:nth-child(1) {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.event-item:nth-child(1) {
+  opacity: 0;
+  transform: translateY(-25%);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.event-section .event-item:nth-child(2) {
+  opacity: 0;
+  transform: translateY(35%);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.story-item .story-img.show,
+.story-item .story-text.show,
+.couple.item.show,
+.gallery-item.show {
+  opacity: 1;
+  transform: translateY(0);
+  transform: translateX(0) ;
+}
+
+.event-item.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.event-section .event-item:nth-child(2).show {
+  opacity: 1;
+  transform: translateY(50px);
+}
+
+.witness-item,
+.gallery-item {
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.witness-item.show {
+  opacity: 1;
+  transform: translateX(0);
+}

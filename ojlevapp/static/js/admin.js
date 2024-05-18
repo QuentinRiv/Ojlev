@@ -257,3 +257,42 @@ window.onscroll = () => {
 
 
 // TODO : avec .plus et .minus, des div sont ajoutés/supprimés dynamiquement ; mais si on fait location.reload, c'est pas nécessaire... C'est l'un ou l'autre
+
+
+// Get the element to animate
+const elements = document.querySelectorAll('.story-img, .story-text, .event-item, .witness-item, .couple.item, .gallery-item');
+
+// Define the options for the Intersection Observer
+const options = {
+  root: null,
+  rootMargin: '0px',
+  threshold: 0.5
+};
+
+// Create a new Intersection Observer
+const observer = new IntersectionObserver(function(entries, observer) {
+  entries.forEach(entry => {
+    // If element is in viewport, add the 'show' class to trigger the animation
+    if (entry.isIntersecting) {
+      entry.target.classList.add("show");
+    } else {
+      entry.target.classList.remove("show");
+    }
+  });
+}, options);
+
+// Start observing the element
+elements.forEach((el) => observer.observe(el));
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  const items = document.querySelectorAll(".witness-item, .gallery-item");
+  items.forEach((item, index) => {
+    // Applique un délai de transition qui commence à 600ms pour le troisième élément et augmente de 600ms pour chaque suivant
+    if (index >= 1) {
+      // Commence à 0, donc index 2 est le troisième élément
+      item.style.transitionDelay = `${100 * (index - 1)}ms`;
+    }
+  });
+});
