@@ -73,7 +73,7 @@
             <div class="home-content">
               <p>We are getting married</p>
               <h1>{{ groom['first_name'] }} & {{ bride['first_name'] }}</h1>
-              <span>30 Feb 2024</span>
+              <span >30 Feb 2024</span>
             </div>
           </div>
         </div>
@@ -188,6 +188,7 @@
                     <img
                     src={{"../static/img/story/"+story['image_name']}}
                     alt="couple love story"
+                    onerror="this.onerror=null;this.src='../static/img/upcloud.png'"
                   />
                   <input type="file" id="hiddenLoveImageInput" style="display: none;" name="image">
                   <div class="update_image">
@@ -270,7 +271,9 @@
           <div class="witness-item item" data-target="Groomsman" data-index={{Groomsman['id']}}>
             <div class="witness-item-inner">
               <div class="witness-img">
-                <img src={{"../static/img/witness/groomsmen/Groomsman_"+loop.index0|string+".jpg"}} alt="Groomsman" class="updateable">
+                <img src={{"../static/img/witness/groomsmen/Groomsman_"+loop.index0|string+".jpg"}} alt="Groomsman" class="updateable"
+                    onerror="this.onerror=null;this.src='../static/img/upcloud.png'"
+                 >
                 <div class="update_image">
                   <i class="fas fa-camera"></i>
                 </div>
@@ -291,7 +294,9 @@
           <div class="witness-item item" data-target="bridesmaid" data-index={{bridesmaid['id']}}>
             <div class="witness-item-inner">
               <div class="witness-img">
-                  <img src={{"../static/img/witness/bridesmaids/bridesmaid_"+loop.index0|string+".jpg"}} alt="bridesmaid">
+                  <img src={{"../static/img/witness/bridesmaids/bridesmaid_"+loop.index0|string+".jpg"}} alt="bridesmaid"
+                    onerror="this.onerror=null;this.src='../static/img/upcloud.png'"
+                  >
                   <div class="update_image">
                     <i class="fas fa-camera"></i>
                   </div>

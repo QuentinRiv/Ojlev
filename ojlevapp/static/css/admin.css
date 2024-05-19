@@ -55,8 +55,6 @@ a.user {
 }
 
 
-
-
 .story-section .addStoryItem {
   background-color: #e4e4e4;
   width: 100px;
@@ -69,7 +67,6 @@ a.user {
   cursor: pointer;
   margin: 30px 10px;
 }
-
 
 
 .story-content .story-img .update_image {

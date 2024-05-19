@@ -2,6 +2,45 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+$(document).ready(function () {
+  function setDefaultImage(img) {
+    // Appliquer l'attribut onerror si ce n'est pas déjà fait
+    if (!$(img).attr("onerror")) {
+      $(img).attr(
+        "onerror",
+        "this.onerror=null; this.src='../static/img/upcloud.png';"
+      );
+    }
+  }
+
+  // Appliquer le fallback sur toutes les images initiales
+  $("img").each(function () {
+    setDefaultImage(this);
+  });
+
+  // Créer une instance de MutationObserver
+  const observer = new MutationObserver(function (mutations) {
+    mutations.forEach(function (mutation) {
+      mutation.addedNodes.forEach(function (node) {
+        if (node.nodeType === 1 && node.tagName === "IMG") {
+          // vérifie si le nœud est un élément et une image
+          setDefaultImage(node);
+        }
+      });
+    });
+  });
+
+  // Configuration de l'observateur:
+  const config = {
+    childList: true,
+    subtree: true,
+  };
+
+  // Démarrer l'observation du document
+  observer.observe(document.body, config);
+});
+
+
 $(window).on("load", function () {
   let isconnected = $("#name_connected").length > 0;
   if (!isconnected) {
@@ -46,27 +85,37 @@ $(window).on("load", function () {
   });
   // Modif des champ modifiables END
 
+
+  function new_elem(element) {
+    let newStep = $(element);
+
+    let nouv = newStep.children().last().clone();
+    let nbrChildren = newStep.children().length;  // Index de l'élément à créer
+    const breakpoint = /[0-9]+/; // Pour séparer là où est l'index
+    const new_val = nouv.find("img").attr("src").split(breakpoint);
+    nouv.attr("data-index", nbrChildren);
+    nouv.find("img").attr("src", new_val[0] + nbrChildren + new_val[1]);
+    nouv.find("h3, span, p").each(function () {
+      $(this).html($(this).attr("name"));
+    });
+    newStep.append(nouv);
+
+    return nouv
+  }
+
   // Ajout/Retrait d'une histoire START
   // Ajout
   $(".addStoryItem.plus").on("click", function () {
-    let newStep = $(".story-content .row");
-
-    let lastChild = newStep.children().last().clone();
-    let nbrChildren = newStep.children().length;
-    console.log("Enfant num :", nbrChildren);
-    let nouv = lastChild.clone();
-    nouv.find(".story-item").attr("data-index", nbrChildren);
-    nouv.find("img").attr("src", "../static/img/upcloud.png");
-    nouv.find("h3").html("New text");
-    nouv.find("span").html("01/01/2050");
-    newStep.append(nouv);
+    
+    new_elem(".story-content .row");
+    
 
     $.ajax({
       url: "/story/new",
       type: "GET",
       success: function (response) {
         console.log("Story added successfully!");
-        location.reload();
+        // location.reload();
       },
       error: function (xhr, status, error) {
         console.error("Failed to add story:", error);
@@ -99,10 +148,9 @@ $(window).on("load", function () {
   var image_name = "";
   $(".update_image").click(function () {
     // Déclenche le clic sur l'input file caché
-    id = $(this).parent().parent().attr("data-index");
+    id = $(this).find("data-index").attr("data-index");
     console.log("-------------------");
     folder_path = $(this).closest("div[data-image-path]").attr("data-image-path");
-    console.log($(this).closest("div[data-image-path]"));
     image_name = $(this).parent().children("img").attr("src").split("/").pop();
     $("#hiddenLoveImageInput").click();
   });
@@ -143,15 +191,7 @@ $(window).on("load", function () {
   // Ajout/Retrait d'une histoire START
   // Ajout
   $(".addWitnessItem.plus").on("click", function () {
-    let newStep = $(".witness-section .row.active");
-
-    let lastChild = newStep.children().last().clone();
-    let nbrChildren = newStep.children().length;
-    let nouv = lastChild.clone();
-    nouv.find("img").attr("src", "../static/img/upcloud.png");
-    nouv.find("h4").html("Witness' name");
-    nouv.find("p").html("Role");
-    newStep.append(nouv);
+    var nouv = new_elem(".witness-section .row.active");
 
     const side = capitalizeFirstLetter($(nouv).attr("data-target"));
 
@@ -160,7 +200,7 @@ $(window).on("load", function () {
       type: "GET",
       success: function (response) {
         console.log("Witness added successfully!");
-        location.reload();
+        // location.reload();
       },
       error: function (xhr, status, error) {
         console.error("Failed to add witness:", error);

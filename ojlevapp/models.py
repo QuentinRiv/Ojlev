@@ -3,13 +3,13 @@ from . import db
 from sqlalchemy.orm import validates
 
 class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True) # primary keys are required by SQLAlchemy
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True) # primary keys are required by SQLAlchemy
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
     name = db.Column(db.String(1000))
 
 class Partner(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     first_name = db.Column(db.String(100))
     last_name = db.Column(db.String(100))
     full_name = db.Column(db.String(100))
@@ -28,14 +28,14 @@ class Partner(db.Model):
 
 
 class Lovestory(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(100))
     date = db.Column(db.String(100))
     description = db.Column(db.String(1000))
     image_name = db.Column(db.String(100))
 
 class Program(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100))
     date = db.Column(db.String(100))
     time = db.Column(db.String(100))
@@ -43,7 +43,7 @@ class Program(db.Model):
 
 
 class Witness(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     side = db.Column(db.String(100))
     full_name = db.Column(db.String(100))
     description = db.Column(db.String(1000))
