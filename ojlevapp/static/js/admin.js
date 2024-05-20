@@ -40,7 +40,7 @@ $(document).ready(function () {
   observer.observe(document.body, config);
 });
 
-
+// If the user is connected
 $(window).on("load", function () {
   let isconnected = $("#name_connected").length > 0;
   if (!isconnected) {
