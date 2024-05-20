@@ -50,17 +50,18 @@ $(window).on("load", function () {
   }
   
 
-  // Modif des champ modifiables START
-  let elements = $(
-    ".couple h3, .couple p, .story-content .row h3, .story-content .row span, .story-content .row p, .event-item-inner h3, .event-item-inner span, .event-item-inner p, .witness-item-inner h4, .witness-item-inner p"
-  );
+  // Champs modifiables START
+  let elements = $(".editable");
   elements.attr("contenteditable", "true");
   elements.css("border", "1px dashed black");
-  elements.on("blur", function () {
+  // elements.on("blur", function () {
+  $('section').on('blur', '.editable', function() {
+
     var id = $(this).closest(".item").attr("data-index"); // On trouve le 1er parent avec la classe .item, pour on récupère son id
-    var text_value = $(this).text();
-    var attribute_name = $(this).attr("name");
-    var table = $(this).closest("section").attr("data-db");
+    var text_value = $(this).text();  // Le contenu
+    var attribute_name = $(this).attr("name");  // La clef
+    var table = $(this).closest("section").attr("data-db"); // Le nom de la table dans la DB
+
     let data = {
       table: table,
       id: id,
@@ -68,6 +69,7 @@ $(window).on("load", function () {
       new_value: text_value,
     };
 
+    // Requete pour la modif de la DB côté Flask
     $.ajax({
       url: "/update",
       type: "POST",
@@ -76,28 +78,28 @@ $(window).on("load", function () {
         console.log(
           `-${table}- table updated successfully! => New Value : -${text_value}- for the attribute -${attribute_name}-`
         );
-        location.reload();
       },
       error: function (xhr, status, error) {
         console.error(`Failed to update -${table}-:`, error);
       },
     });
   });
-  // Modif des champ modifiables END
+  // Champs modifiables END
 
 
+  // Ajout d'un nouvel élément pour Diapo, Witness et Story
   function new_elem(element) {
     let newStep = $(element);
 
     let nouv = newStep.children().last().clone();
-    let nbrChildren = newStep.children().length;  // Index de l'élément à créer
+    let nbrChildren = newStep.closest("section").find(".item").length;  // Index de l'élément à créer
     const breakpoint = /[0-9]+/; // Pour séparer là où est l'index
     const new_val = nouv.find("img").attr("src").split(breakpoint);
     nouv.attr("data-index", nbrChildren);
     nouv.find("img").attr("src", new_val[0] + nbrChildren + new_val[1]);
     nouv.find("h3, span, p").each(function () {
       $(this).html($(this).attr("name"));
-    });
+    }); // Texte affiché
     newStep.append(nouv);
 
     return nouv
@@ -109,7 +111,6 @@ $(window).on("load", function () {
     
     new_elem(".story-content .row");
     
-
     $.ajax({
       url: "/story/new",
       type: "GET",
@@ -146,10 +147,9 @@ $(window).on("load", function () {
   var id = "";
   var folder_path = "";
   var image_name = "";
-  $(".update_image").click(function () {
+  $('section').on('click', '.update_image', function() {
     // Déclenche le clic sur l'input file caché
     id = $(this).find("data-index").attr("data-index");
-    console.log("-------------------");
     folder_path = $(this).closest("div[data-image-path]").attr("data-image-path");
     image_name = $(this).parent().children("img").attr("src").split("/").pop();
     $("#hiddenLoveImageInput").click();
@@ -194,13 +194,13 @@ $(window).on("load", function () {
     var nouv = new_elem(".witness-section .row.active");
 
     const side = capitalizeFirstLetter($(nouv).attr("data-target"));
+    console.log("Side : " + side);
 
     $.ajax({
       url: "/witness/new?side=" + side,
       type: "GET",
       success: function (response) {
         console.log("Witness added successfully!");
-        // location.reload();
       },
       error: function (xhr, status, error) {
         console.error("Failed to add witness:", error);
@@ -233,15 +233,7 @@ $(window).on("load", function () {
   // Ajout/Retrait d'une diapo START
   // Ajout
   $(".addDiapoItem.plus").on("click", function () {
-    let newStep = $(".home-section .small_diapo");
-
-    let lastChild = newStep.children(".small_diapo_item").last().clone();
-    let nbrChildren = newStep.children().length;
-    console.log("Enfant num :", nbrChildren);
-    let nouv = lastChild.clone();
-    nouv.find(".new-image-diapo").attr("data-index", nbrChildren);
-    nouv.find("img").attr("src", "../static/img/upcloud.png");
-    newStep.children(".small_diapo_item").last().after(nouv);
+    new_elem(".home-section .small_diapo .diapos");
 
     $.ajax({
       url: "/slide/new",
@@ -259,7 +251,6 @@ $(window).on("load", function () {
   // Retrait
   $(".addDiapoItem.minus").on("click", function () {
     const folder_path = $(this).closest("div[data-image-path]").attr("data-image-path");
-    console.log("==>", folder_path);
     let newStep = $(".home-section .small_diapo").children(".small_diapo_item");
     newStep.last().remove();
 

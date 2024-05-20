@@ -84,15 +84,17 @@
       <!-- smaller image diapo start -->
       <div class="small_diapo" data-image-path="\slides">
 
-        {% for path in diapo %}
-        <div class="small_diapo_item">
-          <img src={{"../static/img/slides/"+path}} class="diapo_img">
-          <input type="file" id="hiddenDiapoImageInput" style="display: none;" name="image">
-          <div class="update_image" data-index={{loop.index0}}>
-            <i class="fas fa-camera"></i>
+        <div class="diapos">
+          {% for path in diapo %}
+          <div class="small_diapo_item">
+            <img src={{"../static/img/slides/"+path}} class="diapo_img">
+            <input type="file" id="hiddenDiapoImageInput" style="display: none;" name="image">
+            <div class="update_image" data-index={{loop.index0}}>
+              <i class="fas fa-camera"></i>
+            </div>
           </div>
+          {% endfor %}
         </div>
-        {% endfor %}
 
         <div class="add_remove" data-image-path="/slides">
           <div class="addDiapoItem minus">
@@ -130,8 +132,8 @@
                 <i class="fas fa-camera"></i>
               </div>
             </div>
-            <h3 name="full_name">{{ groom['first_name'] }} {{ groom['last_name'] }}</h3>
-            <p name="description">{{ groom['description'] }}</p>
+            <h3 name="full_name" class="editable">{{ groom['first_name'] }} {{ groom['last_name'] }}</h3>
+            <p name="description" class="editable">{{ groom['description'] }}</p>
             <div class="social-links">
               <a href="#"><i class="fab fa-facebook-f"></i></a>
               <a href="#"><i class="fab fa-linkedin-in"></i></a>
@@ -151,8 +153,8 @@
                   <i class="fas fa-camera"></i>
                 </div>
               </div>
-              <h3 name="full_name">{{ bride['first_name'] }} {{ bride['last_name'] }}</h3>
-              <p name="description">{{ bride['description'] }}</p>
+              <h3 name="full_name" class="editable">{{ bride['first_name'] }} {{ bride['last_name'] }}</h3>
+              <p name="description"> class="editable"{{ bride['description'] }}</p>
             <div class="social-links">
               <a href="#"><i class="fab fa-facebook-f"></i></a>
               <a href="#"><i class="fab fa-linkedin-in"></i></a>
@@ -180,9 +182,9 @@
               <div class="story-item item" data-index={{story['id']}}>
                 <i class="fas fa-heart"></i>
                 <div class="story-text">
-                  <h3 name="title">{{ story['title'] }}</h3>
-                  <span name="date"> {{ story['date'] }} </span>
-                  <p name="description">{{ story['description'] }}</p>
+                  <h3 name="title" class="editable">{{ story['title'] }}</h3>
+                  <span name="date" class="editable"> {{ story['date'] }} </span>
+                  <p name="description" class="editable">{{ story['description'] }}</p>
                 </div>
                 <div class="story-img">
                     <img
@@ -226,10 +228,10 @@
                 <!-- item start -->
                 <div class="event-item item" data-index="1">
                     <div class="event-item-inner">
-                        <h3 name="name">{{ programs[0]['name']}}</h3>
-                        <span name="date">{{ programs[0]['date']}}</span>
-                        <span name="time">{{ programs[0]['time']}}</span>
-                        <p name="description">{{ programs[0]['description']}}</p>
+                        <h3 name="name" class="editable">{{ programs[0]['name']}}</h3>
+                        <span name="date" class="editable">{{ programs[0]['date']}}</span>
+                        <span name="time" class="editable">{{ programs[0]['time']}}</span>
+                        <p name="description" class="editable">{{ programs[0]['description']}}</p>
                         <img src="../static/img/icons/flower.svg" alt="event">
                     </div>
                 </div>
@@ -237,10 +239,10 @@
                 <!-- item start -->
                 <div class="event-item item" data-index="2">
                     <div class="event-item-inner">
-                        <h3 name="name">{{ programs[1]['name']}}</h3>
-                        <span name="date">{{ programs[1]['date']}}</span>
-                        <span name="time">{{ programs[1]['time']}}</span>
-                        <p name="description">{{ programs[1]['description']}}</p>
+                        <h3 name="name" class="editable">{{ programs[1]['name']}}</h3>
+                        <span name="date" class="editable">{{ programs[1]['date']}}</span>
+                        <span name="time" class="editable">{{ programs[1]['time']}}</span>
+                        <p name="description" class="editable">{{ programs[1]['description']}}</p>
                         <img src="../static/img/icons/flower.svg" alt="event">
                     </div>
                 </div>
@@ -278,8 +280,8 @@
                   <i class="fas fa-camera"></i>
                 </div>
               </div>
-              <h4 name="full_name">{{ Groomsman['full_name'] }}</h4>
-              <p name="description">{{ Groomsman['description'] }}</p>
+              <h4 name="full_name" class="editable">{{ Groomsman['full_name'] }}</h4>
+              <p name="description" class="editable">{{ Groomsman['description'] }}</p>
             </div>
           </div>
           {% endfor %}
@@ -301,8 +303,8 @@
                     <i class="fas fa-camera"></i>
                   </div>
                 </div>
-              <h4 name="full_name">{{ bridesmaid['full_name'] }}</h4>
-              <p name="description">{{ bridesmaid['description'] }}</p>
+              <h4 name="full_name" class="editable">{{ bridesmaid['full_name'] }}</h4>
+              <p name="description" class="editable">{{ bridesmaid['description'] }}</p>
             </div>
           </div>
           {% endfor %}
@@ -518,4 +520,4 @@
 
 <!-- TODO :
 - le menu burguer : regler l'icone de la mariée
-- la Story, regler pour mieux voir sur petit écran --> 
+- new_elem => pas possible de direct changer d'image, à cause du chemin --> 
