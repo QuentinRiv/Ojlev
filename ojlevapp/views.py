@@ -180,8 +180,8 @@ def remove_witness():
     return redirect(url_for("main.index"))
 
 # Supprime la dernière image d'un dossier
-@bp.route('/remove', methods=['POST'])
-def remove():
+@bp.route('/remove_lastimage', methods=['POST'])
+def remove_lastimage():
     data = request.form.to_dict()
 
     try:

@@ -96,7 +96,7 @@
           {% endfor %}
         </div>
 
-        <div class="add_remove" data-image-path="/slides">
+        <div class="add_remove">
           <div class="addDiapoItem minus">
             <i class="fas fa-minus"></i>
           </div>
@@ -262,24 +262,24 @@
         <div class="row">
           <div class="witness-filter">
             <a href="javascricpt:void(0)" class="filter-btn" data-target="Groomsman" data-image-path="\witness\groomsmen">Groomsmen</a>
-            <a href="javascricpt:void(0)" class="filter-btn active" data-target="bridesmaid" data-image-path="\witness\bridesmaids">Bridesmaid</a>
+            <a href="javascricpt:void(0)" class="filter-btn active" data-target="Bridesmaid" data-image-path="\witness\bridesmaids">Bridesmaid</a>
           </div>
         </div>
         <!-- groomsmen  start -->
         <div class="row justify-content-center filter-img witnesses" data-target="Groomsman" data-image-path="\witness\groomsmen">
           <!-- witness item start -->
-          {% for Groomsman in groomsmen %}
-          <div class="witness-item item" data-target="Groomsman" data-index={{Groomsman['id']}}>
+          {% for groomsman in groomsmen %}
+          <div class="witness-item item" data-target="Groomsman" data-index={{groomsman['id']}}>
             <div class="witness-item-inner">
               <div class="witness-img">
-                <img src={{"../static/img/witness/groomsmen/Groomsman_"+loop.index0|string+".jpg"}} alt="Click here to upload image" class="updateable"
+                <img src={{"../static/img/witness/groomsmen/Groomsman_"+groomsman.id|string+".jpg"}} alt="Click here to upload image" class="updateable"
                  >
                 <div class="update_image">
                   <i class="fas fa-camera"></i>
                 </div>
               </div>
-              <h4 name="full_name" class="editable">{{ Groomsman['full_name'] }}</h4>
-              <p name="description" class="editable">{{ Groomsman['description'] }}</p>
+              <h4 name="full_name" class="editable">{{ groomsman['full_name'] }}</h4>
+              <p name="description" class="editable">{{ groomsman['description'] }}</p>
             </div>
           </div>
           {% endfor %}
@@ -288,13 +288,13 @@
         <!-- groomsmen  end -->
 
         <!-- bridesmaid start -->
-        <div class="row justify-content-center filter-img active witnesses" data-target="bridesmaid" data-image-path="\witness\bridesmaids">
+        <div class="row justify-content-center filter-img active witnesses" data-target="Bridesmaid" data-image-path="\witness\bridesmaids">
           <!-- witness item start -->
           {% for bridesmaid in bridesmaids %}
-          <div class="witness-item item" data-target="bridesmaid" data-index={{bridesmaid['id']}}>
+          <div class="witness-item item" data-target="Bridesmaid" data-index={{bridesmaid['id']}}>
             <div class="witness-item-inner">
               <div class="witness-img">
-                  <img src={{"../static/img/witness/bridesmaids/bridesmaid_"+loop.index0|string+".jpg"}} alt="Click here to upload image"
+                  <img src={{"../static/img/witness/bridesmaids/bridesmaid_"+bridesmaid.id|string+".jpg"}} alt="Click here to upload image"
                   >
                   <div class="update_image">
                     <i class="fas fa-camera"></i>

@@ -58,7 +58,7 @@ $(window).on("load", function () {
 
     let nouv = newStep.children().last().clone();
     let nbrChildren = newStep.closest("section").find(".item").length;  // Index de l'élément à créer
-    const breakpoint = /[0-9]+/; // Pour séparer là où est l'index
+    const breakpoint = /[0-9]+/; // Pour séparer là où est l'index (le 4 dans image-4.png)
     const new_val = nouv.find("img").attr("src").split(breakpoint);
     console.log("-->", new_val);
     nouv.attr("data-index", nbrChildren);
@@ -92,8 +92,7 @@ $(window).on("load", function () {
 
   // Retrait
   $(".addStoryItem.minus").on("click", function () {
-    let newStep = $(".story-content .row").children();
-    newStep.last().remove();
+    remove_img($(".story-content"));
 
     $.ajax({
       url: "/story/remove",
@@ -115,9 +114,10 @@ $(window).on("load", function () {
   var image_name = "";
   $('section').on('click', '.update_image', function() {
     // Déclenche le clic sur l'input file caché
-    let id = $(this).find("data-index").attr("data-index");
+    // let id = $(this).find("data-index").attr("data-index");
     let folder_path = $(this).closest("div[data-image-path]").attr("data-image-path");
     let image_name = $(this).parent().children("img").attr("src").split("/").pop();
+    console.log("=> ", image_name);
     let image = $(this).parent().children("img");
 
     $("#hiddenLoveImageInput").click();
@@ -159,7 +159,7 @@ $(window).on("load", function () {
   $(".addWitnessItem.plus").on("click", function () {
     var nouv = new_elem(".witness-section .row.active");
 
-    const side = capitalizeFirstLetter($(nouv).attr("data-target"));
+    const side = $(nouv).attr("data-target");
     console.log("Side : " + side);
 
     $.ajax({
@@ -178,7 +178,6 @@ $(window).on("load", function () {
   $(".addWitnessItem.minus").on("click", function () {
     let newStep = $(".witness-section .row.active").children();
     const side = capitalizeFirstLetter($(newStep).attr("data-target"));
-    newStep.last().remove();
 
     $.ajax({
       url: "/witness/remove?side=" + side,
@@ -192,7 +191,7 @@ $(window).on("load", function () {
       },
     });
 
-    remove_img($(this));
+    remove_img($(".witnesses.active"));
 
 
   });
@@ -221,29 +220,29 @@ $(window).on("load", function () {
 
   // Retrait
   $(".addDiapoItem.minus").on("click", function () {
-    remove_img($(this));
+    remove_img($(".small_diapo"));
   });
   // Ajout/Retrait d'une diapo END
 });
 
-function remove_img(image_target) {
-  const folder_path = image_target.closest("div[data-image-path]").attr("data-image-path");
+function remove_img(container) {
+  const folder_path = container.attr("data-image-path");
   console.log("Folder path: " + folder_path);
-    // let newStep = $(".home-section .small_diapo").children(".small_diapo_item");
-    // newStep.last().remove();
+  let newestStep = container.find(".item");
+  newestStep.last().remove();
 
-    $.ajax({
-      url: "/remove",
-      type: "POST",
-      data: { folder_path: folder_path },
-      success: function (response) {
-        console.log("Witness removed successfully!");
-        // location.reload();
-      },
-      error: function (xhr, status, error) {
-        console.error("Failed to remove witness:", error);
-      },
-    });
+  $.ajax({
+    url: "/remove_lastimage",
+    type: "POST",
+    data: { folder_path: folder_path },
+    success: function (response) {
+      console.log("Witness removed successfully!");
+      // location.reload();
+    },
+    error: function (xhr, status, error) {
+      console.error("Failed to remove witness:", error);
+    },
+  });
 }
 
 // Menu burger
