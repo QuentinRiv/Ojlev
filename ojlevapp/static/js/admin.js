@@ -46,6 +46,8 @@ $(window).on("load", function () {
   if (!isconnected) {
     console.warn("User pas connecté !");
     $(".add_remove").css("display", "none");
+    $(".update_image").css("display", "none");
+    $(".small_diapo").css("display", "none");
     return;
   }
   
