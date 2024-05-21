@@ -42,7 +42,11 @@
         display: block;
         margin: 1.5rem;
         border-bottom: 1px solid #660000;
-        color: black;
+        /* color: black; */
+    }
+
+    .header .navbar a.part {
+        color: rgb(78, 21, 21);
     }
 
     /* Cas spécial pour l'image du profil*/
@@ -100,5 +104,33 @@
 
     .couple-section .couple i.fa-heart {
         display: none;
+    }
+
+    .story-section .story-img {
+        margin-top: 20px;
+    }
+
+    .story-section .story-content:before {
+        left: 20px;
+    }
+
+    .story-section .story-item i {
+        margin-left: 0px;
+        left: 5px;
+    }
+
+    .story-section .story-text,
+    .story-section .story-img {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .story-section .story-item:nth-child(odd) .story-text {
+        padding: 0 15px 0 60px;
+        text-align: left;
+    }
+
+    .story-section .story-item:nth-child(even) .story-text {
+        padding: 0 60px 0 15px;
     }
 }

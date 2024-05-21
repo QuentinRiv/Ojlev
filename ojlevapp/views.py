@@ -6,9 +6,11 @@ from flask_login import login_required, current_user
 from .models import Partner, Lovestory, Program, Witness
 from . import db
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy import func 
+from sqlalchemy import func
+from .generation import *
 
 bp = Blueprint('main', __name__)
+
 
 @bp.route('/')
 def index():
@@ -19,20 +21,17 @@ def index():
     groomsmen = Witness.query.filter_by(side="Groomsman").all()
     bridesmaids = Witness.query.filter_by(side="Bridesmaid").all()
     diapo = os.listdir('./ojlevapp/static/img/slides')
-    print(diapo)
-    print("=> ", groomsmen)
+
+    # User connecté ?
     if(current_user.is_authenticated):
         print("\nYou are authenticated\n")
     else:
         print("\nYou are not authenticated\n")
     return render_template('index.html', connected=current_user.is_authenticated, groom=groom, bride=bride, stories=stories, programs=programs, groomsmen=groomsmen, bridesmaids=bridesmaids, diapo=diapo)
 
-@bp.route('/upload')
-@login_required
-def upload():
-    return render_template('upload.html', name=current_user.name) 
 
 @bp.route('/upload', methods=['POST'])
+@login_required 
 def upload_file():
     if 'image' not in request.files:
         return redirect(request.url)
@@ -45,10 +44,9 @@ def upload_file():
         return redirect(request.url)
     if file and allowed_file(filename):
         filename = secure_filename(filename)
-        print("path = %s" % path)
-        print("filename = %s" % filename)
         file.save(os.path.join(path, filename))
-        return 'Image uploadée avec succès'
+        print("Path = %s - Filename = %s".format(path, filename))
+        return 'Image uploadée avec succès', 202
     else:
         return 'Type de fichier non autorisé'
 
@@ -57,6 +55,7 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_EXTENSIONS']
 
 @bp.route('/update', methods=['POST'])
+@login_required 
 def update_db():
     data = request.form.to_dict()
     table = data['table']
@@ -71,7 +70,9 @@ def update_db():
 
     element = tablequery.filter_by(id=id).first()
 
-    setattr(element, attribute_name, new_value)
+    setattr(element, attribute_name, new_value) # Builtin function
+    
+    # Check for error
     try: 
         db.session.commit()
     except SQLAlchemyError as e:
@@ -82,55 +83,8 @@ def update_db():
     return "Success", 202
 
 
-def generate_partners():
-    Partner.query.delete()
-    db.session.commit()
-    partner1 = Partner(id=1, 
-                       full_name="Jean Bonbeurre" ,
-                       description="A very nice lad")
-    partner2 = Partner(id=2, 
-                       full_name="Jeanne Haitte", 
-                       description="A very nice girl")
-
-    # add the new user to the database
-    db.session.add(partner1)
-    db.session.add(partner2)
-    db.session.commit()
-    return "ok", 202
 
 
-def generate_story():
-    Lovestory.query.delete()
-    db.session.commit()
-
-    titles = ["First Meet", "First Date", "Proposal", "Engagement"]
-    dates = ["10 Jan 2020", "13 Mar 2021", "16 Jun 2022", "19 Sep 2023"]
-    for i in range(4):
-        lovepart = Lovestory(id=i,
-                             title=titles[i], 
-                             date=dates[i], 
-                             description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam officiis doloribus nulla placeat voluptatibus eum quidem fugit eius impedit, asperiores molestiae natus saepe doloremque, exercitationem quo error iure optio debitis.",
-                             image_name="story-"+str(i)+".jpg")
-        db.session.add(lovepart)
-        db.session.commit()
-        
-    return "ok", 202
-
-def generate_witness():
-    Witness.query.delete()
-    db.session.commit()
-
-    side = ["Groomsman", "Groomsman", "Groomsman", "Bridesmaid", "Bridesmaid", "Bridesmaid", ]
-    full_name = ["Albert Einstein", "Thierry Lermit", "Igor Meideleyeiv", "Marie Curie", "Frida Khalo", "Mahitée"]
-    for i in range(len(full_name)):
-        witness = Witness(  id=i,
-                            side=side[i], 
-                            full_name=full_name[i],
-                            description="Best Friend")
-        db.session.add(witness)
-        db.session.commit()
-        
-    return "ok", 202
 
 @bp.route('/generate', methods=['GET'])
 def generate():
@@ -168,14 +122,22 @@ def remove_story():
     return redirect(url_for("main.index"))
 
 import shutil
+import re
 @bp.route('/slide/new', methods=['GET'])
 def slide():
-
-    result = shutil.copyfile('./ojlevapp/static/img/upcloud.png', './ojlevapp/static/img/slides/slide-3.jpg')
-    print("--->", result)
+    upcloud_img("/slides")
 
     return redirect(url_for("main.index"))
 
+def upcloud_img(path):
+    filenames = os.listdir('./ojlevapp/static/img' + path)[-1]
+    paths = re.split(r'[0-9]+', filenames)
+    next_index = int(re.search(r'[0-9]+', filenames)[0]) + 1
+    next_image = paths[0] + str(next_index) + paths[1]
+
+    print("==>", "./ojlevapp/static/img/" + path + "/" + next_image)
+    result = shutil.copyfile('./ojlevapp/static/img/upcloud.png', "./ojlevapp/static/img/" + path + "/" + next_image)
+    return
 
 @bp.route('/slide/remove', methods=['GET'])
 def slide_remove():
@@ -185,24 +147,6 @@ def slide_remove():
 
     return redirect(url_for("main.index"))
 
-
-def generate_program():
-    Program.query.delete()
-    db.session.commit()
-
-    names = ["Ceremony", "Engagement"]
-    dates = ["16 Jun 2022", "19 Sep 2023"]
-    hours = ["5:00 - 7:00 PM", "5:00 - 7:30 PM"]
-    for i in range(2):
-        program = Program(  id=i+1,
-                            name=names[i], 
-                            date=dates[i], 
-                            time=hours[i],
-                            description="Machin truc muche")
-        db.session.add(program)
-        db.session.commit()
-        
-    return "ok", 202
 
 
 
@@ -235,13 +179,16 @@ def remove_witness():
 
     return redirect(url_for("main.index"))
 
-
+# Supprime la dernière image d'un dossier
 @bp.route('/remove', methods=['POST'])
 def remove():
     data = request.form.to_dict()
-    print("---->", data)
 
-    diapo = os.listdir("./ojlevapp/static/img" + data["folder_path"])
-    os.remove("./ojlevapp/static/img" + data["folder_path"] + "/" + diapo[-1])
+    try:
+        diapo = os.listdir("./ojlevapp/static/img" + data["folder_path"])
+        os.remove("./ojlevapp/static/img" + data["folder_path"] + "/" + diapo[-1])
+    except Exception as e:
+        print("Problème pour supprimer l'image dans " + data["folder_path"])
+        return "ERROR for the image deletion", 500
 
     return "OK", 202

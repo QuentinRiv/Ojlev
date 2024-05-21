@@ -2,43 +2,6 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-$(document).ready(function () {
-  function setDefaultImage(img) {
-    // Appliquer l'attribut onerror si ce n'est pas déjà fait
-    if (!$(img).attr("onerror")) {
-      $(img).attr(
-        "onerror",
-        "this.onerror=null; this.src='../static/img/upcloud.png';"
-      );
-    }
-  }
-
-  // Appliquer le fallback sur toutes les images initiales
-  $("img").each(function () {
-    setDefaultImage(this);
-  });
-
-  // Créer une instance de MutationObserver
-  const observer = new MutationObserver(function (mutations) {
-    mutations.forEach(function (mutation) {
-      mutation.addedNodes.forEach(function (node) {
-        if (node.nodeType === 1 && node.tagName === "IMG") {
-          // vérifie si le nœud est un élément et une image
-          setDefaultImage(node);
-        }
-      });
-    });
-  });
-
-  // Configuration de l'observateur:
-  const config = {
-    childList: true,
-    subtree: true,
-  };
-
-  // Démarrer l'observation du document
-  observer.observe(document.body, config);
-});
 
 // If the user is connected
 $(window).on("load", function () {
@@ -52,17 +15,18 @@ $(window).on("load", function () {
   }
   
 
-  // Modif des champ modifiables START
-  let elements = $(
-    ".couple h3, .couple p, .story-content .row h3, .story-content .row span, .story-content .row p, .event-item-inner h3, .event-item-inner span, .event-item-inner p, .witness-item-inner h4, .witness-item-inner p"
-  );
+  // Champs modifiables START
+  let elements = $(".editable");
   elements.attr("contenteditable", "true");
   elements.css("border", "1px dashed black");
-  elements.on("blur", function () {
+  // elements.on("blur", function () {
+  $('section').on('blur', '.editable', function() {
+
     var id = $(this).closest(".item").attr("data-index"); // On trouve le 1er parent avec la classe .item, pour on récupère son id
-    var text_value = $(this).text();
-    var attribute_name = $(this).attr("name");
-    var table = $(this).closest("section").attr("data-db");
+    var text_value = $(this).text();  // Le contenu
+    var attribute_name = $(this).attr("name");  // La clef
+    var table = $(this).closest("section").attr("data-db"); // Le nom de la table dans la DB
+
     let data = {
       table: table,
       id: id,
@@ -70,6 +34,7 @@ $(window).on("load", function () {
       new_value: text_value,
     };
 
+    // Requete pour la modif de la DB côté Flask
     $.ajax({
       url: "/update",
       type: "POST",
@@ -78,28 +43,29 @@ $(window).on("load", function () {
         console.log(
           `-${table}- table updated successfully! => New Value : -${text_value}- for the attribute -${attribute_name}-`
         );
-        location.reload();
       },
       error: function (xhr, status, error) {
         console.error(`Failed to update -${table}-:`, error);
       },
     });
   });
-  // Modif des champ modifiables END
+  // Champs modifiables END
 
 
+  // Ajout d'un nouvel élément pour Diapo, Witness et Story
   function new_elem(element) {
     let newStep = $(element);
 
     let nouv = newStep.children().last().clone();
-    let nbrChildren = newStep.children().length;  // Index de l'élément à créer
+    let nbrChildren = newStep.closest("section").find(".item").length;  // Index de l'élément à créer
     const breakpoint = /[0-9]+/; // Pour séparer là où est l'index
     const new_val = nouv.find("img").attr("src").split(breakpoint);
+    console.log("-->", new_val);
     nouv.attr("data-index", nbrChildren);
     nouv.find("img").attr("src", new_val[0] + nbrChildren + new_val[1]);
     nouv.find("h3, span, p").each(function () {
       $(this).html($(this).attr("name"));
-    });
+    }); // Texte affiché
     newStep.append(nouv);
 
     return nouv
@@ -107,11 +73,10 @@ $(window).on("load", function () {
 
   // Ajout/Retrait d'une histoire START
   // Ajout
-  $(".addStoryItem.plus").on("click", function () {
+  $(".addStoryItem.plus").on("click", async function () {
     
     new_elem(".story-content .row");
     
-
     $.ajax({
       url: "/story/new",
       type: "GET",
@@ -148,46 +113,45 @@ $(window).on("load", function () {
   var id = "";
   var folder_path = "";
   var image_name = "";
-  $(".update_image").click(function () {
+  $('section').on('click', '.update_image', function() {
     // Déclenche le clic sur l'input file caché
-    id = $(this).find("data-index").attr("data-index");
-    console.log("-------------------");
-    folder_path = $(this).closest("div[data-image-path]").attr("data-image-path");
-    image_name = $(this).parent().children("img").attr("src").split("/").pop();
+    let id = $(this).find("data-index").attr("data-index");
+    let folder_path = $(this).closest("div[data-image-path]").attr("data-image-path");
+    let image_name = $(this).parent().children("img").attr("src").split("/").pop();
+    let image = $(this).parent().children("img");
+
     $("#hiddenLoveImageInput").click();
-  });
 
-  $("#hiddenLoveImageInput").change(function () {
-    var fileData = new FormData();
-    var imageFile = $(this)[0].files[0];
+    $("#hiddenLoveImageInput").off('change').on('change', function () {
+        var fileData = new FormData();
+        var imageFile = this.files[0];
 
+        if (imageFile) {
+            fileData.append("image", imageFile);
+            fileData.append("filename", image_name);
+            fileData.append("path", folder_path);
 
-    if (imageFile) {
-      fileData.append("image", imageFile);
-      fileData.append("filename", image_name);
-      fileData.append("path", folder_path);
+            // Envoie le fichier en AJAX à l'URL '/upload'
+            $.ajax({
+                url: "/upload",
+                type: "POST",
+                data: fileData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    console.log("Image uploaded successfully!");
+                    image.attr("src", '../static/img/' + folder_path + '/' + image_name); // Ajouter un timestamp pour éviter le cache
+                },
+                error: function (xhr, status, error) {
+                    console.error("Failed to upload image:", error);
+                },
+            });
+        } else {
+            console.log("No file selected.");
+        }
+    });
+});
 
-      console.log("=> ", fileData);
-
-      // Envoie le fichier en AJAX à l'URL '/upload'
-      $.ajax({
-        url: "/upload",
-        type: "POST",
-        data: fileData,
-        processData: false,
-        contentType: false,
-        success: function (response) {
-          console.log("Image uploaded successfully!");
-          location.reload();
-        },
-        error: function (xhr, status, error) {
-          console.error("Failed to upload image:", error);
-        },
-      });
-    } else {
-      console.log("No file selected.");
-    }
-  });
   // Upload d'une image LoveStory FIN
 
   // Ajout/Retrait d'une histoire START
@@ -196,13 +160,13 @@ $(window).on("load", function () {
     var nouv = new_elem(".witness-section .row.active");
 
     const side = capitalizeFirstLetter($(nouv).attr("data-target"));
+    console.log("Side : " + side);
 
     $.ajax({
       url: "/witness/new?side=" + side,
       type: "GET",
       success: function (response) {
         console.log("Witness added successfully!");
-        // location.reload();
       },
       error: function (xhr, status, error) {
         console.error("Failed to add witness:", error);
@@ -221,12 +185,16 @@ $(window).on("load", function () {
       type: "GET",
       success: function (response) {
         console.log("Witness removed successfully!");
-        location.reload();
+        // location.reload();
       },
       error: function (xhr, status, error) {
         console.error("Failed to remove witness:", error);
       },
     });
+
+    remove_img($(this));
+
+
   });
   // Ajout/Retrait d'une histoire END
 
@@ -235,22 +203,15 @@ $(window).on("load", function () {
   // Ajout/Retrait d'une diapo START
   // Ajout
   $(".addDiapoItem.plus").on("click", function () {
-    let newStep = $(".home-section .small_diapo");
-
-    let lastChild = newStep.children(".small_diapo_item").last().clone();
-    let nbrChildren = newStep.children().length;
-    console.log("Enfant num :", nbrChildren);
-    let nouv = lastChild.clone();
-    nouv.find(".new-image-diapo").attr("data-index", nbrChildren);
-    nouv.find("img").attr("src", "../static/img/upcloud.png");
-    newStep.children(".small_diapo_item").last().after(nouv);
+    var elem = new_elem(".home-section .small_diapo .diapos");
 
     $.ajax({
       url: "/slide/new",
       type: "GET",
       success: function (response) {
         console.log("Story added successfully!");
-        location.reload();
+        var image_path = elem.find("img").attr("src"); // Ajouter un timestamp pour éviter le cache
+        elem.find("img").attr("src", image_path);
       },
       error: function (xhr, status, error) {
         console.error("Failed to add story:", error);
@@ -260,10 +221,16 @@ $(window).on("load", function () {
 
   // Retrait
   $(".addDiapoItem.minus").on("click", function () {
-    const folder_path = $(this).closest("div[data-image-path]").attr("data-image-path");
-    console.log("==>", folder_path);
-    let newStep = $(".home-section .small_diapo").children(".small_diapo_item");
-    newStep.last().remove();
+    remove_img($(this));
+  });
+  // Ajout/Retrait d'une diapo END
+});
+
+function remove_img(image_target) {
+  const folder_path = image_target.closest("div[data-image-path]").attr("data-image-path");
+  console.log("Folder path: " + folder_path);
+    // let newStep = $(".home-section .small_diapo").children(".small_diapo_item");
+    // newStep.last().remove();
 
     $.ajax({
       url: "/remove",
@@ -271,17 +238,13 @@ $(window).on("load", function () {
       data: { folder_path: folder_path },
       success: function (response) {
         console.log("Witness removed successfully!");
-        location.reload();
+        // location.reload();
       },
       error: function (xhr, status, error) {
         console.error("Failed to remove witness:", error);
       },
     });
-  });
-  // Ajout/Retrait d'une diapo END
-});
-
-
+}
 
 // Menu burger
 let menu = document.querySelector("#menu-btn");
@@ -296,9 +259,6 @@ window.onscroll = () => {
   menu.classList.remove("fa-times");
   navbar.classList.remove("active");
 };
-
-
-// TODO : avec .plus et .minus, des div sont ajoutés/supprimés dynamiquement ; mais si on fait location.reload, c'est pas nécessaire... C'est l'un ou l'autre
 
 
 // Get the element to animate
@@ -338,3 +298,17 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+ $(".filter-btn").click(function () {
+   if ($(this).hasClass("active")) {
+     return;
+   }
+   console.log("------------");
+   console.log($(this));
+   witnessFilter($(this).attr("data-image-path"));
+ });
+ function witnessFilter(target) {
+   //target = groom ou bride
+   console.log("=> Target = " + target);
+   $(".witness-section .add_remove").attr("data-image-path", target);
+ }
