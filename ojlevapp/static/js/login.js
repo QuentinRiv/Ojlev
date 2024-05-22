@@ -38,12 +38,13 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
             alert(data.message); // Afficher l'erreur à l'utilisateur
         } else {
             // Traiter la réponse réussie
-            console.log('Succès:', data.message);
+            console.log('Success:', data.message);
             window.location = data.url;
         }
     })
     .catch(error => {
-        console.error('Erreur :', error);
+        console.error('Erreur on Connection:', error.message);
+        console.log("Response :", response);
     });
 });
 

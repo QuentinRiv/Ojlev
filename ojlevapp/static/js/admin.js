@@ -152,7 +152,7 @@ $(window).on("load", function () {
     });
 });
 
-  // Upload d'une image LoveStory FIN
+  // Upload d'une image Story FIN
 
   // Ajout/Retrait d'une histoire START
   // Ajout

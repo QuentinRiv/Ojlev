@@ -1,0 +1,124 @@
+* {
+    box-sizing: border-box;
+}
+
+body,
+html {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+}
+
+/* Sidebar, extreme left */
+.sidebar {
+    width: 10%;
+    height: 100%;
+    background-color: #3f48cc;
+    color: white;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.sidebar .top {
+    width: 100%;
+    height: 300px;
+}
+
+.sidebar .top .icone {
+    width: 100%;
+    height: 20%;
+    padding: 10px;
+}
+
+.sidebar .top .icone img {
+    width: 100%;
+    border-radius: 50%;
+    border: 2px solid #cccccc;
+}
+
+.sidebar .top .menu_buttons {
+    width: 100%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sidebar .top .menu_buttons i {
+    margin-bottom: 15px;
+}
+
+.sidebar .bottom {
+    width: 100%;
+    height: 20%;
+    background-color: green;
+}
+
+/* End sidebar */
+
+.navig {
+    /* min-width: 150px; */
+    width: 20%;
+    height: 100%;
+    background-color: #eeeeee;
+    color: white;
+}
+
+.main {
+    height: 100%;
+    width: 60%;
+    background-color: #F1EEFF;
+}
+
+.detail {
+    height: 100%;
+    width: 60%;
+    background-color: #FFFFFF;
+}
+
+/* Pas tellement utile */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    margin: 0;
+}
+
+.storage-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.folders,
+.storage-info {
+    margin-top: 20px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.circle-chart {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background-image: conic-gradient(red 0% 85%, #ddd 85% 100%);
+}
+/* Pas tellement utile */
