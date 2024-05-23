@@ -50,7 +50,22 @@ html {
 }
 
 .sidebar .top .menu_buttons i {
-    margin-bottom: 15px;
+    padding: 10px;
+}
+
+.sidebar .top .menu_buttons .icon_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.menu_buttons .icon_container:hover {
+    background-color: #6D62E2;
+}
+
+.menu_buttons .icon_container.active {
+    background-color: #6D62E2;
 }
 
 .sidebar .bottom {
