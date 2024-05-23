@@ -1,5 +1,13 @@
 * {
     box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+ul {
+    list-style-type: none;
+    color: black;
+    margin: 0;
+    padding: 0;
 }
 
 body,
@@ -15,6 +23,7 @@ html {
 /* Sidebar, extreme left */
 .sidebar {
     width: 10%;
+    min-width: 50px;
     height: 100%;
     background-color: #3f48cc;
     color: white;
@@ -26,12 +35,12 @@ html {
 
 .sidebar .top {
     width: 100%;
-    height: 300px;
+    /* height: 300px; */
 }
 
 .sidebar .top .icone {
     width: 100%;
-    height: 20%;
+    /* height: 20%; */
     padding: 10px;
 }
 
@@ -39,6 +48,7 @@ html {
     width: 100%;
     border-radius: 50%;
     border: 2px solid #cccccc;
+    cursor: pointer;
 }
 
 .sidebar .top .menu_buttons {
@@ -47,6 +57,7 @@ html {
     display: flex;
     flex-direction: column;
     align-items: center;
+    cursor: pointer;
 }
 
 .sidebar .top .menu_buttons i {
@@ -71,18 +82,99 @@ html {
 .sidebar .bottom {
     width: 100%;
     height: 20%;
-    background-color: green;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+}
+
+.sidebar .bottom i {
+    padding: 10px;
+    background-color: #6D62E2;
+    border-radius: 50%;
+    margin: 5px;
+    cursor: pointer;
 }
 
 /* End sidebar */
 
+/* Navig Start */
 .navig {
     /* min-width: 150px; */
     width: 20%;
     height: 100%;
-    background-color: #eeeeee;
+    background-color: #ffffff;
     color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    justify-content: space-between;
 }
+
+.navig .menu_title {
+    text-align: center;
+    border-bottom: 1px solid purple;
+}
+
+.navig h3, .navig h4 {
+    color: #000000
+}
+
+.navig .file_nav i {
+    margin-right: 5px;
+}
+
+.navig .file_nav li {
+    margin: 8px auto;
+}
+
+.navig .new_elem {
+    text-align: center;
+}
+.navig .new_elem button {
+    padding: 10px 20px;
+    background-color: #5143E3;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.navig .new_elem button:hover i {
+    background-color:#6D62E2;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+.navig .new_elem_popup {
+    background-color: #F1EFFD;
+    color: black;
+    border-radius: 10%;
+    margin-bottom: 20px;
+    padding: 10px;
+    text-align: left;
+}
+
+.navig .new_elem_popup li{
+    position: relative;
+    margin: 5px 0px;
+    padding-left: 25px;
+    width: 100%;
+}
+
+.navig .new_elem_popup li:hover {
+    background-color: #6D62E2;
+    cursor: pointer;
+}
+
+.navig .new_elem_popup li i {
+    position: absolute;
+    left: 0;
+}
+/* Navig End */
 
 .main {
     height: 100%;
@@ -92,7 +184,7 @@ html {
 
 .detail {
     height: 100%;
-    width: 60%;
+    width: 30%;
     background-color: #FFFFFF;
 }
 
@@ -121,19 +213,6 @@ header h1 {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.folders,
-.storage-info {
-    margin-top: 20px;
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
 
-.circle-chart {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    background-image: conic-gradient(red 0% 85%, #ddd 85% 100%);
-}
+
 /* Pas tellement utile */
