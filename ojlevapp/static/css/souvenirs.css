@@ -100,7 +100,7 @@ html {
 /* Navig Start */
 .navig {
     /* min-width: 150px; */
-    width: 20%;
+    width: 10%;
     height: 100%;
     background-color: #ffffff;
     color: white;
@@ -179,7 +179,7 @@ html {
 /* Main start */
 .main {
     height: 100%;
-    width: 60%;
+    width: 70%;
     background-color: #F1EEFF;
     padding: 15px;
     display: flex;
@@ -199,23 +199,40 @@ html {
     height: 30%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+    gap: 20px;
     padding: 10px; 
 }
 
-.main .clouds div {
+.main .clouds .drive_box {
     background-color: cyan;
-    border-radius:10%;
+    border-radius: 10%;
     aspect-ratio: 1;
     padding: 15px;
+    display: flex;
+    justify-content: space-between;
+
 }
 
-.main .clouds img {
+.main .drive_box span {
+    text-align: right;
+}
+
+.main .clouds .logo_img {
     height: 30%;
     width: 30%;
     background-color: white;
     border-radius: 50%;
-    padding: 1px;
+    display: flex;
+    padding: 8%;
+}
+
+.main .clouds .logo_img img {
+    width: 100%;
+    height: 100%;
+}
+
+.main .clouds .logo_name {
+
 }
 
 .main .folders {
@@ -264,3 +281,39 @@ header h1 {
 
 
 /* Pas tellement utile */
+
+
+
+@media (max-width: 800px) {
+    .sidebar,
+    .new_elem_popup p {
+        display: none;
+    }
+
+    .navig .file_nav li {
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    .navig .file_nav li {
+        background-color: #cccccc;
+        border-radius: 5px;
+        padding: 5px;
+    }
+
+    .navig .new_elem_popup li i {
+        position: initial;
+    }
+
+    .navig .new_elem_popup ul {
+        text-align: center;
+    }
+
+    .navig .button_span {
+        display: none;
+    }
+
+    .navig .new_elem_popup li {
+        padding: 0;
+    }
+}
