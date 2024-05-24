@@ -176,11 +176,59 @@ html {
 }
 /* Navig End */
 
+/* Main start */
 .main {
     height: 100%;
     width: 60%;
     background-color: #F1EEFF;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
+
+.main .header {
+    height: 10%;
+}
+
+.main .header h2, h3 {
+    margin: 0;
+}
+
+.main .clouds {
+    height: 30%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding: 10px; 
+}
+
+.main .clouds div {
+    background-color: cyan;
+    border-radius:10%;
+    aspect-ratio: 1;
+    padding: 15px;
+}
+
+.main .clouds img {
+    height: 30%;
+    width: 30%;
+    background-color: white;
+    border-radius: 50%;
+    padding: 1px;
+}
+
+.main .folders {
+    height: 20%;
+    background-color:red;
+}
+
+.main .files {
+    height: 40%;
+    background-color: blue;
+}
+
+/* Main end */
 
 .detail {
     height: 100%;
