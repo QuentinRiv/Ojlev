@@ -1,5 +1,5 @@
 
-from .models import Partner, Lovestory, Program, Witness
+from .models import Couple, Story, Program, Witness
 from . import db
 
 
@@ -22,12 +22,12 @@ def generate_witness():
 
 
 def generate_partners():
-    Partner.query.delete()
+    Couple.query.delete()
     db.session.commit()
-    partner1 = Partner(id=1, 
+    partner1 = Couple(id=1, 
                        full_name="Jean Bonbeurre" ,
                        description="A very nice lad")
-    partner2 = Partner(id=2, 
+    partner2 = Couple(id=2, 
                        full_name="Jeanne Haitte", 
                        description="A very nice girl")
 
@@ -39,16 +39,16 @@ def generate_partners():
 
 
 def generate_story():
-    Lovestory.query.delete()
+    Story.query.delete()
     db.session.commit()
 
     titles = ["First Meet", "First Date", "Proposal", "Engagement"]
     dates = ["10 Jan 2020", "13 Mar 2021", "16 Jun 2022", "19 Sep 2023"]
     for i in range(4):
-        lovepart = Lovestory(id=i,
+        lovepart = Story(id=i,
                              title=titles[i], 
                              date=dates[i], 
-                             description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam officiis doloribus nulla placeat voluptatibus eum quidem fugit eius impedit, asperiores molestiae natus saepe doloremque, exercitationem quo error iure optio debitis.",
+                             description="Lorem ipsum dolor sit amet consectetur adipisicing elit.",
                              image_name="story-"+str(i)+".jpg")
         db.session.add(lovepart)
         db.session.commit()

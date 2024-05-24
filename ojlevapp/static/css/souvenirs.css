@@ -1,0 +1,266 @@
+* {
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+ul {
+    list-style-type: none;
+    color: black;
+    margin: 0;
+    padding: 0;
+}
+
+body,
+html {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+}
+
+/* Sidebar, extreme left */
+.sidebar {
+    width: 10%;
+    min-width: 50px;
+    height: 100%;
+    background-color: #3f48cc;
+    color: white;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.sidebar .top {
+    width: 100%;
+    /* height: 300px; */
+}
+
+.sidebar .top .icone {
+    width: 100%;
+    /* height: 20%; */
+    padding: 10px;
+}
+
+.sidebar .top .icone img {
+    width: 100%;
+    border-radius: 50%;
+    border: 2px solid #cccccc;
+    cursor: pointer;
+}
+
+.sidebar .top .menu_buttons {
+    width: 100%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+.sidebar .top .menu_buttons i {
+    padding: 10px;
+}
+
+.sidebar .top .menu_buttons .icon_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.menu_buttons .icon_container:hover {
+    background-color: #6D62E2;
+}
+
+.menu_buttons .icon_container.active {
+    background-color: #6D62E2;
+}
+
+.sidebar .bottom {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+}
+
+.sidebar .bottom i {
+    padding: 10px;
+    background-color: #6D62E2;
+    border-radius: 50%;
+    margin: 5px;
+    cursor: pointer;
+}
+
+/* End sidebar */
+
+/* Navig Start */
+.navig {
+    /* min-width: 150px; */
+    width: 20%;
+    height: 100%;
+    background-color: #ffffff;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    justify-content: space-between;
+}
+
+.navig .menu_title {
+    text-align: center;
+    border-bottom: 1px solid purple;
+}
+
+.navig h3, .navig h4 {
+    color: #000000
+}
+
+.navig .file_nav i {
+    margin-right: 5px;
+}
+
+.navig .file_nav li {
+    margin: 8px auto;
+}
+
+.navig .new_elem {
+    text-align: center;
+}
+.navig .new_elem button {
+    padding: 10px 20px;
+    background-color: #5143E3;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.navig .new_elem button:hover i {
+    background-color:#6D62E2;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+.navig .new_elem_popup {
+    background-color: #F1EFFD;
+    color: black;
+    border-radius: 10%;
+    margin-bottom: 20px;
+    padding: 10px;
+    text-align: left;
+}
+
+.navig .new_elem_popup li{
+    position: relative;
+    margin: 5px 0px;
+    padding-left: 25px;
+    width: 100%;
+}
+
+.navig .new_elem_popup li:hover {
+    background-color: #6D62E2;
+    cursor: pointer;
+}
+
+.navig .new_elem_popup li i {
+    position: absolute;
+    left: 0;
+}
+/* Navig End */
+
+/* Main start */
+.main {
+    height: 100%;
+    width: 60%;
+    background-color: #F1EEFF;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.main .header {
+    height: 10%;
+}
+
+.main .header h2, h3 {
+    margin: 0;
+}
+
+.main .clouds {
+    height: 30%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding: 10px; 
+}
+
+.main .clouds div {
+    background-color: cyan;
+    border-radius:10%;
+    aspect-ratio: 1;
+    padding: 15px;
+}
+
+.main .clouds img {
+    height: 30%;
+    width: 30%;
+    background-color: white;
+    border-radius: 50%;
+    padding: 1px;
+}
+
+.main .folders {
+    height: 20%;
+    background-color:red;
+}
+
+.main .files {
+    height: 40%;
+    background-color: blue;
+}
+
+/* Main end */
+
+.detail {
+    height: 100%;
+    width: 30%;
+    background-color: #FFFFFF;
+}
+
+/* Pas tellement utile */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    margin: 0;
+}
+
+.storage-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+
+
+/* Pas tellement utile */

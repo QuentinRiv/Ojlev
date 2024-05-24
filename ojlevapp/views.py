@@ -3,7 +3,7 @@ from flask import Blueprint, current_app, url_for
 import os
 from werkzeug.utils import secure_filename
 from flask_login import login_required, current_user
-from .models import Partner, Lovestory, Program, Witness
+from .models import Couple, Story, Program, Witness
 from . import db
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import func
@@ -14,9 +14,9 @@ bp = Blueprint('main', __name__)
 
 @bp.route('/')
 def index():
-    groom = Partner.query.filter_by(id=1).first()
-    bride = Partner.query.filter_by(id=2).first()
-    stories = Lovestory.query.all()
+    groom = Couple.query.filter_by(id=1).first()
+    bride = Couple.query.filter_by(id=2).first()
+    stories = Story.query.all()
     programs = Program.query.all()
     groomsmen = Witness.query.filter_by(side="Groomsman").all()
     bridesmaids = Witness.query.filter_by(side="Bridesmaid").all()
@@ -64,8 +64,8 @@ def update_db():
     new_value = data['new_value']
     # Need : Table, id, key, value
     if (table == "Program"): tablequery = db.session.query(Program)
-    if (table == "Lovestory"): tablequery = db.session.query(Lovestory)
-    if (table == "Partner"): tablequery = db.session.query(Partner)
+    if (table == "Story"): tablequery = db.session.query(Story)
+    if (table == "Couple"): tablequery = db.session.query(Couple)
     if (table == "Witness"): tablequery = db.session.query(Witness)
 
     element = tablequery.filter_by(id=id).first()
@@ -98,8 +98,8 @@ def generate():
 
 @bp.route('/story/new', methods=['GET'])
 def new_story():
-    high_id = len(Lovestory.query.all())
-    lovepart = Lovestory(id=high_id,
+    high_id = len(Story.query.all())
+    lovepart = Story(id=high_id,
                             title="New love step", 
                             date="01 Jan 2050", 
                             description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam officiis doloribus nulla placeat voluptatibus eum quidem fugit eius impedit, asperiores molestiae natus saepe doloremque, exercitationem quo error iure optio debitis.",
@@ -113,9 +113,9 @@ def new_story():
 
 @bp.route('/story/remove', methods=['GET'])
 def remove_story():
-    highest_id = len(Lovestory.query.all()) - 1
+    highest_id = len(Story.query.all()) - 1
 
-    last_story = Lovestory.query.filter_by(id=highest_id).delete()
+    last_story = Story.query.filter_by(id=highest_id).delete()
 
     db.session.commit()
 
@@ -180,8 +180,8 @@ def remove_witness():
     return redirect(url_for("main.index"))
 
 # Supprime la dernière image d'un dossier
-@bp.route('/remove', methods=['POST'])
-def remove():
+@bp.route('/remove_lastimage', methods=['POST'])
+def remove_lastimage():
     data = request.form.to_dict()
 
     try:
