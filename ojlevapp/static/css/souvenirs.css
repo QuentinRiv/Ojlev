@@ -207,16 +207,20 @@ html {
 }
 
 .main .clouds .drive_box {
-    background-color: #5444E2;
+    background-color: #FFFFFF;
     border-radius: 10%;
     aspect-ratio: 1;
     flex: 1;
-    padding: 15px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     margin: auto;
+    cursor: pointer;
+}
 
+.main .clouds .drive_box.active {
+    background-color: #5444E2;
 }
 
 .main .drive_box .logo {
@@ -228,17 +232,24 @@ html {
 
 .main .drive_box span {
     text-align: right;
-    color: white;
-
+    color: black;
 }
 
 .main .clouds .logo_img {
     width: 50px;
     height: 50px; 
-    background-color: white;
+    background-color: #E6EDFA;
     border-radius: 50%;
     display: flex;
     padding: 11px;
+}
+
+.main .drive_box.active .logo_img {
+    background-color: white;
+}
+
+.main .drive_box.active span {
+    color:white;
 }
 
 .main .clouds .logo_img img {
@@ -279,12 +290,72 @@ html {
 
 .main .folders {
     height: 20%;
-    background-color:red;
 }
 
 .main .files {
     height: 40%;
     background-color: blue;
+}
+
+.main .folders .folders_text {
+    display: flex;
+    justify-content: space-between;
+}
+
+.main .folders .folders_elems { 
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); 
+    gap: 20px;
+}
+
+.main .folders .folders_elem {
+    background-color: white; 
+    height: 100px;
+    border-radius: 10px; 
+    padding: 10px; 
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.main .folders .folders_elem:hover {
+    background-color: #cccccc;
+}
+
+.main .folders_elem .folder_logo {
+    color: #5446E2;
+    font-size: 180%;
+}
+
+.main .folders_elem .folder_line {
+    position: absolute;
+    width: 100%;
+    height: 2%;
+    background-color: #6D62E2;
+    left: 0;
+    top: 45%;
+}
+
+.main .folders_elem p {
+    font-weight: 600; 
+    margin-bottom: 5px; 
+}
+
+.main .folders_elem .last_modif i {
+    font-size: 80%;
+}
+
+.main .folders_elem span {
+    font-size: 10px;
+}
+
+.main .folders_elem .last_modif {
+    color: grey;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 /* Main end */
