@@ -22,7 +22,7 @@ html {
 
 /* Sidebar, extreme left */
 .sidebar {
-    width: 10%;
+    width: 8%;
     min-width: 50px;
     height: 100%;
     background-color: #3f48cc;
@@ -100,7 +100,7 @@ html {
 /* Navig Start */
 .navig {
     /* min-width: 150px; */
-    width: 10%;
+    width: 12%;
     height: 100%;
     background-color: #ffffff;
     color: white;
@@ -200,22 +200,22 @@ html {
     /* display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); */
     display: flex;
-    justify-content: space-around; 
-    gap: 90px;
+    gap: 14px;
     padding: 10px; 
     width: 100%;
 }
 
 .main .clouds .drive_box {
+    height: 100%;
+    max-width: 200px;
+    aspect-ratio: 1;  
     background-color: #FFFFFF;
-    border-radius: 10%;
-    aspect-ratio: 1;
+    border-radius: 20px; 
     flex: 1;
-    padding: 20px;
+    padding: 20px; 
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    margin: auto;
     cursor: pointer;
 }
 
@@ -241,7 +241,7 @@ html {
     background-color: #E6EDFA;
     border-radius: 50%;
     display: flex;
-    padding: 11px;
+    /* padding: 15px; */
 }
 
 .main .drive_box.active .logo_img {
@@ -253,7 +253,8 @@ html {
 }
 
 .main .clouds .logo_img img {
-    width: 100%;
+    max-width: 30px;
+    margin: auto;
     /* height: 100%; */
 }
 
@@ -304,9 +305,8 @@ html {
 
 .main .folders .folders_elems { 
     width: 100%;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); 
-    gap: 20px;
+    display: flex;
+    
 }
 
 .main .folders .folders_elem {
@@ -340,18 +340,18 @@ html {
 
 .main .folders_elem p {
     font-weight: 600; 
-    margin-bottom: 5px; 
+    margin-bottom: 7px; 
 }
 
-.main .folders_elem .last_modif i {
+ .last_modif i {
     font-size: 80%;
 }
 
-.main .folders_elem span {
+.last_modif span {
     font-size: 10px;
 }
 
-.main .folders_elem .last_modif {
+ .last_modif {
     color: grey;
     display: flex;
     align-items: center;
