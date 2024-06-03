@@ -16,7 +16,8 @@ $(document).ready(function () {
 
 function adjustGridContainer() {
     const fileRows = $('.file');    // Tous les fichiers
-    const fileRowHeight = fileRows[0].clientHeight; // Hauteur totale d'une ligne avec padding (ttes les lignes ont la m^ taille)
+    // const fileRowHeight = fileRows.first().height(); // Ne fonctionne pas...
+    const fileRowHeight = 36;
     const rowGap = 10; // Espace entre les lignes
     const necessaryHeight = fileRowHeight + rowGap;
     
@@ -30,19 +31,16 @@ function adjustGridContainer() {
     // Calcul de la hauteur disponible dans .files_part
     var availableHeight = filesPart.height() - (filesText.height() + fileHeader.height());
 
-    console.log("==>", availableHeight);
-
     fileRows.each(function(index, fileRow) {
-        console.log("->", fileRow);     
-        console.log("Espace restant :", availableHeight);
         if (availableHeight > necessaryHeight) {
-            // $(fileRow).css("display", "block");
             availableHeight -= necessaryHeight;
+            $(fileRow).addClass("active");
         }
         else {
-            $(fileRow).css("display", "none");
+            // $(fileRow).addClass("hidden");
         }
     })
+
 }
 
 // Ajuste la hauteur au chargement et au redimensionnement de la fenêtre
@@ -58,7 +56,7 @@ $(document).ready(function() {
 
     $('.childCheckbox').change(function() {
         // Vérifie si tous les checkboxes enfants sont cochés
-        var allChecked = $('.childShare').length === $('.childCheckbox:checked').length;
+        var allChecked = $('.childCheckbox').length === $('.childCheckbox:checked').length;
         $('#mainCheckbox').prop('checked', allChecked); // Met à jour le checkbox principal selon que tous les enfants sont cochés
     });
 });

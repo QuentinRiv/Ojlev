@@ -116,7 +116,8 @@ html {
 }
 
 .navig h3, .navig h4 {
-    color: #000000
+    color: #000000;
+    text-transform: capitalize;
 }
 
 .navig .file_nav i {
@@ -421,18 +422,16 @@ html {
 .files_container {
     display: grid;
     row-gap: 10px;
-    height: 100%;
     overflow: hidden;
     align-items: start;
     grid-auto-rows: min-content;
-    /* grid-auto-rows: 21px; */
 }
 
 .file_header,
 .file {
     display: grid;
-    grid-template-columns: 1fr 1fr 4fr 1.5fr 2fr 3fr 1fr;
-    grid-template-areas: "icon type name size members last-updated more";
+    grid-template-columns: 1fr 1fr 4fr 1.5fr 3fr 1fr;
+    grid-template-areas: "icon type name size last-updated more";
     text-align: center;
 }
 
@@ -452,6 +451,10 @@ html {
 
 .file .option {
     cursor: pointer;
+}
+
+.file:not(.active) {
+    display: none;
 }
 
 .file_header span,
@@ -488,6 +491,8 @@ html {
     grid-template-areas: "overview overview"
                          "size date"
                          "folder dimension";
+    padding: 0 10px;
+    margin-bottom: 15px;
 }
 
 .overview {
@@ -501,6 +506,27 @@ html {
 .overview img {
     max-width: 100%;
     border-radius: 50%;
+    border: 3px solid green;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: #f5f5fb;
+    margin: 4px;
+    border-radius: 8px;
+    border: 2px solid #5444e2;
+}
+
+.info p {
+    margin: 0;
+    text-align: center;
+}
+
+.info img {
+    max-width: 30%;
 }
 
 
@@ -540,6 +566,24 @@ html {
 
     .last_modif {
         display: none;
+    }
+
+    .detail_grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 2fr 1fr 1fr 1fr 1fr; /* Modification pour avoir plus de lignes */
+        grid-template-areas: "overview"
+                "size" "date"
+                "folder" "dimension";
+        row-gap: 10px;
+    }
+
+    .info {
+        margin: 3px 15px;
+    }
+
+    .info img {
+        max-width: 20%;
     }
 }
 

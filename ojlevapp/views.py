@@ -192,3 +192,7 @@ def remove_lastimage():
         return "ERROR for the image deletion", 500
 
     return "OK", 202
+
+@bp.route('/file_manager')
+def file_manager():
+    return render_template('souvenirs.html')
