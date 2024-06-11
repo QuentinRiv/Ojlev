@@ -8,7 +8,7 @@ def generate_witness():
     db.session.commit()
 
     side = ["Groomsman", "Groomsman", "Groomsman", "Bridesmaid", "Bridesmaid", "Bridesmaid", ]
-    full_name = ["Albert Einstein", "Thierry Lermit", "Igor Meideleyeiv", "Marie Curie", "Frida Khalo", "Mahitée"]
+    full_name = ["John Doe", "Tim Allan", "Bill Something", "Maria Carey", "Jane Dae", "Someone"]
     for i in range(len(full_name)):
         witness = Witness(  id=i,
                             side=side[i], 
@@ -25,11 +25,11 @@ def generate_partners():
     Couple.query.delete()
     db.session.commit()
     partner1 = Couple(id=1, 
-                       full_name="Jean Bonbeurre" ,
-                       description="A very nice lad")
+                       full_name="David Beckham" ,
+                       description="A very nice footballer")
     partner2 = Couple(id=2, 
-                       full_name="Jeanne Haitte", 
-                       description="A very nice girl")
+                       full_name="Victoria Beckham", 
+                       description="A very nice singer")
 
     # add the new user to the database
     db.session.add(partner1)
@@ -48,7 +48,7 @@ def generate_story():
         lovepart = Story(id=i,
                              title=titles[i], 
                              date=dates[i], 
-                             description="Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+                             description="Any description you want to put there...",
                              image_name="story-"+str(i)+".jpg")
         db.session.add(lovepart)
         db.session.commit()
@@ -68,7 +68,7 @@ def generate_program():
                             name=names[i], 
                             date=dates[i], 
                             time=hours[i],
-                            description="Machin truc muche")
+                            description="Write what is going to happen")
         db.session.add(program)
         db.session.commit()
         

@@ -234,6 +234,7 @@ html {
     flex-direction: column;
     justify-content: space-between;
     cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .main .clouds .drive_box.active {
@@ -357,15 +358,42 @@ html {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    flex-basis: 150px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.main .folders_elem.active {
+    background-color: #5444E2;
+
+    .folder_logo {
+        color: #ffffff;
+    }
+
+    .folder_line {
+        background-color: #ffffff;
+    }
+
+    p {
+        color: #FFFFFF;
+    }
+
 }
 
 .main .folders .folders_elem:hover {
     background-color: #cccccc;
 }
 
+.main .folders .folders_elem.active:hover {
+    background-color: #5444e2dc;
+}
+
 .main .folders_elem .folder_logo {
     color: #5446E2;
     font-size: 180%;
+}
+
+.main .folders_elem p {
+    text-transform: capitalize;
 }
 
 .main .folders_elem .folder_line {
@@ -433,6 +461,7 @@ html {
     grid-template-columns: 1fr 1fr 4fr 1.5fr 3fr 1fr;
     grid-template-areas: "icon type name size last-updated more";
     text-align: center;
+    cursor: pointer;
 }
 
 .file_type {
@@ -443,6 +472,7 @@ html {
     background-color: #ffffff;
     border-radius: 5px;
     padding: 8px 0;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 }
 
 .file:hover {
@@ -453,7 +483,8 @@ html {
     cursor: pointer;
 }
 
-.file:not(.active) {
+/* So that it hides the overflowing lines */
+.file:not(.show) {
     display: none;
 }
 
@@ -465,13 +496,17 @@ html {
     text-overflow: ellipsis;
 }
 
-.file .fileDate {
+.file .file_date {
     overflow: hidden;
     white-space: nowrap;
 }
 
-.file .fileDate p {
+.file .file_date p {
     display: inline;
+}
+
+.file.active {
+    background-color: #c2bae7;
 }
 
 /* ======= Main end ======= */
@@ -482,6 +517,18 @@ html {
     width: 30%;
     background-color: #FFFFFF;
     padding: 15px;
+    position: relative;
+}
+
+.detail .waiting_container {
+    position: absolute;
+    background: linear-gradient(180deg, rgba(255,233,215,1) 0%, rgba(255,233,215,1) 90%, rgba(163,163,163,1) 100%);
+    height: 100%;
+    border-radius: 10px;
+}
+
+.detail .waiting_container img {
+    max-width: 100%;   
 }
 
 .detail_grid {
@@ -529,6 +576,9 @@ html {
     max-width: 30%;
 }
 
+.main .fa-file-image, .main .fa-image {
+    color: rgb(79, 181, 199);
+}
 
 
 @media (max-width: 800px) {

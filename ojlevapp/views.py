@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect
-from flask import Blueprint, current_app, url_for
+from flask import Blueprint, current_app, url_for, jsonify
 import os
 from werkzeug.utils import secure_filename
 from flask_login import login_required, current_user
@@ -8,6 +8,9 @@ from . import db
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import func
 from .generation import *
+from .controller import *
+from datetime import datetime
+from PIL import Image
 
 bp = Blueprint('main', __name__)
 
@@ -121,23 +124,12 @@ def remove_story():
 
     return redirect(url_for("main.index"))
 
-import shutil
-import re
+
 @bp.route('/slide/new', methods=['GET'])
 def slide():
     upcloud_img("/slides")
 
     return redirect(url_for("main.index"))
-
-def upcloud_img(path):
-    filenames = os.listdir('./ojlevapp/static/img' + path)[-1]
-    paths = re.split(r'[0-9]+', filenames)
-    next_index = int(re.search(r'[0-9]+', filenames)[0]) + 1
-    next_image = paths[0] + str(next_index) + paths[1]
-
-    print("==>", "./ojlevapp/static/img/" + path + "/" + next_image)
-    result = shutil.copyfile('./ojlevapp/static/img/upcloud.png', "./ojlevapp/static/img/" + path + "/" + next_image)
-    return
 
 @bp.route('/slide/remove', methods=['GET'])
 def slide_remove():
@@ -196,3 +188,59 @@ def remove_lastimage():
 @bp.route('/file_manager')
 def file_manager():
     return render_template('souvenirs.html')
+
+
+@bp.route('/directory')
+def directory():
+    data = dirfiles(".", "dirnames")
+    return jsonify(data)
+
+@bp.route('/files')
+def files():
+    folder = request.args.get("folder")
+    data = dirfiles(folder, "filenames")
+    return jsonify(data)
+
+def dirfiles(path, category):
+    directories = []
+    files = []
+    files_data = []
+    for (dirpath, dirnames, filenames) in os.walk(".\ojlevapp\static\img\gallery\\" + path):
+        directories.extend(dirnames)
+        files.extend(filenames)
+    
+    if category == "dirnames":
+        return directories
+    elif category == "filenames":
+        for file_name in filenames:
+            image_path = ".\ojlevapp\static\img\gallery\\" + path + "\\" + file_name
+
+            # Obtenir la taille du fichier en octets
+            file_size = round(os.path.getsize(image_path) / 1024)
+
+            # Obtenir la date de dernière modification
+            mod_time = os.path.getmtime(image_path)
+            last_modification_date = datetime.fromtimestamp(mod_time).strftime("%d %b %Y")
+
+            # Obtenir les dimensions de l'image (largeur x hauteur)
+            with Image.open(image_path) as img:
+                width, height = img.size
+
+            files_data += [{
+                'name': file_name,
+                'size': f'{file_size} KB',
+                'dimensions': f'{width} x {height}',
+                'last_modified': last_modification_date
+            }]
+
+            def get_last_modified(file):
+                return datetime.strptime(file['last_modified'], "%d %b %Y")
+
+            # Utilisation de sorted() pour obtenir une nouvelle liste triée
+            sorted_files_data = sorted(files_data, key=get_last_modified)[::-1]
+
+        return sorted_files_data
+
+    
+    raise ValueError("Wrong type of category")
+    

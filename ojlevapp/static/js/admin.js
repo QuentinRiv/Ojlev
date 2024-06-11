@@ -11,6 +11,7 @@ $(window).on("load", function () {
     $(".add_remove").css("display", "none");
     $(".update_image").css("display", "none");
     $(".small_diapo").css("display", "none");
+    $(".photo_gallery").css("display", "none");
     return;
   }
   
