@@ -71,7 +71,7 @@
     </section>
     <section class="main">
 
-        <div class="header">
+        <div class="toptitle">
             <h3>My Cloud</h3>
             <p>Hi Jim, Welcome back !</p>
         </div>
@@ -163,11 +163,11 @@
         </div>
 
         <div class="folders">
-            <div class="folders_text">
+            <div class="folders_text main_headers">
                 <h4>Folders</h4>
                 <h5>View all</h5>
             </div>
-            <div class="folders_elems">
+            <div class="folders_container">
                 <div class="folders_elem active">
                     <i class="fas fa-folder folder_logo"></i>
                     <div class="folder_line"></div>
@@ -191,9 +191,9 @@
         </div>
 
         <div class="files_part">
-            <div class="files_text">
+            <div class="files_text main_headers">
                 <h4>Recent files</h4>
-                <h5>View all</h5>
+                <h5 class="view_all">View all</h5>
             </div>
             <div class="files_container">
                 <div class="file_header">
@@ -210,7 +210,8 @@
                     <span class="file_name">Deals on Pne thing</span>
                     <span class="file_size">100 Mb</span>
                     <div class="file_date">03 March 2023 </div>
-                    <span><i class="fas fa-ellipsis-h option"></i></span>
+                    <span class="setting"><i class="fas fa-ellipsis-h option"></i></span>
+
                 </div>
                 <div class="file">
                     <input type="checkbox" class="childCheckbox">
@@ -218,7 +219,8 @@
                     <span class="file_name">Deals on Black Friday and many other</span>
                     <span class="file_size">200 Mb</span>
                     <span class="file_date">03 Dec 2021</span>
-                    <span><i class="fas fa-ellipsis-h option"></i></span>
+                    <span class="setting"><i class="fas fa-ellipsis-h option"></i></span>
+                    
                 </div>
               
                 
@@ -230,12 +232,27 @@
             <img src="../static/img/other/waitingfile.png" alt="">
         </div>
         <div class="detail_grid">
-            <div class="overview"><img src="../static/img/couple/bride.png" alt=""></div>
+            <div class="overview">
+                <img src="../static/img/couple/bride.png" alt="">
+            </div>
             <div class="size info"><img src="../static/img/other/weight.png" alt=""> <p>42 Mb </p></div>
             <div class="date info"><img src="../static/img/other/calendar.png" alt=""> <p>01 Dec 2020 </p></div>
             <div class="parent info"><img src="../static/img/other/folder.svg" alt=""> <p>Folder </p></div>
             <div class="dimension info"><img src="../static/img/other/ruler.png" alt=""> <p> 680x1040 </p></div>
         </div>
+
+        <!-- gallery popup start -->
+        <div class="gallery-popup">
+            <div class="gp-container">
+                <div id="thumbselect">
+
+                </div>
+                <div class="gp-counter"></div>
+                <div class="gp-close">&times;</div>
+                <img src="../static/img/gallery/large/2.jpg" class="gp-img" alt="gallery img">
+            </div>
+        </div>
+        <!-- gallery popup end -->
     </section>
 
     <script src="../static/js/jquery.min.js"></script>

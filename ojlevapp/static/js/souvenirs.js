@@ -20,17 +20,21 @@ $(document).ready(function () {
     // adjustGridContainer();
   }
 
-  $(document).ready(function () {
-    // Utilisation de la délégation d'événements pour gérer les clics sur .folders_elem
-    $(".folders_elem").on("click", function () {
-      console.log("*************");
+    // Pour afficher les fichiers dans le dossier sélectionné
+    $(document).on("click", ".folders_elem", function () {
       $(".folders_elem").removeClass("active");
       $(this).addClass("active");
       show_files($(this).attr("name"));
     });
 
+    $(document).on("click", ".setting", function (event) {
+      event.stopPropagation();
+      console.log("Settings clicked");
+      // Autres actions pour le clic sur "setting"
+    });
+
     // Toggle active mode for the file rows in the grid
-    $(".file").on("click", function () {
+    $(document).on("click", ".file", function () {
       const isActive = $(this).hasClass("active");
       $(".file").removeClass("active");
 
@@ -38,12 +42,14 @@ $(document).ready(function () {
       if (!isActive) {
         $(this).addClass("active");
         $(".waiting_container").css("opacity", 0);
-        console.log($(".waiting_container"));
+        $(".waiting_container").css("visibility", "hidden");
+        const activeFolder = $(".folders_elem.active").attr("name");
+        const filename = $(this).find(".file_name").html();
+        $(".overview img").attr("src", "../static/img/gallery/" + activeFolder + "/" + filename)
       } else {
         $(".waiting_container").css("opacity", 1);
       }
     });
-  });
 
 
   // Configuration de l'observateur pour observer les modifications dans l'élément body
@@ -74,7 +80,9 @@ $(document).ready(function () {
 
 
 function adjustGridContainer() {
+    console.log("--------------------");
     const fileRows = $('.file');    // Tous les fichiers
+    $(fileRows).removeClass("show");
     // const fileRowHeight = fileRows.first().height(); // Ne fonctionne pas...
     const fileRowHeight = 36;
     const rowGap = 10; // Espace entre les lignes
@@ -89,6 +97,7 @@ function adjustGridContainer() {
 
     // Calcul de la hauteur disponible dans .files_part
     var availableHeight = filesPart.height() - (filesText.height() + fileHeader.height());
+    console.log("availableHeight: " + availableHeight);
 
     fileRows.each(function(index, fileRow) {
         if (availableHeight > necessaryHeight) {
@@ -96,7 +105,7 @@ function adjustGridContainer() {
             $(fileRow).addClass("show");
         }
         else {
-            // $(fileRow).addClass("hidden");
+            $(fileRow).removeClass("show");
         }
     })
 
@@ -118,13 +127,6 @@ $(document).ready(function() {
         var allChecked = $('.childCheckbox').length === $('.childCheckbox:checked').length;
         $('#mainCheckbox').prop('checked', allChecked); // Met à jour le checkbox principal selon que tous les enfants sont cochés
     });
-});
-
-
-
-// Update the file info part (right side)
-$(document).ready(function () {
-    showInfo();
 });
 
 
@@ -154,7 +156,7 @@ $(document).ready(function () {
         let folderHtml = folderItems.join("");
 
         // Append the new HTML to the existing content
-        $(".folders_elems").html(folderHtml);
+        $(".folders_container").html(folderHtml);
 
         // Add .active for the first elem
         $(".folders_elem").first().addClass("active");
@@ -165,7 +167,7 @@ $(document).ready(function () {
     });
 });
 
-
+// Update the right side, with the file info
 function showInfo() {
   $(".file").on("click", function () {
     const file_size = $(this).find(".file_size").html();
@@ -197,7 +199,7 @@ function show_files(folder) {
                     <span class="file_size">${file.size}</span>
                     <span class="file_date">${file.last_modified}</span>
                     <span style="display:none" class="file_dim">${file.dimensions}</span>
-                    <span><i class="fas fa-ellipsis-h option"></i></span>
+                    <span class="setting"><i class="fas fa-ellipsis-h option"></i></span>
                   </div>
                     `;
         });
@@ -213,11 +215,123 @@ function show_files(folder) {
         $(".files_container").append(folderHtml);
 
         adjustGridContainer();
-        showInfo();
-      },
-      error: function (jqXHR, textStatus, errorThrown) {
-        // Code to execute in case of an error
-        console.error("Error:", textStatus, errorThrown);
-      },
+        // showInfo();
+      }
     });
 }
+
+
+// To show the file menu (three)
+$(document).ready(function() {
+  const menuTemplate = `
+                <div class="file_menu" id="context-menu">
+                    <div class="menu-item">Rename</div>
+                    <div class="menu-item">Move</div>
+                    <div class="menu-item">Delete</div>
+                </div>
+            `;
+
+    $(document).on("click", ".setting", function(event) {
+        $("#context-menu").remove();
+        $("body").append(menuTemplate);
+        const menu = $("#context-menu");
+        
+        
+        // Calculate the position of the button
+        const buttonOffset = $(this).offset();
+        const buttonWidth = $(this).outerWidth();
+        
+        // Set the position of the menu
+        menu.css({
+            top: buttonOffset.top - menu.height(),
+            left: buttonOffset.left + buttonWidth - menu.outerWidth()
+        });
+
+        // Toggle the menu visibility
+        menu.toggleClass("show");
+    });
+
+    // Hide the menu when clicking outside
+    $(document).on("click", function(event) {
+        if (!$(event.target).closest(".setting, #context-menu").length) {
+            $("#context-menu").removeClass("show");
+        }
+    });
+});
+
+
+$(document).ready(function() {
+  $(".view_all").on("click", function () {
+    const foldersCont = $(".folders_container");
+    foldersCont.toggleClass("reduce");
+    $(".folders_container.reduce").one("transitionend", function () {
+      console.log("*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
+      adjustGridContainer();
+    });
+  });
+
+  // === Afficher la photo en grand ===
+  const wHeight = $(window).height();
+  $(".gallery-popup .gp-img").css("max-height", wHeight + "px");
+
+  let imageSrc = "";
+  const totalGalleryItems = $(".gallery-item").length;
+
+  $(".overview img").click(function () {
+    imageSrc = $(this).attr("src");
+    console.log(imageSrc);
+    $(".gallery-popup").addClass("open");
+    $(".gallery-popup .gp-img").hide();
+    // Désactiver la sélection de texte
+    $("body").css({
+      "user-select": "none",
+      "-webkit-user-select": "none",
+      "-moz-user-select": "none",
+      "-ms-user-select": "none",
+    });
+    gpSlideShow();
+  });
+
+  function gpSlideShow() {
+    $(".gallery-popup .gp-img").fadeIn().attr("src", imageSrc);
+  }
+
+  $(".gp-close").click(function () {
+    $(".gallery-popup").removeClass("open");
+  });
+
+
+    var isDown = false;
+    var offset = [0, 0];
+    var mousePosition;
+    var $div = $("#thumbselect"); // Assurez-vous de remplacer #yourDivId par l'ID de votre div
+
+    $div.on("mousedown", function (e) {
+      isDown = true;
+      offset = [$div.offset().left - e.clientX, $div.offset().top - e.clientY];
+    });
+
+    $(document).on("mouseup", function () {
+      isDown = false;
+    });
+
+    $(document).on("mousemove", function (e) {
+      if (isDown) {
+        e.preventDefault();
+        mousePosition = {
+          x: e.clientX,
+          y: e.clientY,
+        };
+        $div.css({
+          left: mousePosition.x + offset[0] + "px",
+          top: mousePosition.y + offset[1] + "px",
+        });
+      }
+    });
+
+
+  // === FIN Afficher la photo en grand ===
+});
+
+
+
