@@ -1,7 +1,28 @@
 
+import requests
 from .models import Couple, Story, Program, Witness
 from . import db
+import os
+from pathlib import Path
+from datetime import datetime
+from PIL import Image
 
+def generate_user():
+    url = 'signup'  # Assurez-vous que l'URL est correcte et accessible
+    data = {
+        'email': 'Jean@email.com',
+        'name': 'Jean',
+        'password': '1234'
+    }
+
+    response = requests.post(url, json=data)
+
+    if response.status_code == 202:
+        print('Request was successful with status 202')
+    else:
+        print(f'Request failed with status {response.status_code}')
+
+    return
 
 def generate_witness():
     Witness.query.delete()
@@ -74,3 +95,23 @@ def generate_program():
         
     return "ok", 202
 
+def generate_gallery():
+
+    files_with_parent = []
+
+    for dirpath, _, filenames in os.walk(".\ojlevapp\static\img\gallery\\"):
+        for filename in filenames:
+            full_path = os.path.join(dirpath, filename)
+            parent = dirpath.split("\\")[-1]
+            file_weight = round(os.path.getsize(full_path) / 1024)
+            mod_time = os.path.getmtime(full_path)
+            last_modification_date = datetime.fromtimestamp(mod_time).strftime("%d %b %Y")
+            with Image.open(full_path) as img:
+                width, height = img.size
+            files_with_parent.append({"parent_folder" : parent, 
+                                      "image_name" : filename,
+                                      "weight" : file_weight, 
+                                      'dimensions': f'{width} x {height}',
+                                      "last_modification_date" : last_modification_date})
+
+    return files_with_parent

@@ -3,7 +3,7 @@ from flask import Blueprint, current_app, url_for, jsonify
 import os
 from werkzeug.utils import secure_filename
 from flask_login import login_required, current_user
-from .models import Couple, Story, Program, Witness
+from .models import Couple, Story, Program, Witness, Gallery
 from . import db
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy import func
@@ -41,7 +41,7 @@ def upload_file():
     
     file = request.files['image']
     filename = request.form['filename']
-    path = ".\ojlevapp\static\img" + request.form['path']
+    path = ".\\ojlevapp\\static\\img" + request.form['path']
 
     if file.filename == '':
         return redirect(request.url)
@@ -91,10 +91,12 @@ def update_db():
 
 @bp.route('/generate', methods=['GET'])
 def generate():
+    generate_user()
     generate_program()
     generate_partners()
     generate_story()
     generate_witness()
+    generate_gallery()
 
     return "ok", 200
 
@@ -103,10 +105,10 @@ def generate():
 def new_story():
     high_id = len(Story.query.all())
     lovepart = Story(id=high_id,
-                            title="New love step", 
-                            date="01 Jan 2050", 
-                            description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam officiis doloribus nulla placeat voluptatibus eum quidem fugit eius impedit, asperiores molestiae natus saepe doloremque, exercitationem quo error iure optio debitis.",
-                            image_name="story-"+str(high_id)+".jpg")
+                    title="New love step", 
+                    date="01 Jan 2050", 
+                    description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quibusdam officiis doloribus nulla placeat voluptatibus eum quidem fugit eius impedit, asperiores molestiae natus saepe doloremque, exercitationem quo error iure optio debitis.",
+                    image_name="story-"+str(high_id)+".jpg")
 
     db.session.add(lovepart)
     db.session.commit()
@@ -118,7 +120,7 @@ def new_story():
 def remove_story():
     highest_id = len(Story.query.all()) - 1
 
-    last_story = Story.query.filter_by(id=highest_id).delete()
+    Story.query.filter_by(id=highest_id).delete()
 
     db.session.commit()
 
@@ -146,12 +148,12 @@ def slide_remove():
 def new_witness():
     side = request.args.get("side")
     high_id = len(Witness.query.filter_by().all())
-    lovepart = Witness(id=high_id,
+    witness = Witness(id=high_id,
                             side=side, 
                             full_name="John Doe", 
                             description="Best Friend")
 
-    db.session.add(lovepart)
+    db.session.add(witness)
     db.session.commit()
 
     return redirect(url_for("main.index"))
@@ -205,7 +207,7 @@ def dirfiles(path, category):
     directories = []
     files = []
     files_data = []
-    for (dirpath, dirnames, filenames) in os.walk(".\ojlevapp\static\img\gallery\\" + path):
+    for (dirpath, dirnames, filenames) in os.walk(".\\ojlevapp\\static\\img\\gallery\\" + path):
         directories.extend(dirnames)
         files.extend(filenames)
     
@@ -213,7 +215,7 @@ def dirfiles(path, category):
         return directories
     elif category == "filenames":
         for file_name in filenames:
-            image_path = ".\ojlevapp\static\img\gallery\\" + path + "\\" + file_name
+            image_path = os.path.join(dirpath, file_name)
 
             # Obtenir la taille du fichier en octets
             file_size = round(os.path.getsize(image_path) / 1024)
@@ -244,3 +246,18 @@ def dirfiles(path, category):
     
     raise ValueError("Wrong type of category")
     
+
+
+@bp.route('/temporary')
+def temporary():
+    images = generate_gallery()
+    for image in images:
+        img_gallery = Gallery(image_name=image["image_name"],
+                              size=image["dimensions"],
+                              weight=image["weight"],
+                              parent_folder=image["parent_folder"])
+        
+        db.session.add(img_gallery)
+
+    db.commit()
+    return generate_gallery(), 202

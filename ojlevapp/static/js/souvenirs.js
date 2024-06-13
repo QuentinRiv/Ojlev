@@ -292,42 +292,99 @@ $(document).ready(function() {
     gpSlideShow();
   });
 
+  let showgallery = false;
   function gpSlideShow() {
     $(".gallery-popup .gp-img").fadeIn().attr("src", imageSrc);
+    showgallery = true;
   }
 
   $(".gp-close").click(function () {
     $(".gallery-popup").removeClass("open");
+    showgallery = false;
+    console.log("Offset top = " + $("#thumbselect").css("top"));
+    console.log("Offset left = " + $("#thumbselect").css("left"));
+    console.log("Offset width = " + $("#thumbselect").css("width"));
+    console.log("Offset height = " + $("#thumbselect").css("height"));
   });
 
 
     var isDown = false;
+    const resizer = $(".resizer");
     var offset = [0, 0];
     var mousePosition;
-    var $div = $("#thumbselect"); // Assurez-vous de remplacer #yourDivId par l'ID de votre div
+    var inmask = $("#thumbselect"); // Assurez-vous de remplacer #yourDivId par l'ID de votre div
+    let aspectRatio = inmask.width() / inmask.height();
 
-    $div.on("mousedown", function (e) {
+    $(resizer).on("mousedown", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      isResizing = true;
+      startWidth = inmask.width();
+      startHeight = inmask.height();
+      startX = e.clientX;
+      startY = e.clientY;
+      $(document).on("mousemove", onMouseMove);
+      $(document).on("mouseup", onMouseUp);
+    });
+
+    function onMouseMove(e) {
+      if (isResizing) {
+        let dx = e.clientX - startX;
+        let newWidth = startWidth + dx;
+        let newHeight = newWidth / aspectRatio;
+        inmask.css({
+          width: newWidth + "px",
+          height: newHeight + "px",
+        });
+      }
+    }
+
+    function onMouseUp() {
+      if (isResizing) {
+        isResizing = false;
+        $(document).off("mousemove", onMouseMove);
+        $(document).off("mouseup", onMouseUp);
+      }
+    }
+
+    $(inmask).on("mousedown", function (e) {
+      if (!showgallery) {
+        return;
+      }
       isDown = true;
-      offset = [$div.offset().left - e.clientX, $div.offset().top - e.clientY];
+      offset = [
+        $(inmask).offset().left - e.clientX,
+        $(inmask).offset().top - e.clientY,
+      ];
     });
 
-    $(document).on("mouseup", function () {
+    $(inmask).on("mouseup", function () {
+      if (!showgallery) {
+        return;
+      }
       isDown = false;
-    });
+      console.log("isDown : " + isDown);
+    }); 
 
     $(document).on("mousemove", function (e) {
+      if (!showgallery) {
+        return;
+      }
       if (isDown) {
         e.preventDefault();
         mousePosition = {
           x: e.clientX,
           y: e.clientY,
         };
-        $div.css({
+        $(inmask).css({
           left: mousePosition.x + offset[0] + "px",
           top: mousePosition.y + offset[1] + "px",
         });
       }
     });
+
+
 
 
   // === FIN Afficher la photo en grand ===

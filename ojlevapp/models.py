@@ -61,6 +61,17 @@ class Witness(db.Model):
     
     def image_path(self):
         return f'/witness/{self.side.lower()}/{self.image_name}'
+
+class Gallery(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    image_name = db.Column(db.String(100))
+    size = db.Column(db.String(100))
+    weight = db.Column(db.String(100))
+    parent_folder = db.Column(db.String(100))
+    date = db.Column(db.String(100))
+    
+    def image_path(self):
+        return f'/gallery/{self.parent_folder.lower()}/{self.image_name}'
     
 
 def delete_image(mapper, connection, target):

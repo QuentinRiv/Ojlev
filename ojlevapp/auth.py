@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from .models import User
 from . import db
 from flask_login import login_user, logout_user, login_required
+import requests
 
 auth = Blueprint('auth', __name__)
 
@@ -38,25 +39,6 @@ def login_post():
     }
     # if the above check passes, then we know the user has the right credentials
     return jsonify(response), 202
-
-#     if data['password'] == "1234":
-#         response = {
-#             'error': False,
-#             'code': 202,
-#             'message': 'Mot de passe correct !',
-#             'url': '/',
-#         }
-#         code = 202
-#     else:
-#         response = {
-#             'error': True,
-#             'code': 400,
-#             'message': 'Mot de passe incorrect',
-#             'url': '/login'
-#         }
-#         code = 500
-#     return jsonify(response), code
-
 
 
 @auth.route('/signup', methods=['POST'])

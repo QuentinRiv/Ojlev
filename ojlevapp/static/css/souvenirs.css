@@ -793,10 +793,24 @@ html {
 
 .gallery-popup #thumbselect {
     position: absolute;
-    width: 100px;
-    height: 100px;
+    top: 15px;
+    left: 15px;
+    width: 500px;
+    height: 368px;
     background-color: #cccccc75;
     border: 3px dashed black;
     -webkit-user-drag: none;
     transition: none;
+    cursor: grab;
+    margin: 40px 0;
+}
+
+.resizer {
+    width: 20px;
+    height: 20px;
+    background: darkblue;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    cursor: se-resize;
 }
