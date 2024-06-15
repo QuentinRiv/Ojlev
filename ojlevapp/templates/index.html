@@ -373,6 +373,15 @@
             </div>
           </div>
           <!-- gallery item end -->
+          {% for gallery in galleries %}
+          <!-- gallery item start -->
+          <div class="gallery-item">
+            <div class="gallery-item-inner">
+              <img src={{"../static/img/gallery/"+gallery.parent_folder+"/"+gallery.image_name}} data-large="../static/img/gallery/large/6.jpg" alt="couple gallery">
+            </div>
+          </div>
+          <!-- gallery item end -->
+          {% endfor %}
         </div>
       </div>
 

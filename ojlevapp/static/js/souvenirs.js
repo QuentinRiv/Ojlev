@@ -197,8 +197,8 @@ function show_files(folder) {
                     <span class="file_type"><i class="fas fa-file-image"></i></span>
                     <span class="file_name">${file.name}</span>
                     <span class="file_size">${file.size}</span>
-                    <span class="file_date">${file.last_modified}</span>
-                    <span style="display:none" class="file_dim">${file.dimensions}</span>
+                    <span class="file_date">${file.date}</span>
+                    <span style="display:none" class="file_dim">${file.weight}</span>
                     <span class="setting"><i class="fas fa-ellipsis-h option"></i></span>
                   </div>
                     `;
@@ -215,7 +215,7 @@ function show_files(folder) {
         $(".files_container").append(folderHtml);
 
         adjustGridContainer();
-        // showInfo();
+        showInfo();
       }
     });
 }
@@ -296,15 +296,53 @@ $(document).ready(function() {
   function gpSlideShow() {
     $(".gallery-popup .gp-img").fadeIn().attr("src", imageSrc);
     showgallery = true;
+
+    const imageSrc_split = imageSrc.split("/");
+    image_name = imageSrc_split.pop();
+    image_parent = imageSrc_split.pop();
+
+    // Pour obtenir les infos du mask
+    $.ajax({
+      url: "/gallery/image_info?image_name=" + image_name + "&image_parent=" + image_parent,
+      type: "GET",
+      success: function (data) {
+        console.log("Succès pour avoir les infos :", data);
+        $("#thumbselect").css("top", data.thumb_top);
+        $("#thumbselect").css("left", data.thumb_left);
+        $("#thumbselect").css("width", data.thumb_width);
+        $("#thumbselect").css("height", data.thumb_height);
+      },
+      error: function (xhr, status, error) {
+        console.error(`Failed to update :`, error);
+      },
+    });
   }
 
   $(".gp-close").click(function () {
     $(".gallery-popup").removeClass("open");
     showgallery = false;
-    console.log("Offset top = " + $("#thumbselect").css("top"));
-    console.log("Offset left = " + $("#thumbselect").css("left"));
-    console.log("Offset width = " + $("#thumbselect").css("width"));
-    console.log("Offset height = " + $("#thumbselect").css("height"));
+    isDown = false;
+
+    let data = {
+      img_path : imageSrc,
+      top: $("#thumbselect").css("top"),
+      left: $("#thumbselect").css("left"),
+      width: $("#thumbselect").css("width"),
+      height: $("#thumbselect").css("height")
+    };
+
+    // Requete pour la modif de la DB côté Flask
+    $.ajax({
+      url: "/image_thumb",
+      type: "POST",
+      data: data,
+      success: function (response) {
+        console.log("Succès de l'update");
+      },
+      error: function (xhr, status, error) {
+        console.error(`Failed to update :`, error);
+      },
+    });
   });
 
 
@@ -316,6 +354,7 @@ $(document).ready(function() {
     let aspectRatio = inmask.width() / inmask.height();
 
     $(resizer).on("mousedown", function (e) {
+      console.log("Modif du masque")
       e.preventDefault();
       e.stopPropagation();
 
@@ -353,10 +392,13 @@ $(document).ready(function() {
         return;
       }
       isDown = true;
+      console.log("Valeur top :", $(inmask).offset().top);
+      console.log("Valeur Y :", e.clientY);
       offset = [
-        $(inmask).offset().left - e.clientX,
-        $(inmask).offset().top - e.clientY,
+        $(inmask).position().left - e.clientX,
+        $(inmask).position().top - e.clientY,
       ];
+      console.log("isDown : " + isDown);
     });
 
     $(inmask).on("mouseup", function () {
@@ -377,6 +419,7 @@ $(document).ready(function() {
           x: e.clientX,
           y: e.clientY,
         };
+
         $(inmask).css({
           left: mousePosition.x + offset[0] + "px",
           top: mousePosition.y + offset[1] + "px",

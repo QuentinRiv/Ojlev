@@ -69,9 +69,20 @@ class Gallery(db.Model):
     weight = db.Column(db.String(100))
     parent_folder = db.Column(db.String(100))
     date = db.Column(db.String(100))
+    thumb_top = db.Column(db.Integer)
+    thumb_left = db.Column(db.Integer)
+    thumb_width = db.Column(db.Integer)
+    thumb_height = db.Column(db.Integer)
     
     def image_path(self):
         return f'/gallery/{self.parent_folder.lower()}/{self.image_name}'
+    
+    def __str__(self):
+        return f'Image {self.image_name}'
+    
+    def __repr__(self):
+        return f'Image {self.image_name}'
+
     
 
 def delete_image(mapper, connection, target):

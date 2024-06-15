@@ -128,4 +128,35 @@ $(document).ready( function() {
             $(".gallery-popup").removeClass("open");
         }
     });
+
+
+
+
+    var top = 80;
+    var left = 358;
+    var originalWidth = 500;
+    var originalHeight = 368;
+
+    // Sélectionner les éléments
+    var $container = $(".gallery-item-inner");
+    var $image = $(".gallery-item-inner img");
+
+    console.log("Images :", $image);
+
+    // Ajuster les styles de l'image conteneur
+    $container.css("padding-top", (originalHeight / originalWidth) * 100 + "%");
+
+    // Calculer l'échelle pour adapter l'image à la taille du conteneur
+    var containerWidth = $container.width();
+    var scale = originalWidth / containerWidth;
+
+    // Ajuster les styles de l'image recadrée
+    $image.css({
+      width: originalWidth + "px",
+      height: originalHeight + "px",
+      top: -top + "px",
+      left: -left + "px",
+      transform: "scale(" + scale + ")",
+    });
+
 })

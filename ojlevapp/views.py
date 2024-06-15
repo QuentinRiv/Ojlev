@@ -5,12 +5,8 @@ from werkzeug.utils import secure_filename
 from flask_login import login_required, current_user
 from .models import Couple, Story, Program, Witness, Gallery
 from . import db
-from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy import func
 from .generation import *
 from .controller import *
-from datetime import datetime
-from PIL import Image
 
 bp = Blueprint('main', __name__)
 
@@ -24,13 +20,14 @@ def index():
     groomsmen = Witness.query.filter_by(side="Groomsman").all()
     bridesmaids = Witness.query.filter_by(side="Bridesmaid").all()
     diapo = os.listdir('./ojlevapp/static/img/slides')
+    galleries = Gallery.query.all()
 
     # User connecté ?
     if(current_user.is_authenticated):
         print("\nYou are authenticated\n")
     else:
         print("\nYou are not authenticated\n")
-    return render_template('index.html', connected=current_user.is_authenticated, groom=groom, bride=bride, stories=stories, programs=programs, groomsmen=groomsmen, bridesmaids=bridesmaids, diapo=diapo)
+    return render_template('index.html', connected=current_user.is_authenticated, groom=groom, bride=bride, stories=stories, programs=programs, groomsmen=groomsmen, bridesmaids=bridesmaids, diapo=diapo, galleries=galleries)
 
 
 @bp.route('/upload', methods=['POST'])
@@ -61,27 +58,7 @@ def allowed_file(filename):
 @login_required 
 def update_db():
     data = request.form.to_dict()
-    table = data['table']
-    id = data['id']
-    attribute_name = data['attribute_name']
-    new_value = data['new_value']
-    # Need : Table, id, key, value
-    if (table == "Program"): tablequery = db.session.query(Program)
-    if (table == "Story"): tablequery = db.session.query(Story)
-    if (table == "Couple"): tablequery = db.session.query(Couple)
-    if (table == "Witness"): tablequery = db.session.query(Witness)
-
-    element = tablequery.filter_by(id=id).first()
-
-    setattr(element, attribute_name, new_value) # Builtin function
-    
-    # Check for error
-    try: 
-        db.session.commit()
-    except SQLAlchemyError as e:
-        error = str(e.__dict__['orig'])
-        print(error)
-        return error
+    update_database(data)
 
     return "Success", 202
 
@@ -200,64 +177,54 @@ def directory():
 @bp.route('/files')
 def files():
     folder = request.args.get("folder")
-    data = dirfiles(folder, "filenames")
-    return jsonify(data)
-
-def dirfiles(path, category):
-    directories = []
-    files = []
-    files_data = []
-    for (dirpath, dirnames, filenames) in os.walk(".\\ojlevapp\\static\\img\\gallery\\" + path):
-        directories.extend(dirnames)
-        files.extend(filenames)
-    
-    if category == "dirnames":
-        return directories
-    elif category == "filenames":
-        for file_name in filenames:
-            image_path = os.path.join(dirpath, file_name)
-
-            # Obtenir la taille du fichier en octets
-            file_size = round(os.path.getsize(image_path) / 1024)
-
-            # Obtenir la date de dernière modification
-            mod_time = os.path.getmtime(image_path)
-            last_modification_date = datetime.fromtimestamp(mod_time).strftime("%d %b %Y")
-
-            # Obtenir les dimensions de l'image (largeur x hauteur)
-            with Image.open(image_path) as img:
-                width, height = img.size
-
-            files_data += [{
-                'name': file_name,
-                'size': f'{file_size} KB',
-                'dimensions': f'{width} x {height}',
-                'last_modified': last_modification_date
-            }]
-
-            def get_last_modified(file):
-                return datetime.strptime(file['last_modified'], "%d %b %Y")
-
-            # Utilisation de sorted() pour obtenir une nouvelle liste triée
-            sorted_files_data = sorted(files_data, key=get_last_modified)[::-1]
-
-        return sorted_files_data
-
-    
-    raise ValueError("Wrong type of category")
-    
-
-
-@bp.route('/temporary')
-def temporary():
-    images = generate_gallery()
+    images = dirfiles(folder, "filenames")
+    image_list = []
     for image in images:
-        img_gallery = Gallery(image_name=image["image_name"],
-                              size=image["dimensions"],
-                              weight=image["weight"],
-                              parent_folder=image["parent_folder"])
-        
-        db.session.add(img_gallery)
+        image_data = {
+            'id': image.id,
+            'name': image.image_name,
+            'size': image.size,
+            'weight': image.weight,
+            'parent_folder': image.parent_folder,
+            'date': image.date,
+            'thumb_top': image.thumb_top,
+            'thumb_left': image.thumb_left,
+            'thumb_width': image.thumb_width,
+            'thumb_height': image.thumb_height,
+        }
+        image_list.append(image_data)
+    return jsonify(image_list)
 
-    db.commit()
-    return generate_gallery(), 202
+
+@bp.route('/image_thumb', methods=['POST'])
+def image_thumb():
+    data = request.form.to_dict()
+    print("Data: {0}".format(data))
+    img_path = data["img_path"]
+    parent_folder = img_path.split("/")[-2]
+    image_name = img_path.split("/")[-1]
+    image = Gallery.query.filter_by(image_name=image_name, parent_folder=parent_folder).first()
+    image.thumb_top = int(data ["top"][:-2])
+    image.thumb_left = int(data ["left"][:-2])
+    image.thumb_width = int(data ["width"][:-2])
+    image.thumb_height = int(data ["height"][:-2])
+
+    db.session.commit()
+    print("Gallery : ", image)
+    return "Bingo", 202
+
+
+@bp.route('/gallery/image_info')
+def image_info():
+    image_name = request.args.get("image_name")
+    image_parent = request.args.get("image_parent")
+    image = Gallery.query.filter_by(image_name=image_name, parent_folder=image_parent).first()
+
+    image_data = {
+            'thumb_top': image.thumb_top,
+            'thumb_left': image.thumb_left,
+            'thumb_width': image.thumb_width,
+            'thumb_height': image.thumb_height,
+        }
+
+    return jsonify(image_data)

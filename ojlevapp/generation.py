@@ -1,6 +1,7 @@
 
+import shutil
 import requests
-from .models import Couple, Story, Program, Witness
+from .models import Couple, Story, Program, Witness, Gallery
 from . import db
 import os
 from pathlib import Path
@@ -8,7 +9,7 @@ from datetime import datetime
 from PIL import Image
 
 def generate_user():
-    url = 'signup'  # Assurez-vous que l'URL est correcte et accessible
+    url = 'http://127.0.0.1:5000/signup'  # Assurez-vous que l'URL est correcte et accessible
     data = {
         'email': 'Jean@email.com',
         'name': 'Jean',
@@ -95,23 +96,68 @@ def generate_program():
         
     return "ok", 202
 
+def get_last_modified_time(file_path):
+    # Obtenir le temps de la dernière modification en secondes depuis l'époque
+    timestamp = os.path.getmtime(file_path)
+    
+    # Convertir le timestamp en un objet datetime
+    last_modified_time = datetime.fromtimestamp(timestamp)
+    
+    # Formater la date et l'heure dans le format "01 Jan 2021 12:34"
+    formatted_time = last_modified_time.strftime("%d %b %Y %H:%M")
+    
+    return formatted_time
+
 def generate_gallery():
+
+    directory = ".\\ojlevapp\\static\\img\\gallery"
+    for filename in os.listdir(directory):
+        file_path = os.path.join(directory, filename)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)  # Supprimer les fichiers et les liens symboliques
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)  # Supprimer les sous-dossiers
+        except Exception as e:
+            print(f'Failed to delete {file_path}. Reason: {e}')
 
     files_with_parent = []
 
-    for dirpath, _, filenames in os.walk(".\ojlevapp\static\img\gallery\\"):
+    shutil.copytree(".\ojlevapp\static\img\other\\large", ".\\ojlevapp\\static\\img\\gallery\\large")
+    # shutil.copytree(".\ojlevapp\static\img\other\\thumb", ".\\ojlevapp\\static\\img\\gallery\\thumb")
+
+    for dirpath, _, filenames in os.walk(".\\ojlevapp\\static\\img\\gallery\\"):
         for filename in filenames:
             full_path = os.path.join(dirpath, filename)
             parent = dirpath.split("\\")[-1]
             file_weight = round(os.path.getsize(full_path) / 1024)
             mod_time = os.path.getmtime(full_path)
-            last_modification_date = datetime.fromtimestamp(mod_time).strftime("%d %b %Y")
+            last_modification_date = datetime.fromtimestamp(mod_time).strftime("%d %b %Y %H:%M")
             with Image.open(full_path) as img:
                 width, height = img.size
             files_with_parent.append({"parent_folder" : parent, 
                                       "image_name" : filename,
+                                      "date" : get_last_modified_time(full_path),
                                       "weight" : file_weight, 
                                       'dimensions': f'{width} x {height}',
                                       "last_modification_date" : last_modification_date})
+            
+    Gallery.query.delete()
+    db.session.commit()
+
+    for image in files_with_parent:
+        img_gallery = Gallery(image_name=image["image_name"],
+                              size=image["dimensions"],
+                              weight=image["weight"],
+                              parent_folder=image["parent_folder"],
+                              date=image["date"],
+                              thumb_top=15,
+                              thumb_left=15,
+                              thumb_width=500,
+                              thumb_height=368)
+        
+        db.session.add(img_gallery)
+
+    db.session.commit()
 
     return files_with_parent
