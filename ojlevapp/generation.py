@@ -151,10 +151,10 @@ def generate_gallery():
                               weight=image["weight"],
                               parent_folder=image["parent_folder"],
                               date=image["date"],
-                              thumb_top=15,
-                              thumb_left=15,
-                              thumb_width=500,
-                              thumb_height=368)
+                              thumb_top=0,
+                              thumb_left=0,
+                              thumb_right=500,
+                              thumb_bottom=368)
         
         db.session.add(img_gallery)
 

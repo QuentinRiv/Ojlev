@@ -7,6 +7,8 @@ from .models import Couple, Story, Program, Witness, Gallery
 from . import db
 from .generation import *
 from .controller import *
+from PIL import Image
+from pathlib import Path
 
 bp = Blueprint('main', __name__)
 
@@ -45,7 +47,6 @@ def upload_file():
     if file and allowed_file(filename):
         filename = secure_filename(filename)
         file.save(os.path.join(path, filename))
-        print("Path = %s - Filename = %s".format(path, filename))
         return 'Image uploadée avec succès', 202
     else:
         return 'Type de fichier non autorisé'
@@ -189,8 +190,8 @@ def files():
             'date': image.date,
             'thumb_top': image.thumb_top,
             'thumb_left': image.thumb_left,
-            'thumb_width': image.thumb_width,
-            'thumb_height': image.thumb_height,
+            'thumb_right': image.thumb_right,
+            'thumb_bottom': image.thumb_bottom,
         }
         image_list.append(image_data)
     return jsonify(image_list)
@@ -199,18 +200,29 @@ def files():
 @bp.route('/image_thumb', methods=['POST'])
 def image_thumb():
     data = request.form.to_dict()
-    print("Data: {0}".format(data))
+    print("Data = {}".format(data))
     img_path = data["img_path"]
     parent_folder = img_path.split("/")[-2]
     image_name = img_path.split("/")[-1]
+    
+    original = Image.open('./ojlevapp/static/img/gallery/' + parent_folder + '/' + image_name )
+    box = ()
+    for position in ["left", "top", "right", "bottom"]:
+        box += (round(float(data[position])),)
+
+    cropped_img = original.crop(box)
+
+    Path('./ojlevapp/static/img/thumb/' + parent_folder).mkdir(parents=True, exist_ok=True)
+    cropped_img.save('./ojlevapp/static/img/thumb/' + parent_folder + '/' + image_name)
+
     image = Gallery.query.filter_by(image_name=image_name, parent_folder=parent_folder).first()
-    image.thumb_top = int(data ["top"][:-2])
-    image.thumb_left = int(data ["left"][:-2])
-    image.thumb_width = int(data ["width"][:-2])
-    image.thumb_height = int(data ["height"][:-2])
+    image.thumb_top = float(data["top"])
+    image.thumb_left = float(data["left"])
+    image.thumb_right = float(data["right"])
+    image.thumb_bottom = float(data["bottom"])
 
     db.session.commit()
-    print("Gallery : ", image)
+
     return "Bingo", 202
 
 
@@ -223,8 +235,14 @@ def image_info():
     image_data = {
             'thumb_top': image.thumb_top,
             'thumb_left': image.thumb_left,
-            'thumb_width': image.thumb_width,
-            'thumb_height': image.thumb_height,
+            'thumb_right': image.thumb_right,
+            'thumb_bottom': image.thumb_bottom,
         }
 
     return jsonify(image_data)
+
+@bp.route('/gallery/new_folder', methods=['POST'])
+def new_folder():
+    folder_name = request.args.get("name")
+    Path('./ojlevapp/static/img/gallery/' + folder_name).mkdir(parents=True, exist_ok=True)
+    return "OK", 202

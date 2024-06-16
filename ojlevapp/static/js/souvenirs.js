@@ -29,7 +29,6 @@ $(document).ready(function () {
 
     $(document).on("click", ".setting", function (event) {
       event.stopPropagation();
-      console.log("Settings clicked");
       // Autres actions pour le clic sur "setting"
     });
 
@@ -48,6 +47,7 @@ $(document).ready(function () {
         $(".overview img").attr("src", "../static/img/gallery/" + activeFolder + "/" + filename)
       } else {
         $(".waiting_container").css("opacity", 1);
+        $(".waiting_container").css("visibility", "visible");
       }
     });
 
@@ -80,7 +80,6 @@ $(document).ready(function () {
 
 
 function adjustGridContainer() {
-    console.log("--------------------");
     const fileRows = $('.file');    // Tous les fichiers
     $(fileRows).removeClass("show");
     // const fileRowHeight = fileRows.first().height(); // Ne fonctionne pas...
@@ -97,7 +96,6 @@ function adjustGridContainer() {
 
     // Calcul de la hauteur disponible dans .files_part
     var availableHeight = filesPart.height() - (filesText.height() + fileHeader.height());
-    console.log("availableHeight: " + availableHeight);
 
     fileRows.each(function(index, fileRow) {
         if (availableHeight > necessaryHeight) {
@@ -265,7 +263,6 @@ $(document).ready(function() {
     const foldersCont = $(".folders_container");
     foldersCont.toggleClass("reduce");
     $(".folders_container.reduce").one("transitionend", function () {
-      console.log("*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
       adjustGridContainer();
     });
   });
@@ -275,11 +272,9 @@ $(document).ready(function() {
   $(".gallery-popup .gp-img").css("max-height", wHeight + "px");
 
   let imageSrc = "";
-  const totalGalleryItems = $(".gallery-item").length;
 
   $(".overview img").click(function () {
     imageSrc = $(this).attr("src");
-    console.log(imageSrc);
     $(".gallery-popup").addClass("open");
     $(".gallery-popup .gp-img").hide();
     // Désactiver la sélection de texte
@@ -294,6 +289,8 @@ $(document).ready(function() {
 
   let showgallery = false;
   function gpSlideShow() {
+    let text = "Visit Microsoft!";
+    let result = text.replace("Microsoft", "W3Schools");
     $(".gallery-popup .gp-img").fadeIn().attr("src", imageSrc);
     showgallery = true;
 
@@ -307,10 +304,20 @@ $(document).ready(function() {
       type: "GET",
       success: function (data) {
         console.log("Succès pour avoir les infos :", data);
-        $("#thumbselect").css("top", data.thumb_top);
-        $("#thumbselect").css("left", data.thumb_left);
-        $("#thumbselect").css("width", data.thumb_width);
-        $("#thumbselect").css("height", data.thumb_height);
+        var exactImgWidth = $(".gp-img").prop("naturalWidth");
+        var exactImgHeight = $(".gp-img").prop("naturalHeight");
+
+        $("#thumbselect").css("top", Math.round(data.thumb_top / exactImgHeight * $(".gp-img").height() * 100) / 100);
+        $("#thumbselect").css("left", Math.round(data.thumb_left / exactImgWidth * $(".gp-img").width() * 100) / 100);
+        $("#thumbselect").css("width", Math.round((data.thumb_right - data.thumb_left) / exactImgWidth * $(".gp-img").width() * 100) / 100);
+        $("#thumbselect").css("height", Math.round((data.thumb_bottom - data.thumb_top) / exactImgHeight * $(".gp-img").height() * 100) / 100);
+
+        
+        console.log("Hauteur", data.thumb_bottom - data.thumb_top);
+        console.log(" / ", exactImgHeight);
+        console.log(" * ", $(".gp-img").height());
+        console.log(" = ", Math.round((data.thumb_bottom - data.thumb_top) / exactImgHeight * $(".gp-img").height() * 100) / 100);
+        console.log("----------------------------------");
       },
       error: function (xhr, status, error) {
         console.error(`Failed to update :`, error);
@@ -319,17 +326,26 @@ $(document).ready(function() {
   }
 
   $(".gp-close").click(function () {
-    $(".gallery-popup").removeClass("open");
-    showgallery = false;
-    isDown = false;
+    
 
+    var exactImgWidth = $(".gp-img").prop("naturalWidth");
+    var exactImgHeight = $(".gp-img").prop("naturalHeight");
+
+    console.log($("#thumbselect").position());
+    console.log("Height of mask:", $("#thumbselect").position().top + $("#thumbselect").height() + 6);
+    console.log("Image height", $(".gp-img").height());
+    console.log("exactImgHeight", exactImgHeight);
+
+    //Grosse opération car la dimension affichée n'est pas la véritable
     let data = {
-      img_path : imageSrc,
-      top: $("#thumbselect").css("top"),
-      left: $("#thumbselect").css("left"),
-      width: $("#thumbselect").css("width"),
-      height: $("#thumbselect").css("height")
+      img_path: imageSrc,
+      top: Math.round($("#thumbselect").position().top / $(".gp-img").height() * exactImgHeight * 100) / 100,
+      left: Math.round($("#thumbselect").position().left / $(".gp-img").width() * exactImgWidth * 100) / 100,
+      right: Math.round(($("#thumbselect").position().left + $("#thumbselect").width() + 6) / $(".gp-img").width() * exactImgWidth * 100) / 100,
+      bottom: Math.round(($("#thumbselect").position().top + $("#thumbselect").height() + 6)  / $(".gp-img").height() * exactImgHeight * 100) / 100,
     };
+
+    console.log("Hauteur calculée : ", data.bottom);
 
     // Requete pour la modif de la DB côté Flask
     $.ajax({
@@ -343,6 +359,10 @@ $(document).ready(function() {
         console.error(`Failed to update :`, error);
       },
     });
+
+    $(".gallery-popup").removeClass("open");
+    showgallery = false;
+    isDown = false;
   });
 
 
@@ -354,7 +374,6 @@ $(document).ready(function() {
     let aspectRatio = inmask.width() / inmask.height();
 
     $(resizer).on("mousedown", function (e) {
-      console.log("Modif du masque")
       e.preventDefault();
       e.stopPropagation();
 
@@ -392,13 +411,10 @@ $(document).ready(function() {
         return;
       }
       isDown = true;
-      console.log("Valeur top :", $(inmask).offset().top);
-      console.log("Valeur Y :", e.clientY);
       offset = [
         $(inmask).position().left - e.clientX,
         $(inmask).position().top - e.clientY,
       ];
-      console.log("isDown : " + isDown);
     });
 
     $(inmask).on("mouseup", function () {
@@ -406,7 +422,6 @@ $(document).ready(function() {
         return;
       }
       isDown = false;
-      console.log("isDown : " + isDown);
     }); 
 
     $(document).on("mousemove", function (e) {
@@ -435,3 +450,64 @@ $(document).ready(function() {
 
 
 
+// Partie Create New
+$(document).ready(function () {
+  $(".new_folder").click(function () {
+    console.log("***********************");
+    $("#folder_form").toggle();
+  });
+
+  $(".btn.cancel").click(function () {
+    $("#folder_form").toggle();
+  });
+
+  $(".create_folder").click(function () {
+    let form = $(".form-container").serializeArray();
+    console.log("Folder name: ", form);
+    const folder = `
+                <div class="folders_elem">
+                    <i class="fas fa-folder folder_logo"></i>
+                    <div class="folder_line"></div>
+                    <p>${form[0].value}</p>
+                    <div class="last_modif">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Last modif : 4th May</span>
+                    </div>
+                </div>
+            `;
+    $(".folders_container").append(folder);
+
+    $.ajax({
+      url: "/gallery/new_folder?name=" + form[0].value,
+      type: "POST",
+      success: function (data) {
+        console.log("Succès pour avoir les infos :", data);
+      },
+      error: function (xhr, status, error) {
+        console.error(`Failed to update :`, error);
+      },
+    });
+    $("#folder_form").toggle();
+  });
+
+  $(".new_file").click(function () {
+    console.log("***********************");
+    $("#file_form").toggle();
+  });
+
+  function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            $('#imagePreview').css('background-image', 'url('+e.target.result +')');
+            $('#imagePreview').hide();
+            $('#imagePreview').fadeIn(650);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+$("#imageUpload").change(function() {
+    readURL(this);
+});
+
+});

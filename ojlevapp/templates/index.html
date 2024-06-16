@@ -331,53 +331,11 @@
           </div>
         </div>
         <div class="row images">
-          <!-- gallery item start -->
-          <div class="gallery-item">
-            <div class="gallery-item-inner">
-              <img src="../static/img/gallery/thumb/1.jpg" data-large="../static/img/gallery/large/1.jpg" alt="Click here to upload image">
-            </div>
-          </div>
-          <!-- gallery item end -->
-          <!-- gallery item start -->
-          <div class="gallery-item">
-            <div class="gallery-item-inner">
-              <img src="../static/img/gallery/thumb/2.jpg" data-large="../static/img/gallery/large/2.jpg" alt="Click here to upload image">
-            </div>
-          </div>
-          <!-- gallery item end -->
-          <!-- gallery item start -->
-          <div class="gallery-item">
-            <div class="gallery-item-inner">
-              <img src="../static/img/gallery/thumb/3.jpg" data-large="../static/img/gallery/large/3.jpg" alt="couple gallery">
-            </div>
-          </div>
-          <!-- gallery item end -->
-          <!-- gallery item start -->
-          <div class="gallery-item">
-            <div class="gallery-item-inner">
-              <img src="../static/img/gallery/thumb/4.jpg" data-large="../static/img/gallery/large/4.jpg" alt="couple gallery">
-            </div>
-          </div>
-          <!-- gallery item end -->
-          <!-- gallery item start -->
-          <div class="gallery-item">
-            <div class="gallery-item-inner">
-              <img src="../static/img/gallery/thumb/5.jpg" data-large="../static/img/gallery/large/5.jpg" alt="couple gallery">
-            </div>
-          </div>
-          <!-- gallery item end -->
-          <!-- gallery item start -->
-          <div class="gallery-item">
-            <div class="gallery-item-inner">
-              <img src="../static/img/gallery/thumb/6.jpg" data-large="../static/img/gallery/large/6.jpg" alt="couple gallery">
-            </div>
-          </div>
-          <!-- gallery item end -->
           {% for gallery in galleries %}
           <!-- gallery item start -->
           <div class="gallery-item">
             <div class="gallery-item-inner">
-              <img src={{"../static/img/gallery/"+gallery.parent_folder+"/"+gallery.image_name}} data-large="../static/img/gallery/large/6.jpg" alt="couple gallery">
+              <img src={{"../static/img/thumb/"+gallery.parent_folder+"/"+gallery.image_name}} data-large={{"../static/img/gallery/"+gallery.parent_folder+"/"+gallery.image_name}} alt="couple gallery">
             </div>
           </div>
           <!-- gallery item end -->

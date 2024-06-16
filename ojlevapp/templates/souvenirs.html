@@ -58,10 +58,47 @@
         <div class="new_elem">
             <div class="new_elem_popup">
                 <ul>
-                    <li><i class="fas fa-folder-plus"></i><p>Folder</p></li>
-                    <li><i class="fas fa-image"></i><p>Image</p></li>
-                    <li><i class="fas fa-hashtag"></i><p>Image</p></li>
+                    <li class="new_folder"><i class="fas fa-folder-plus"></i><p>Folder</p></li>
+                    <li class="new_file"><i class="fas fa-image"></i><p>Image</p></li>
+                    <li><i class="fas fa-hashtag"></i><p>Link</p></li>
                 </ul>
+
+                <div class="black_bg_form" id="folder_form">
+                    <div class="folder_popup">
+                        <div class="form-popup" id="popupForm">
+                            <form class="form-container">
+                                <h2>Type the new folder's name</h2>
+                                <label for="folder_name">
+                                    <strong>Name</strong>
+                                </label>
+                                <input type="text" id="text" placeholder="Folder's name" name="folder_name" required />
+                                <button type="button" class="btn create_folder">Create</button>
+                                <button type="button" class="btn cancel">Fermer</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="black_bg_form" id="file_form">>
+                    <div class="container">
+                        <h1>Upload an image 
+                            <small>with preview</small>
+                        </h1>
+                        <div class="avatar-upload">
+                            <div class="avatar-edit">
+                                <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" />
+                                <label for="imageUpload"></label>
+                            </div>
+                            <div class="avatar-preview">
+                                <div id="imagePreview">
+                                    
+                                </div>
+                            
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <button>
                 <span class="button_span">Create New</span>
@@ -244,11 +281,13 @@
         <!-- gallery popup start -->
         <div class="gallery-popup">
             <div class="gp-container">
-                <div id="thumbselect">
-                    <div class="resizer"></div>
-                </div>
                 <div class="gp-close">&times;</div>
-                <img src="../static/img/gallery/large/2.jpg" class="gp-img" alt="gallery img">
+                <div class="image_container">
+                    <div id="thumbselect">
+                        <div class="resizer"></div>
+                    </div>
+                    <img src="../static/img/gallery/large/2.jpg" class="gp-img" alt="gallery img">
+                </div>
             </div>
         </div>
         <!-- gallery popup end -->
