@@ -165,8 +165,8 @@ def remove_lastimage():
 
     return "OK", 202
 
-@bp.route('/file_manager')
-def file_manager():
+@bp.route('/gallery')
+def gallery():
     return render_template('souvenirs.html')
 
 
@@ -197,7 +197,7 @@ def files():
     return jsonify(image_list)
 
 
-@bp.route('/image_thumb', methods=['POST'])
+@bp.route('/gallery/image_thumb', methods=['POST'])
 def image_thumb():
     data = request.form.to_dict()
     print("Data = {}".format(data))

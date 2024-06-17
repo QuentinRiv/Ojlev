@@ -349,7 +349,7 @@ $(document).ready(function() {
 
     // Requete pour la modif de la DB côté Flask
     $.ajax({
-      url: "/image_thumb",
+      url: "/gallery/image_thumb",
       type: "POST",
       data: data,
       success: function (response) {
@@ -504,10 +504,45 @@ $(document).ready(function () {
             $('#imagePreview').fadeIn(650);
         }
         reader.readAsDataURL(input.files[0]);
+
+        imageFile = input.files[0];
+
+        $("#file_name").val(imageFile.name);
     }
-}
-$("#imageUpload").change(function() {
-    readURL(this);
-});
+  }
+  $("#imageUpload").change(function() {
+      readURL(this);
+  });
+
+  var fileData = new FormData();
+  var imageFile = NaN;
+
+  $(".upload_file").click(function() {
+
+    if (imageFile) {
+        fileData.append("image", imageFile);
+        fileData.append("filename", imageFile.name);
+        fileData.append("path", "large");
+
+        // Envoie le fichier en AJAX à l'URL '/upload'
+        $.ajax({
+            url: "/gallery/upload",
+            type: "POST",
+            data: fileData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                console.log("Image uploaded successfully!");
+            },
+            error: function (xhr, status, error) {
+                console.error("Failed to upload image:", error);
+            },
+        });
+    } else {
+        console.log("No file selected.");
+    }
+
+  });
 
 });
+

@@ -30,6 +30,9 @@ def create_app():
     from .views import bp
     app.register_blueprint(bp)
 
+    from .gallery_views import gallery_bp
+    app.register_blueprint(gallery_bp)
+
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
 

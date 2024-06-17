@@ -890,8 +890,8 @@ html {
     display: none;
 }
 
-#file_form .container {
-  max-width: 960px;
+#file_form .fileform_container {
+  max-width: 560px;
   margin: 30px auto;
   padding: 20px;
   background: whitesmoke;
@@ -966,4 +966,51 @@ html {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+}
+
+.fileform_container .btn {
+    margin: 10px auto;
+}
+
+.fileform_container input {
+    display: block;
+    width: 100%;
+    max-width: 150px;
+    padding: 10px;
+    margin: 15px auto;
+    border: none;
+    background: #eee;
+}
+
+.fileform_container .folder_dropdown {
+    margin: 15px auto;
+    display: block;
+}
+
+.slide {
+  clear:both;
+  width:100%;
+  height:0px;
+  overflow: hidden;
+  text-align: center;
+  transition: height .4s ease;
+}
+
+.slide li {padding : 30px;}
+
+#touch {position: absolute; opacity: 0; height: 0px;}    
+
+#touch:checked + .slide {height: 300px;} 
+
+.folder_dropdown li,
+.folder_dropdown a {text-decoration : none; color : #2d2f31;}
+
+span.ddtitle {
+  padding : 30px;
+  background : #2d2f31; 
+  color : white;
+  font-size : 1.2em;
+  font-variant : small-caps;
+  cursor : pointer;
+  display: block;
 }

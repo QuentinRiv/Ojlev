@@ -110,9 +110,9 @@ $(window).on("load", function () {
   // Ajout/Retrait d'une histoire END
 
   // Upload d'une image Witness START
-  var id = "";
-  var folder_path = "";
-  var image_name = "";
+  // var id = "";
+  // var folder_path = "";
+  // var image_name = "";
   $('section').on('click', '.update_image', function() {
     // Déclenche le clic sur l'input file caché
     // let id = $(this).find("data-index").attr("data-index");
