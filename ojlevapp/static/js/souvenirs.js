@@ -457,7 +457,7 @@ $(document).ready(function () {
     $("#folder_form").toggle();
   });
 
-  $(".btn.cancel").click(function () {
+  $(".folder_popup   .btn.cancel").click(function () {
     $("#folder_form").toggle();
   });
 
@@ -492,6 +492,10 @@ $(document).ready(function () {
 
   $(".new_file").click(function () {
     console.log("***********************");
+    $("#file_form").toggle();
+  });
+
+  $(".fileform_container .btn.cancel").click(function () {
     $("#file_form").toggle();
   });
 
@@ -546,3 +550,17 @@ $(document).ready(function () {
 
 });
 
+document.addEventListener('DOMContentLoaded', (event) => {
+  const dropdownToggle = document.querySelector('.dropdown-toggle');
+  const dropdownMenu = document.querySelector('.dropdown-menu');
+
+  dropdownToggle.addEventListener('click', () => {
+    dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!event.target.closest('.file_dropdown')) {
+      dropdownMenu.style.display = 'none';
+    }
+  });
+});

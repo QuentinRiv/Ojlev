@@ -69,10 +69,10 @@ class Gallery(db.Model):
     weight = db.Column(db.String(100))
     parent_folder = db.Column(db.String(100))
     date = db.Column(db.String(100))
-    thumb_top = db.Column(db.Double)
-    thumb_left = db.Column(db.Double)
-    thumb_right = db.Column(db.Double)
-    thumb_bottom = db.Column(db.Double)
+    thumb_top = db.Column(db.Float)
+    thumb_left = db.Column(db.Float)
+    thumb_right = db.Column(db.Float)
+    thumb_bottom = db.Column(db.Float)
     
     def image_path(self):
         return f'/gallery/{self.parent_folder.lower()}/{self.image_name}'

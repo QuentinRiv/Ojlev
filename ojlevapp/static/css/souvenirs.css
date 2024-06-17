@@ -131,7 +131,7 @@ html {
 .navig .new_elem {
     text-align: center;
 }
-.navig .new_elem button {
+.navig .new_elem .new_elem_btn {
     padding: 10px 20px;
     background-color: #5143E3;
     border-radius: 10px;
@@ -144,7 +144,7 @@ html {
     gap: 20px;
 }
 
-.navig .new_elem button:hover i {
+.navig .new_elem .new_elem_btn:hover i {
     background-color:#6D62E2;
     padding: 8px;
     border-radius: 5px;
@@ -982,35 +982,46 @@ html {
     background: #eee;
 }
 
-.fileform_container .folder_dropdown {
-    margin: 15px auto;
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-toggle {
+    background-color: #f1f1f1;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 200px;
+    text-align: left;
+}
+
+.dropdown-toggle:after {
+    content: ' \25BC';
+    float: right;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: white;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    width: 100%;
+}
+
+.dropdown-menu .dropdown-item {
+    padding: 10px 20px;
+    text-decoration: none;
     display: block;
+    color: black;
 }
 
-.slide {
-  clear:both;
-  width:100%;
-  height:0px;
-  overflow: hidden;
-  text-align: center;
-  transition: height .4s ease;
+.dropdown-menu .dropdown-item:hover {
+    background-color: #f1f1f1;
 }
 
-.slide li {padding : 30px;}
-
-#touch {position: absolute; opacity: 0; height: 0px;}    
-
-#touch:checked + .slide {height: 300px;} 
-
-.folder_dropdown li,
-.folder_dropdown a {text-decoration : none; color : #2d2f31;}
-
-span.ddtitle {
-  padding : 30px;
-  background : #2d2f31; 
-  color : white;
-  font-size : 1.2em;
-  font-variant : small-caps;
-  cursor : pointer;
-  display: block;
+.dropdown-menu .dropdown-item:active {
+    background-color: #ddd;
 }
