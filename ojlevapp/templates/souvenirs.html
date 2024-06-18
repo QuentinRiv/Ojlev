@@ -97,11 +97,9 @@
                         </div>
                         <input type="text" id="file_name" placeholder="Picture name" name="file_name" required />
                         <div class="file_dropdown">
-                            <button class="dropdown-toggle" id="dropdownMenuButton">Owner</button>
+                            <button class="dropdown-toggle" id="dropdownMenuButton"><span>Owner</span></button>
                             <div class="dropdown-menu">
-                                <a href="#" class="dropdown-item">Editor</a>
-                                <a href="#" class="dropdown-item">Owner</a>
-                                <a href="#" class="dropdown-item">Uploader</a>
+
                             </div>
                         </div>
                         <button type="button" class="btn upload_file">Upload</button>
@@ -273,6 +271,24 @@
                 
             </div>
         </div>
+
+        <!-- Rename file START -->
+        <div class="black_bg_form" id="rename_form">
+            <div class="rename_popup">
+                <div class="form-popup" id="popupForm">
+                    <form class="form-container">
+                        <h2>Type the new image name</h2>
+                        <label for="image_name">
+                            <strong>Name</strong>
+                        </label>
+                        <input type="text" id="text" placeholder="New name" name="image_name" required />
+                        <button type="button" class="btn rename_image">Create</button>
+                        <button type="button" class="btn cancel">Fermer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Rename file END -->
     </section>
     <section class="detail">
         <div class="waiting_container">

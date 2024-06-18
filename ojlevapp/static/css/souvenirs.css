@@ -131,7 +131,9 @@ html {
 .navig .new_elem {
     text-align: center;
 }
-.navig .new_elem .new_elem_btn {
+
+.navig .new_elem .new_elem_btn,
+.fileform_container .btn {
     padding: 10px 20px;
     background-color: #5143E3;
     border-radius: 10px;
@@ -882,13 +884,12 @@ html {
     z-index: 10000;
 }
 
-#folder_form {
+#folder_form,
+#file_form,
+#rename_form {
     display: none;
 }
 
-#file_form {
-    display: none;
-}
 
 #file_form .fileform_container {
   max-width: 560px;
@@ -982,6 +983,11 @@ html {
     background: #eee;
 }
 
+.file_dropdown {
+    width: 200px;
+    margin: 0 auto;
+}
+
 .dropdown {
     position: relative;
     display: inline-block;
@@ -1004,12 +1010,11 @@ html {
 
 .dropdown-menu {
     display: none;
-    position: absolute;
     background-color: white;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
     width: 100%;
-}
+    }
 
 .dropdown-menu .dropdown-item {
     padding: 10px 20px;

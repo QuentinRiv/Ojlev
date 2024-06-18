@@ -223,9 +223,9 @@ function show_files(folder) {
 $(document).ready(function() {
   const menuTemplate = `
                 <div class="file_menu" id="context-menu">
-                    <div class="menu-item">Rename</div>
-                    <div class="menu-item">Move</div>
-                    <div class="menu-item">Delete</div>
+                    <div class="menu-item rename">Rename</div>
+                    <div class="menu-item move">Move</div>
+                    <div class="menu-item delete">Delete</div>
                 </div>
             `;
 
@@ -491,7 +491,6 @@ $(document).ready(function () {
   });
 
   $(".new_file").click(function () {
-    console.log("***********************");
     $("#file_form").toggle();
   });
 
@@ -524,9 +523,14 @@ $(document).ready(function () {
   $(".upload_file").click(function() {
 
     if (imageFile) {
+        var folder = $("#dropdownMenuButton span").html();
+        var image_name = $("#file_name").val();
+        console.log("Folder = ", folder);
+        console.log("Image_name = ", image_name);
+
         fileData.append("image", imageFile);
-        fileData.append("filename", imageFile.name);
-        fileData.append("path", "large");
+        fileData.append("filename", image_name);
+        fileData.append("path", folder);
 
         // Envoie le fichier en AJAX à l'URL '/upload'
         $.ajax({
@@ -550,17 +554,59 @@ $(document).ready(function () {
 
 });
 
-document.addEventListener('DOMContentLoaded', (event) => {
-  const dropdownToggle = document.querySelector('.dropdown-toggle');
-  const dropdownMenu = document.querySelector('.dropdown-menu');
+$(document).ready(function() {
 
-  dropdownToggle.addEventListener('click', () => {
-    dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
-  });
+    $.ajax({
+        url: "/directory",
+        type: "GET",
+        success: function (data) {
 
-  document.addEventListener('click', (event) => {
-    if (!event.target.closest('.file_dropdown')) {
-      dropdownMenu.style.display = 'none';
-    }
-  });
+        // Use .map() to create an array of HTML strings
+        let dropdown_items = data.map(function (folder) {
+            return `
+            <a href="#" class="dropdown-item">${folder}</a>
+                    `;
+        });
+
+        // Join the array into a single string and set it as the HTML content
+        let dropdown_html = dropdown_items.join("");
+
+        // Append the new HTML to the existing content
+        $(".dropdown-menu").html(dropdown_html);
+
+        }
+    });
+
+    const dropdownToggle = $('.dropdown-toggle');
+    const dropdownMenu = $('.dropdown-menu');
+    const dropdownItems = $('.dropdown-item');
+
+    dropdownToggle.on('click', function() {
+        dropdownMenu.toggle();
+    });
+
+    $(document).on("click", ".dropdown-item", function (event) {
+        event.preventDefault();
+        console.log($(this))
+        const selectedItemText = $(this).text();
+        $('.dropdown-toggle span').text(selectedItemText);
+        dropdownMenu.hide();
+    });
+
+    $(document).on('click', function(event) {
+        if (!$(event.target).closest('.file_dropdown').length) {
+            dropdownMenu.hide();
+        }
+    });
+
+    // Rename image START
+    $(document).on("click", ".menu-item.rename", function (event) {
+        $("#rename_form").toggle();
+    });
+
+    $("#rename_form .btn.cancel").click(function () {
+        $("#rename_form").toggle();
+    });
+    // Rename image END
+
 });

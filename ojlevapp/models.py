@@ -63,11 +63,11 @@ class Witness(db.Model):
         return f'/witness/{self.side.lower()}/{self.image_name}'
 
 class Gallery(db.Model):
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    image_name = db.Column(db.String(100))
+    id = db.Column(db.Integer, autoincrement=True)
+    image_name = db.Column(db.String(100), primary_key=True)
     size = db.Column(db.String(100))
     weight = db.Column(db.String(100))
-    parent_folder = db.Column(db.String(100))
+    parent_folder = db.Column(db.String(100), primary_key=True)
     date = db.Column(db.String(100))
     thumb_top = db.Column(db.Float)
     thumb_left = db.Column(db.Float)

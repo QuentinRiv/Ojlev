@@ -107,13 +107,38 @@ def upload():
     
     file = request.files['image']
     filename = request.form['filename']
-    path = "./ojlevapp/static/img" + request.form['path']
-
-    if file.filename == '':
-        return redirect(request.url)
+    parent_folder = request.form['path']
+    gallery_path = "./ojlevapp/static/img/gallery/" + request.form['path']
+    
     if file and allowed_file(filename):
         filename = secure_filename(filename)
-        file.save(os.path.join(path, filename))
+        file_path = os.path.join(gallery_path, filename)
+        
+        file.save(file_path)
+        shutil.copy(file_path, file_path.replace("gallery", "thumb"))
+                
+        directory = ".\\ojlevapp\\static\\img\\thumb"
+
+        file_weight = round(os.path.getsize(file_path) / 1024)
+        mod_time = os.path.getmtime(file_path)
+        last_modification_date = datetime.fromtimestamp(mod_time).strftime("%d %b %Y %H:%M")
+        with Image.open(file_path) as img:
+            width, height = img.size
+
+        img_gallery = Gallery(image_name = filename,
+                            size = f'{width} x {height}',
+                            weight = file_weight,
+                            parent_folder = parent_folder,
+                            date = get_last_modified_time(file_path),
+                            thumb_top = width/2 - 368/2,
+                            thumb_left = height/2 - 500/2,
+                            thumb_right = height/2 + 500/2,
+                            thumb_bottom = width/2 + 368/2)
+        
+        db.session.add(img_gallery)
+
+        db.session.commit()
+
         return 'Image uploadée avec succès', 202
     else:
         return 'Type de fichier non autorisé'
