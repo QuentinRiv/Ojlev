@@ -25,9 +25,7 @@ def dirfiles(path, category):
         directories.extend(dirnames)
         files.extend(filenames)
     
-    if category == "dirnames":
-        return directories
-    elif category == "filenames":
+    if category == "filenames":
         for file_name in filenames:
             image_path = os.path.join(dirpath, file_name)
 

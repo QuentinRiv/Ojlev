@@ -128,6 +128,8 @@ def generate_gallery():
 
     for dirpath, _, filenames in os.walk(".\\ojlevapp\\static\\img\\gallery\\"):
         for filename in filenames:
+            image_name = filename.split(".")[0]
+            extension = filename.split(".")[-1]
             full_path = os.path.join(dirpath, filename)
             parent = dirpath.split("\\")[-1]
             file_weight = round(os.path.getsize(full_path) / 1024)
@@ -136,7 +138,8 @@ def generate_gallery():
             with Image.open(full_path) as img:
                 width, height = img.size
             files_with_parent.append({"parent_folder" : parent, 
-                                      "image_name" : filename,
+                                      "image_name" : image_name,
+                                      "extension" : extension,
                                       "date" : get_last_modified_time(full_path),
                                       "weight" : file_weight, 
                                       'dimensions': f'{width} x {height}',
@@ -147,6 +150,7 @@ def generate_gallery():
 
     for image in files_with_parent:
         img_gallery = Gallery(image_name=image["image_name"],
+                              extension=image["extension"],
                               size=image["dimensions"],
                               weight=image["weight"],
                               parent_folder=image["parent_folder"],

@@ -71,7 +71,7 @@
                                 <label for="folder_name">
                                     <strong>Name</strong>
                                 </label>
-                                <input type="text" id="text" placeholder="Folder's name" name="folder_name" required />
+                                <input type="text" id="folder_name" placeholder="Folder's name" name="folder_name" required />
                                 <button type="button" class="btn create_folder">Create</button>
                                 <button type="button" class="btn cancel">Fermer</button>
                             </form>
@@ -79,6 +79,7 @@
                     </div>
                 </div>
 
+                <!-- Add ney image START -->
                 <div class="black_bg_form" id="file_form">>
                     <div class="fileform_container">
                         <h1>Upload an image 
@@ -112,6 +113,7 @@
                 <span class="button_span">Create New</span>
                 <span><i class="fas fa-plus"></i></span>
             </button>
+            <!-- Add ney image START -->
         </div>
     </section>
     <section class="main">
@@ -281,14 +283,52 @@
                         <label for="image_name">
                             <strong>Name</strong>
                         </label>
-                        <input type="text" id="text" placeholder="New name" name="image_name" required />
-                        <button type="button" class="btn rename_image">Create</button>
-                        <button type="button" class="btn cancel">Fermer</button>
+                        <input type="text" id="new_name" placeholder="New name" name="image_name" required />
+                        <button type="button" class="btn rename_image">Rename</button>
+                        <button type="button" class="btn cancel">Close</button>
                     </form>
                 </div>
             </div>
         </div>
         <!-- Rename file END -->
+
+        <!-- Delete file START -->
+        <div class="black_bg_form" id="delete_form">
+            <div class="delete_popup">
+                <div class="form-popup" id="popupForm">
+                    <form class="form-container">
+                        <button type="button" class="btn delete_image">Delete</button>
+                        <button type="button" class="btn cancel">Close</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Delete file END -->
+
+        <!-- Add ney image START -->
+            <div class="black_bg_form" id="move_form">>
+                <div class="container">
+                    <h1>Move an image 
+                        <small>to a new folder</small>
+                    </h1>
+
+                    <div class="file_dropdown">
+                        <button class="dropdown-toggle" id="dropdownMenuButton"><span>Owner</span></button>
+                        <div class="dropdown-menu">
+
+                        </div>
+                    </div>
+                    <button type="button" class="btn move_image">Upload</button>
+                    <button type="button" class="btn cancel">Fermer</button>
+                </div>
+            </div>
+
+        </div>
+        <button class="new_elem_btn">
+            <span class="button_span">Create New</span>
+            <span><i class="fas fa-plus"></i></span>
+        </button>
+        <!-- Add ney image START -->
     </section>
     <section class="detail">
         <div class="waiting_container">
@@ -321,6 +361,7 @@
 
     <script src="../static/js/jquery.min.js"></script>
     <script src="../static/js/souvenirs.js"></script>
+    <script src="../static/js/gallery_thumb.js"></script>
 
 </body>
 

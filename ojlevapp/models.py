@@ -2,16 +2,22 @@ from flask_login import UserMixin
 from . import db
 from sqlalchemy.orm import validates
 from sqlalchemy import event
-from sqlalchemy.orm import sessionmaker
-import os
+from flask import current_app
+from . import db
+import os, re, string
 
+img_server = 'ojlevapp/static/img'
+gallery_path = img_server + '/gallery'
+thumb_path = img_server + '/thumb'
 class User(UserMixin, db.Model):
+    __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True) # primary keys are required by SQLAlchemy
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
     name = db.Column(db.String(1000))
 
 class Couple(db.Model):
+    __tablename__ = 'couple'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     first_name = db.Column(db.String(100))
     last_name = db.Column(db.String(100))
@@ -23,9 +29,9 @@ class Couple(db.Model):
     def update_first_last_name(self, key, value):
         # Cette fonction se déclenche lorsque full_name est modifié
         names = value.split(' ', 1)  # Sépare sur le premier espace
-        self.first_name = names[0]  # Le premier élément est first_name
+        self.first_name = names[0]  # 1er élément : first_name
         if len(names) > 1:
-            self.last_name = names[1]  # Le second élément est last_name
+            self.last_name = names[1]  # 2nd élément : last_name
         else:
             self.last_name = ''  # Aucun last_name si full_name n'a qu'un mot
         return value
@@ -35,6 +41,7 @@ class Couple(db.Model):
 
 
 class Story(db.Model):
+    __tablename__ = 'stories'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(100))
     date = db.Column(db.String(100))
@@ -45,6 +52,7 @@ class Story(db.Model):
         return f'/story/{self.image_name}'
 
 class Program(db.Model):
+    __tablename__ = 'programs'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(100))
     date = db.Column(db.String(100))
@@ -53,6 +61,7 @@ class Program(db.Model):
 
 
 class Witness(db.Model):
+    __tablename__ = 'witnesses'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     side = db.Column(db.String(100))
     full_name = db.Column(db.String(100))
@@ -63,39 +72,143 @@ class Witness(db.Model):
         return f'/witness/{self.side.lower()}/{self.image_name}'
 
 class Gallery(db.Model):
-    id = db.Column(db.Integer, autoincrement=True)
-    image_name = db.Column(db.String(100), primary_key=True)
+    __tablename__ = 'galleries'
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    image_name = db.Column(db.String(100), nullable=False)
+    extension = db.Column(db.String(10), nullable=False)
     size = db.Column(db.String(100))
     weight = db.Column(db.String(100))
-    parent_folder = db.Column(db.String(100), primary_key=True)
+    parent_folder = db.Column(db.String(100))
     date = db.Column(db.String(100))
     thumb_top = db.Column(db.Float)
     thumb_left = db.Column(db.Float)
     thumb_right = db.Column(db.Float)
     thumb_bottom = db.Column(db.Float)
+
+    @validates('image_name')
+    def validate_name(self, key, value):
+        unsafechars = ["\"", "\\", "&", "#", " ", "{", "}", "<", ">", "**", "?", "!", "$", "'", ":", "."]
+        forbiden_found = filter(lambda x: x in unsafechars, value)
+        print("\nValue : ", value, " - ", len(value))
+        
+        print(list(forbiden_found))
+
+        if list(forbiden_found):
+            raise ValueError(f"Forbiden character found => '{"".join(forbiden_found)}' not accepted")
+        
+        print("\nValue : ", value)
+        return value
     
-    def image_path(self):
+    @validates('image_name')
+    def validate_image_name(self, key, image_name):
+        # Validate and ensure the extension is set correctly
+        if not self.extension:
+            name, ext = self.split_filename(image_name)
+            if ext not in current_app.config['ALLOWED_EXTENSIONS']:
+                raise ValueError(f"Image name '{image_name}' does not have a valid extension and no extension was provided.")
+            self.extension = ext
+        return image_name
+
+    @staticmethod
+    def split_filename(filename):
+        name, extension = os.path.splitext(filename)
+        extension = extension.lstrip('.')
+        return name, extension
+
+    
+    @validates('extension')
+    def validate_extension(self, key, value):
+        print("value : ", value)
+        if value not in current_app.config['ALLOWED_EXTENSIONS']:
+            raise ValueError(f"Invalid extension: {value}. Allowed extensions are: {current_app.config['ALLOWED_EXTENSIONS']}")
+        return value
+
+    @property
+    def full_image_name(self):
+        return f"{self.image_name}.{self.image_extension}"
+    
+    def gallery_path(self):
         return f'/gallery/{self.parent_folder.lower()}/{self.image_name}'
     
+    def thumb_path(self):
+        return f'/thumb/{self.parent_folder.lower()}/{self.image_name}'
+     
+    def parent_path(self):
+        return f'/gallery/{self.parent_folder.lower()}/'
+
     def __str__(self):
         return f'Image {self.image_name}'
     
     def __repr__(self):
         return f'Image {self.image_name}'
-
     
+    def update_details(self, new_parent_folder=None, new_image_name=None):
+        if new_parent_folder:
+            self._rename_and_update_parent_folder(new_parent_folder)
+        if new_image_name:
+            self._rename_and_update_image_name(new_image_name)
+        db.session.commit()
 
+    def _rename_and_update_parent_folder(self, new_parent_folder):
+        old_gallery_path = img_server + self.gallery_path()
+        new_gallery_path = old_gallery_path.replace(self.parent_folder, new_parent_folder, 1)
+        self._rename_file(old_gallery_path, new_gallery_path)
+        self.parent_folder = new_parent_folder
+
+    def _rename_and_update_image_name(self, new_image_name):
+        match = re.search(r'\.([a-zA-Z0-9]+)$', new_image_name)
+        current_extension = re.search(r'\.([a-zA-Z0-9]+)$', self.image_name).group(1)
+        
+        if match:
+            new_extension = match.group(1)
+            if new_extension in current_app.config['ALLOWED_EXTENSIONS']:
+                new_full_name = new_image_name
+            else:
+                raise ValueError("Wrong extension prefix")
+        else:
+            new_full_name = f"{new_image_name}.{current_extension}"
+
+        self._rename_file(img_server + self.gallery_path(), img_server + self.parent_path() + new_full_name)
+        self._rename_file(img_server + self.thumb_path(), img_server + "/thumb/" + self.parent_folder + "/" + new_full_name)
+        self.image_name = new_full_name
+
+    def _rename_file(self, old_name, new_name):
+        if os.path.exists(new_name):
+            raise Exception("Careful: image already existing")
+        try:
+            os.rename(old_name, new_name)
+        except FileNotFoundError:
+            raise Exception(f'The file {old_name} does not exist')
+        except PermissionError:
+            raise Exception(f'Permission denied to rename {old_name}')
+        except Exception as e:
+            raise Exception(f'An error occurred: {e}')
+        
 def delete_image(mapper, connection, target):
-    image_server = './ojlevapp/static/img'
-    image_path = target.image_path()
-    absolute_path = image_server + image_path
+    image_path = target.gallery_path()
+    absolute_path = img_server + image_path
     try:
         os.remove(absolute_path)
     except Exception as e:
         exit("Error to delete the image :", e)
+
+def rename_file(old_name, new_name):
+    if os.path.exists(new_name):
+        raise Exception("Careful : image already existing")
+    
+    try:
+        os.rename(old_name, new_name)
+        return f'File renamed from {old_name} to {new_name}'
+    except FileNotFoundError:
+        raise Exception(f'The file {old_name} does not exist')
+    except PermissionError:
+        raise Exception(f'Permission denied to rename {old_name}')
+    except Exception as e:
+        raise Exception(f'An error occurred: {e}')
 
 # Attacher l'écouteur à l'événement 'after_delete' pour le modèle User
 event.listen(Couple, 'before_delete', delete_image)
 event.listen(Program, 'before_delete', delete_image)
 event.listen(Story, 'before_delete', delete_image)
 event.listen(Witness, 'before_delete', delete_image)
+event.listen(Gallery, 'before_delete', delete_image)

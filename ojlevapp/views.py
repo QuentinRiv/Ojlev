@@ -169,34 +169,6 @@ def remove_lastimage():
 def gallery():
     return render_template('souvenirs.html')
 
-
-@bp.route('/directory')
-def directory():
-    data = dirfiles(".", "dirnames")
-    return jsonify(data)
-
-@bp.route('/files')
-def files():
-    folder = request.args.get("folder")
-    images = dirfiles(folder, "filenames")
-    image_list = []
-    for image in images:
-        image_data = {
-            'id': image.id,
-            'name': image.image_name,
-            'size': image.size,
-            'weight': image.weight,
-            'parent_folder': image.parent_folder,
-            'date': image.date,
-            'thumb_top': image.thumb_top,
-            'thumb_left': image.thumb_left,
-            'thumb_right': image.thumb_right,
-            'thumb_bottom': image.thumb_bottom,
-        }
-        image_list.append(image_data)
-    return jsonify(image_list)
-
-
 @bp.route('/gallery/image_thumb', methods=['POST'])
 def image_thumb():
     data = request.form.to_dict()
