@@ -155,7 +155,6 @@ function show_files(folder) {
       url: url,
       type: "GET",
       success: function (data) {
-        console.log(data);
 
         // Use .map() to create an array of HTML strings
         let folderItems = data.map(function (file) {
@@ -305,8 +304,15 @@ $(document).ready(function () {
   $(".upload_file").click(function() {
 
     if (imageFile) {
-        var folder = $("#dropdownMenuButton span").html();
+        var folder = $("#file_form .dropdown-toggle span").html();
+        console.log($("#file_form .dropdown-toggle span"));
         var image_name = $("#file_name").val();
+        var resul = checkEmpty([$("#file_name"), $("#file_form .dropdown-toggle span")]);
+        console.log("\nResultat : " + resul);
+        if (resul) {
+          console.log("---------");
+          return
+        }
 
         fileData.append("image", imageFile);
         fileData.append("filename", image_name);
@@ -328,7 +334,7 @@ $(document).ready(function () {
           },
         });
     } else {
-        console.log("No file selected.");
+        alert("No file selected.");
     }
 
   });
@@ -364,14 +370,13 @@ $(document).ready(function() {
 
   $(document).on("click", ".dropdown-item", function (event) {
     event.preventDefault();
-    console.log($(this));
     const selectedItemText = $(this).text();
     $(".dropdown-toggle span").text(selectedItemText);
     dropdownMenu.hide();
   });
 
   $(document).on("click", function (event) {
-    if (!$(event.target).closest(".file_dropdown").length) {
+    if (!$(event.target).closest(".folder_dropdown").length) {
       dropdownMenu.hide();
     }
   });
@@ -461,7 +466,7 @@ $(document).ready(function() {
 
   $(".move_image").click(function () {
     let image_id = $("#move_form").attr("data-index");
-    let folder = $("#dropdownMenuButton span").html();
+    let folder = $(".dropdownMenuButton span").html();
 
     let data = {
       image_id: image_id,
@@ -484,3 +489,36 @@ $(document).ready(function() {
 });
 
 
+function checkEmpty(fields) {
+  var hasEmptyField = false;
+  $.each(fields, function (indexInArray, field) {
+    var $element = $(field);
+    var content;
+
+    if ($element.is("input")) {
+      content = $element.val();
+    } else if ($element.is("span")) {
+      content = $element.html();
+    }
+
+    console.log("element = ", $element);
+    console.log("Content = " + content);
+
+    if (content == "") {
+      var originalColor = $element.css("background-color");
+
+      // Change la couleur en rouge
+      $element.css("background-color", "red");
+
+      // Attends 1 seconde (1000 ms), puis remet la couleur d'origine
+      setTimeout(function () {
+        $element.css("background-color", originalColor);
+      }, 700);
+      hasEmptyField = true;
+      return false; // Arrête l'itération
+    }
+  });
+
+  return hasEmptyField;
+
+}

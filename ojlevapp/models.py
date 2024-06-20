@@ -80,39 +80,43 @@ class Gallery(db.Model):
     weight = db.Column(db.String(100))
     parent_folder = db.Column(db.String(100))
     date = db.Column(db.String(100))
-    thumb_top = db.Column(db.Float)
-    thumb_left = db.Column(db.Float)
-    thumb_right = db.Column(db.Float)
-    thumb_bottom = db.Column(db.Float)
+    thumb_top = db.Column(db.Float, default=0)
+    thumb_left = db.Column(db.Float, default=0)
+    thumb_right = db.Column(db.Float, default=500)
+    thumb_bottom = db.Column(db.Float, default=368)
 
-    @validates('image_name')
-    def validate_name(self, key, value):
-        unsafechars = ["\"", "\\", "&", "#", " ", "{", "}", "<", ">", "**", "?", "!", "$", "'", ":", "."]
-        forbiden_found = filter(lambda x: x in unsafechars, value)
-        print("\nValue : ", value, " - ", len(value))
-        
-        print(list(forbiden_found))
-
-        if list(forbiden_found):
-            raise ValueError(f"Forbiden character found => '{"".join(forbiden_found)}' not accepted")
-        
-        print("\nValue : ", value)
-        return value
     
     @validates('image_name')
     def validate_image_name(self, key, image_name):
         # Validate and ensure the extension is set correctly
         if not self.extension:
+            print("Image = {0}".format(image_name))
             name, ext = self.split_filename(image_name)
+            print("Extension = {0}".format(ext))
             if ext not in current_app.config['ALLOWED_EXTENSIONS']:
                 raise ValueError(f"Image name '{image_name}' does not have a valid extension and no extension was provided.")
             self.extension = ext
-        return image_name
+        else:
+            name = image_name
+
+        return name
+    
+    @validates('size')
+    def validate_size(self, key, size):
+        width, height = size.split(" x ")
+        self.thumb_left = int(width)/2 - 500/2
+        self.thumb_right = int(width)/2 + 500/2
+        self.thumb_top = int(height)/2 - 368/2
+        self.thumb_bottom = int(height)/2 + 368/2
+
+        return size
 
     @staticmethod
     def split_filename(filename):
         name, extension = os.path.splitext(filename)
         extension = extension.lstrip('.')
+        if not extension:
+            raise Exception("Missing extension in 'split_filename'")
         return name, extension
 
     

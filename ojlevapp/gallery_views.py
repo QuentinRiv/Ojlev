@@ -1,7 +1,6 @@
 from flask import render_template, request
 from flask import Blueprint, current_app, jsonify
 import os
-from werkzeug.utils import secure_filename
 from .models import Gallery
 from . import db
 from .generation import *
@@ -100,51 +99,14 @@ def new_folder():
 @gallery_bp.route('/gallery/upload', methods=['POST'])
 def upload():
     
+    # The image, its name, its directory
     file = request.files['image']
     filename = request.form['filename']
-    extension = request.form['extension']
     parent_folder = request.form['path']
-    gallery_path = current_app.config["UPLOAD_FOLDER"] + "/gallery/" + parent_folder
-
-
-    if (check_duplicate(parent_folder, filename)):
-            return jsonify({'error': 'Another image already exists with that name'}), 409  # Retourne une erreur 400 avec un message d'erreur
-    if not file:
-        return jsonify({'error': str(e)}), 422
-    if not allowed_file(extension):
-        return jsonify({'error': "Filetype not accepted"}), 422
-
-    filename = secure_filename(filename)
-    image_name, = split_filename(filename)
-    file_path = os.path.join(gallery_path, filename)
     
-    file.save(file_path)
-    shutil.copy(file_path, file_path.replace("gallery", "thumb", 1))
-            
+    answer = gallery_upload(file, filename, parent_folder)
 
-    file_weight = round(os.path.getsize(file_path) / 1024)
-    with Image.open(file_path) as img:
-        width, height = img.size
-
-    print("Extension = " + extension)
-
-    img_gallery = Gallery(image_name = image_name,
-                            extension = extension,
-                            size = f'{width} x {height}',
-                            weight = file_weight,
-                            parent_folder = parent_folder,
-                            date = get_last_modified_time(file_path),
-                            thumb_top = width/2 - 368/2,
-                            thumb_left = height/2 - 500/2,
-                            thumb_right = height/2 + 500/2,
-                            thumb_bottom = width/2 + 368/2)
-    
-    
-    db.session.add(img_gallery)
-
-    db.session.commit()
-
-    return jsonify("Success"), 202
+    return answer
 
 
 

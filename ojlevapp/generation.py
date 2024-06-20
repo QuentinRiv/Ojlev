@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 from datetime import datetime
 from PIL import Image
+from .gallery_controller import get_last_modified_time
 
 def generate_user():
     url = 'http://127.0.0.1:5000/signup'  # Assurez-vous que l'URL est correcte et accessible
@@ -96,17 +97,7 @@ def generate_program():
         
     return "ok", 202
 
-def get_last_modified_time(file_path):
-    # Obtenir le temps de la dernière modification en secondes depuis l'époque
-    timestamp = os.path.getmtime(file_path)
-    
-    # Convertir le timestamp en un objet datetime
-    last_modified_time = datetime.fromtimestamp(timestamp)
-    
-    # Formater la date et l'heure dans le format "01 Jan 2021 12:34"
-    formatted_time = last_modified_time.strftime("%d %b %Y %H:%M")
-    
-    return formatted_time
+
 
 def generate_gallery():
 
@@ -149,8 +140,8 @@ def generate_gallery():
     db.session.commit()
 
     for image in files_with_parent:
-        img_gallery = Gallery(image_name=image["image_name"],
-                              extension=image["extension"],
+        img_gallery = Gallery(extension=image["extension"],
+                              image_name=image["image_name"],
                               size=image["dimensions"],
                               weight=image["weight"],
                               parent_folder=image["parent_folder"],

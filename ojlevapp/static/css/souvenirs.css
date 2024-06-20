@@ -992,12 +992,13 @@ html {
     padding: 10px;
     margin: 15px auto;
     border: none;
-    background: #eee;
+    background: #dbd4e6;
+    border-radius: 10px;
 }
 
-.file_dropdown {
+.folder_dropdown {
     width: 200px;
-    margin: 0 auto;
+    margin: 0 auto 30px;
 }
 
 .dropdown {
@@ -1006,13 +1007,14 @@ html {
 }
 
 .dropdown-toggle {
-    background-color: #f1f1f1;
+    background-color: #dbd4e6;
     border: none;
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
     width: 200px;
     text-align: left;
+    border-radius: 10px;
 }
 
 .dropdown-toggle:after {
