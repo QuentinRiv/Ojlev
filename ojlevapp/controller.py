@@ -36,7 +36,7 @@ def dirfiles(path, category):
             mod_time = os.path.getmtime(image_path)
             last_modification_date = datetime.fromtimestamp(mod_time).strftime("%d %b %Y %H:%M")
 
-            # Obtenir les dimensions de l'image (largeur x hauteur)
+            # Obtenir dimensions de l'image (largeur x hauteur)
             with Image.open(image_path) as img:
                 width, height = img.size
 
