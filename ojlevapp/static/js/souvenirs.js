@@ -279,6 +279,17 @@ $(document).ready(function () {
     $("#file_form").toggle();
   });
 
+  function removeFileExtension(filename) {
+    // Trouve la position du dernier point dans le nom de fichier
+    var lastDotPosition = filename.lastIndexOf(".");
+
+    // Si aucun point n'est trouvé, retourne le nom de fichier original
+    if (lastDotPosition === -1) return filename;
+
+    // Retourne la partie du nom de fichier avant le dernier point
+    return filename.substring(0, lastDotPosition);
+  }
+
   function readURL(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
@@ -291,7 +302,8 @@ $(document).ready(function () {
 
         imageFile = input.files[0];
 
-        $("#file_name").val(imageFile.name);
+        var imageName = removeFileExtension(imageFile.name);
+        $("#file_name").val(imageName);
     }
   }
   $("#imageUpload").change(function() {
@@ -307,16 +319,17 @@ $(document).ready(function () {
         var folder = $("#file_form .dropdown-toggle span").html();
         console.log($("#file_form .dropdown-toggle span"));
         var image_name = $("#file_name").val();
+        var extension = imageFile.name.split(".").pop();
         var resul = checkEmpty([$("#file_name"), $("#file_form .dropdown-toggle span")]);
-        console.log("\nResultat : " + resul);
         if (resul) {
-          console.log("---------");
           return
         }
+
 
         fileData.append("image", imageFile);
         fileData.append("filename", image_name);
         fileData.append("path", folder);
+        fileData.append("extension", extension);
 
         // Envoie le fichier en AJAX à l'URL '/upload'
         $.ajax({
@@ -349,7 +362,7 @@ $(document).ready(function() {
       // Use .map() to create an array of HTML strings
       let dropdown_items = data.map(function (folder) {
         return `
-            <a href="#" class="dropdown-item">${folder}</a>
+            <span class="dropdown-item">${folder}</span>
                     `;
       });
 
@@ -365,19 +378,19 @@ $(document).ready(function() {
   const dropdownMenu = $(".dropdown-menu");
 
   dropdownToggle.on("click", function () {
-    dropdownMenu.toggle();
+    dropdownMenu.toggleClass("active");
   });
 
   $(document).on("click", ".dropdown-item", function (event) {
     event.preventDefault();
     const selectedItemText = $(this).text();
     $(".dropdown-toggle span").text(selectedItemText);
-    dropdownMenu.hide();
+    dropdownMenu.removeClass("active");
   });
 
   $(document).on("click", function (event) {
     if (!$(event.target).closest(".folder_dropdown").length) {
-      dropdownMenu.hide();
+      dropdownMenu.removeClass("active");
     }
   });
 
@@ -505,14 +518,15 @@ function checkEmpty(fields) {
     console.log("Content = " + content);
 
     if (content == "") {
-      var originalColor = $element.css("background-color");
+      var $toHighlight = $($element).closest(".mandatory");
+      var originalColor = $toHighlight.css("background-color");
 
       // Change la couleur en rouge
-      $element.css("background-color", "red");
+      $toHighlight.css("background-color", "red");
 
       // Attends 1 seconde (1000 ms), puis remet la couleur d'origine
       setTimeout(function () {
-        $element.css("background-color", originalColor);
+        $toHighlight.css("background-color", originalColor);
       }, 700);
       hasEmptyField = true;
       return false; // Arrête l'itération

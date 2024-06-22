@@ -92,14 +92,18 @@ class Gallery(db.Model):
         if not self.extension:
             print("Image = {0}".format(image_name))
             name, ext = self.split_filename(image_name)
-            print("Extension = {0}".format(ext))
-            if ext not in current_app.config['ALLOWED_EXTENSIONS']:
-                raise ValueError(f"Image name '{image_name}' does not have a valid extension and no extension was provided.")
-            self.extension = ext
+            self.extension = self.validate_extension('extension', ext)
         else:
             name = image_name
 
         return name
+    
+    @validates('extension')
+    def validate_extension(self, key, extension):
+        if extension not in current_app.config['ALLOWED_EXTENSIONS']:
+                raise ValueError(f"Not a valid extension or no extension was provided.")
+
+        return extension
     
     @validates('size')
     def validate_size(self, key, size):
@@ -118,14 +122,7 @@ class Gallery(db.Model):
         if not extension:
             raise Exception("Missing extension in 'split_filename'")
         return name, extension
-
     
-    @validates('extension')
-    def validate_extension(self, key, value):
-        print("value : ", value)
-        if value not in current_app.config['ALLOWED_EXTENSIONS']:
-            raise ValueError(f"Invalid extension: {value}. Allowed extensions are: {current_app.config['ALLOWED_EXTENSIONS']}")
-        return value
 
     @property
     def full_image_name(self):

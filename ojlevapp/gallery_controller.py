@@ -65,17 +65,15 @@ def get_last_modified_time(file_path):
     
     return formatted_time
 
-def gallery_upload(file, filename, parent_folder):
+def gallery_upload(file, filename, parent_folder, extension):
     gallery_path = current_app.config["UPLOAD_FOLDER"] + "/gallery/" + parent_folder
 
     # Safety check
     if (check_duplicate(parent_folder, filename)):
         return jsonify({'error': 'Another image already exists with that name'}), 409  # Retourne une erreur 400 avec un message d'erreur
-    if not allowed_file(filename):
-        return jsonify({'error': f"Filetype not accepted ({filename.split("."[-1])})"}), 422
 
     # Sanitize, save and put a copy in thumb
-    filename = secure_filename(filename)
+    filename = f'{secure_filename(filename)}.{extension}'
     file_path = os.path.join(gallery_path, filename)
     file.save(file_path)
     shutil.copy(file_path, file_path.replace("gallery", "thumb", 1))

@@ -49,9 +49,10 @@ def image_thumb():
     print("Data = {}".format(data))
     img_path = data["img_path"]
     parent_folder = img_path.split("/")[-2]
-    image_name = img_path.split("/")[-1]
+    fullname = img_path.split("/")[-1]
+    image_name, _ = split_filename(fullname)
     
-    original = Image.open('./ojlevapp/static/img/gallery/' + parent_folder + '/' + image_name )
+    original = Image.open('./ojlevapp/static/img/gallery/' + parent_folder + '/' + fullname )
     box = ()
     for position in ["left", "top", "right", "bottom"]:
         box += (round(float(data[position])),)
@@ -59,7 +60,7 @@ def image_thumb():
     cropped_img = original.crop(box)
 
     Path('./ojlevapp/static/img/thumb/' + parent_folder).mkdir(parents=True, exist_ok=True)
-    cropped_img.save('./ojlevapp/static/img/thumb/' + parent_folder + '/' + image_name)
+    cropped_img.save('./ojlevapp/static/img/thumb/' + parent_folder + '/' + fullname)
 
     image = Gallery.query.filter_by(image_name=image_name, parent_folder=parent_folder).first()
     image.thumb_top = float(data["top"])
@@ -76,7 +77,8 @@ def image_thumb():
 def image_info():
     image_name = request.args.get("image_name")
     image_parent = request.args.get("image_parent")
-    image = Gallery.query.filter_by(image_name=image_name, parent_folder=image_parent).first()
+    imageName, _ = split_filename(image_name)
+    image = Gallery.query.filter_by(image_name=imageName, parent_folder=image_parent).first()
 
     image_data = {
             'thumb_top': image.thumb_top,
@@ -103,8 +105,9 @@ def upload():
     file = request.files['image']
     filename = request.form['filename']
     parent_folder = request.form['path']
+    extension = request.form['extension']
     
-    answer = gallery_upload(file, filename, parent_folder)
+    answer = gallery_upload(file, filename, parent_folder, extension)
 
     return answer
 
@@ -165,3 +168,4 @@ def move():
 
 
     return "Okay", 202
+

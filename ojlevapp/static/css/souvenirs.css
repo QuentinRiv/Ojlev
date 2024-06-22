@@ -1017,31 +1017,46 @@ html {
     border-radius: 10px;
 }
 
-.dropdown-toggle:after {
-    content: ' \25BC';
+.dropdown-toggle .chevron {
     float: right;
 }
 
+.folder_dropdown:has(.dropdown-menu.active) .chevron {
+    transform: rotate(-90deg);
+    color: #353232;
+}
+
 .dropdown-menu {
-    display: none;
+    height: 0;
     background-color: white;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
     width: 100%;
+    transition: height 0.4s ease-in-out;
     }
 
+.dropdown-menu.active {
+    height: auto;
+}
+
 .dropdown-menu .dropdown-item {
+    opacity: 0;
+    transition: opacity 0.1 ease;
+}
+
+.dropdown-menu.active .dropdown-item {
+    opacity: 1;
     padding: 10px 20px;
     text-decoration: none;
     display: block;
     color: black;
 }
 
-.dropdown-menu .dropdown-item:hover {
+.dropdown-menu.active .dropdown-item:hover {
     background-color: #f1f1f1;
 }
 
-.dropdown-menu .dropdown-item:active {
+.dropdown-menu.active .dropdown-item:active {
     background-color: #ddd;
 }
 

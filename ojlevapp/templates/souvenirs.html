@@ -97,10 +97,13 @@
                             </div>
                         </div>
                         <h1><small>Image name</small></h1>
-                        <input type="text" id="file_name" placeholder="Picture name" name="file_name" required />
+                        <input type="text" id="file_name" placeholder="Picture name" name="file_name" class="mandatory" required />
                         <h1><small>Folder</small></h1>
                         <div class="folder_dropdown">
-                            <button class="dropdown-toggle" class="dropdownMenuButton"><span></span></button>
+                            <button class="dropdown-toggle dropdownMenuButton mandatory">
+                                <span></span>
+                                <i class="fas fa-chevron-circle-left chevron"></i>
+                            </button>
                             <div class="dropdown-menu">
 
                             </div>
@@ -315,7 +318,10 @@
                     </h1>
 
                     <div class="folder_dropdown">
-                        <button class="dropdown-toggle" class="dropdownMenuButton"><span></span></button>
+                        <button class="dropdown-toggle dropdownMenuButton">
+                            <span></span>
+                            <i class="fas fa-chevron-circle-left"></i>
+                        </button>
                         <div class="dropdown-menu">
 
                         </div>
@@ -326,10 +332,6 @@
             </div>
 
         </div>
-        <button class="new_elem_btn">
-            <span class="button_span">Create New</span>
-            <span><i class="fas fa-plus"></i></span>
-        </button>
         <!-- Move image START -->
     </section>
     <section class="detail">
