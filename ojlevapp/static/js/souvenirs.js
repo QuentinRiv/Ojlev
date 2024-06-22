@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
   // Sélection d'un icone tout à gauche
   $(document).on("click", ".icon_container", function () {
     $(".icon_container.active").removeClass("active");
@@ -14,37 +13,42 @@ $(document).ready(function () {
     $(this).addClass("active");
   });
 
-
   // Pour afficher les fichiers dans le dossier sélectionné
-  $(document).on("click", ".folders_elem", function () {
+  $(document).on("click", ".folders_elem, .folder_li", function () {
+    let folder_name = $(this).attr("name");
     $(".folders_elem.active").removeClass("active");
-    $(this).addClass("active");
+    $(".folders_elem[name=" + folder_name + "]").addClass("active");
     show_files($(this).attr("name"));
+
+    $(".folder_li.active").removeClass("active");
+    $(".folder_li[name=" + folder_name + "]").addClass("active");
   });
+
 
   // Pour éviter que cliquer sur "..." actionne le clique sur toute la ligne
   $(document).on("click", ".setting", function (event) {
     event.stopPropagation();
   });
 
-    // Toggle active mode for the file rows in the grid
-    $(document).on("click", ".file", function () {
-      const isActive = $(this).hasClass("active");
-      $(".file").removeClass("active");
+  // Toggle active mode for the file rows in the grid
+  $(document).on("click", ".file", function () {
+    const isActive = $(this).hasClass("active");
+    $(".file").removeClass("active");
 
-      // Si l'élément cliqué n'était pas déjà actif, ajouter la classe 'active'
-      if (!isActive) {
-        $(this).addClass("active");
-        $(".waiting_container").addClass("hidden")
-        const activeFolder = $(".folders_elem.active").attr("name");
-        const filename = $(this).find(".file_name").html();
-        $(".overview img").attr("src", "../static/img/gallery/" + activeFolder + "/" + filename)
-      } else {
-        $(".waiting_container").removeClass("hidden");
-
-      }
-    });
-
+    // Si l'élément cliqué n'était pas déjà actif, ajouter la classe 'active'
+    if (!isActive) {
+      $(this).addClass("active");
+      $(".waiting_container").addClass("hidden");
+      const activeFolder = $(".folders_elem.active").attr("name");
+      const filename = $(this).find(".file_name").html();
+      $(".overview img").attr(
+        "src",
+        "../static/img/gallery/" + activeFolder + "/" + filename
+      );
+    } else {
+      $(".waiting_container").removeClass("hidden");
+    }
+  });
 })
 
 
@@ -99,14 +103,10 @@ $(document).ready(function() {
 
 // Update the folders name that are in the gallery folder
 $(document).ready(function () {
-    $.ajax({
-      url: "/directory",
-      type: "GET",
-      success: function (data) {
-
-        // Use .map() to create an array of HTML strings
-        let folderItems = data.map(function (folder) {
-          return `
+    get_directories().then(function (data) {
+      // Use .map() to create an array of HTML strings
+      let folderItems = data.map(function (folder) {
+        return `
                   <div class="folders_elem" name=${folder}>
                       <i class="fas fa-folder folder_logo"></i>
                       <div class="folder_line"></div>
@@ -117,20 +117,32 @@ $(document).ready(function () {
                       </div>
                   </div>
               `;
-        });
+      });
 
-        // Join the array into a single string and set it as the HTML content
-        let folderHtml = folderItems.join("");
+      // Join the array into a single string and set it as the HTML content
+      let folderHtml = folderItems.join("");
 
-        // Append the new HTML to the existing content
-        $(".folders_container").html(folderHtml);
+      // Append the new HTML to the existing content
+      $(".folders_container").html(folderHtml);
 
-        // Add .active for the first elem
-        $(".folders_elem").first().addClass("active");
+      // Add .active for the first elem
+      $(".folders_elem").first().addClass("active");
 
-        // Initialize, by showing the files of the first folder
-        show_files(data[0]);
-      }
+      // Initialize, by showing the files of the first folder
+      show_files(data[0]);
+    });
+
+    //  Second column displays 
+    get_directories().then(function (data) {
+      let folderItems = data.map(function (folder) {
+        return `
+            <li class="folder_li" name="${folder}"><i class="fas fa-folder"></i>${folder}</li>
+              `;
+      });
+      let folderHtml = folderItems.join("");
+      $(".file_nav ul").html(folderHtml);
+      $(".folder_li").first().addClass("active");
+
     });
 });
 
@@ -262,7 +274,7 @@ $(document).ready(function () {
     $(".folders_container").append(folder);
 
     $.ajax({
-      url: "/gallery/new_folder?name=" + form[0].value,
+      url: "/gallery/new_folder?name=" + new_folder_name,
       type: "POST",
       success: function (data) {
         console.log("Succès pour avoir les infos :", data);
@@ -354,24 +366,48 @@ $(document).ready(function () {
 
 });
 
+
+function fetchData(url) {
+  return new Promise(function (resolve, reject) {
+    $.ajax({
+      url: url,
+      type: "GET",
+      success: function (data) {
+        resolve(data);
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        reject(errorThrown);
+      },
+    });
+  });
+}
+
+// Utilisation de la fonction avec async/await
+async function get_directories() {
+  try {
+    let data = await fetchData("/directory");
+    console.log(data); // Utilisez les données obtenues ici
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+}
+
 $(document).ready(function() {
-  $.ajax({
-    url: "/directory",
-    type: "GET",
-    success: function (data) {
-      // Use .map() to create an array of HTML strings
-      let dropdown_items = data.map(function (folder) {
-        return `
-            <span class="dropdown-item">${folder}</span>
-                    `;
-      });
 
-      // Join the array into a single string and set it as the HTML content
-      let dropdown_html = dropdown_items.join("");
+  get_directories().then(function (data) {
+    // Use .map() to create an array of HTML strings
+    let dropdown_items = data.map(function (folder) {
+      return `
+          <span class="dropdown-item">${folder}</span>
+                  `;
+    });
 
-      // Append the new HTML to the existing content
-      $(".dropdown-menu").html(dropdown_html);
-    },
+    // Join the array into a single string and set it as the HTML content
+    let dropdown_html = dropdown_items.join("");
+
+    // Append the new HTML to the existing content
+    $(".dropdown-menu").html(dropdown_html);
   });
 
   const dropdownToggle = $(".dropdown-toggle");
@@ -536,3 +572,8 @@ function checkEmpty(fields) {
   return hasEmptyField;
 
 }
+
+// Show the 'Create new' menu
+$(document).on('click', '.new_elem_btn', function (e) {
+  $(".new_elem_popup").toggle();
+})

@@ -32,8 +32,8 @@ def get_directories():
         thumb_directories.extend(dirnames)
 
     # Get sure we are on the same page
-    if (gallery_directories == list(DB_directories)) and (gallery_directories == gallery_directories):
-        return list(DB_directories)
+    if (gallery_directories == thumb_directories):
+        return thumb_directories
     else:
         raise Exception("Not the same directories between the DB, gallery and thumb folders")
     

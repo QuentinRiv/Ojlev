@@ -118,7 +118,6 @@ def upload():
 @gallery_bp.route('/gallery/rename', methods=['UPDATE'])
 def rename():
     data = request.form.to_dict()
-    print("Data = {}".format(data))
     image_id = data['image_id']
     new_name = data['new_name']
     image = Gallery.query.get(image_id)
@@ -143,7 +142,6 @@ def delete():
     image_id = data['image_id']
     image = Gallery.query.get(image_id)
     if image:
-        # Modifier les attributs de l'instance
         db.session.delete(image)
 
     db.session.commit()
@@ -154,7 +152,6 @@ def delete():
 @gallery_bp.route('/gallery/move', methods=['UPDATE'])
 def move():
     data = request.form.to_dict()
-    print("Data = {}".format(data))
     image_id = data['image_id']
     new_folder = data['new_folder']
     image = Gallery.query.get(image_id)
