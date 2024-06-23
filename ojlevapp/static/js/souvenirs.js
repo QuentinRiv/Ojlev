@@ -573,6 +573,7 @@ function checkEmpty(fields) {
 
 }
 
+
 // Show the 'Create new' menu
 $(document).on('click', '.new_elem_btn', function (e) {
   $(".new_elem_popup").toggle();
