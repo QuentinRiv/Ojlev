@@ -565,6 +565,7 @@ function checkEmpty(fields) {
         $toHighlight.css("background-color", originalColor);
       }, 700);
       hasEmptyField = true;
+      
       return false; // Arrête l'itération
     }
   });
