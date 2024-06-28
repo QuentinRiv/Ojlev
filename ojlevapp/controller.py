@@ -60,6 +60,7 @@ def dirfiles(path, category):
         return sorted_files_data
 
     
+
     raise ValueError("Wrong type of category")
     
 def update_database(data):
