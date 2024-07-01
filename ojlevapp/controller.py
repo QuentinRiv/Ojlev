@@ -85,4 +85,3 @@ def update_database(data):
         return error
     
     return
-
