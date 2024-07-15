@@ -244,8 +244,13 @@ $(document).ready(function() {
   $(".view_all").on("click", function () {
     $(".folders_container").toggleClass("reduce");
     $(".folders_container.reduce").one("transitionend", function () {
-      adjustGridContainer();
+      // adjustGridContainer();
+      $(".file").addClass("show");
     });
+    $(".files_container").toggleClass("expanded");
+    if (!$(".files_container.expanded")[0]) {
+      adjustGridContainer();
+    }
   });
 
 });
@@ -322,16 +327,20 @@ $(document).ready(function () {
       readURL(this);
   });
 
-  var fileData = new FormData();
   var imageFile = NaN;
 
   $(".upload_file").click(function() {
+
+    var fileData = new FormData();
 
     if (imageFile) {
         var folder = $("#file_form .dropdown-toggle span").html();
         console.log($("#file_form .dropdown-toggle span"));
         var image_name = $("#file_name").val();
+        console.log("Image name: ", image_name);
+        console.log("Image name: ", imageFile);
         var extension = imageFile.name.split(".").pop();
+        console.log("Extension: ", extension);
         var resul = checkEmpty([$("#file_name"), $("#file_form .dropdown-toggle span")]);
         if (resul) {
           return
@@ -527,7 +536,8 @@ $(document).ready(function() {
       type: "UPDATE",
       data: data,
       success: function (response) {
-        console.log("Succès de la suppression");
+        console.log("Succès du move");
+        $("#move_form").toggle();
       },
       error: function (xhr, status, error) {
         alert(`Failed to update :`, error);
@@ -549,9 +559,6 @@ function checkEmpty(fields) {
     } else if ($element.is("span")) {
       content = $element.html();
     }
-
-    console.log("element = ", $element);
-    console.log("Content = " + content);
 
     if (content == "") {
       var $toHighlight = $($element).closest(".mandatory");

@@ -106,6 +106,8 @@ def upload():
     filename = request.form['filename']
     parent_folder = request.form['path']
     extension = request.form['extension']
+
+    print("Filename = " + filename)
     
     answer = gallery_upload(file, filename, parent_folder, extension)
 

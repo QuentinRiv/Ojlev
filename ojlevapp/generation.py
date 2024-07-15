@@ -1,13 +1,14 @@
 
 import shutil
 import requests
-from .models import Couple, Story, Program, Witness, Gallery
+from .models import Couple, Story, Program, Witness, Gallery, User
 from . import db
 import os
 from pathlib import Path
 from datetime import datetime
 from PIL import Image
 from .gallery_controller import get_last_modified_time
+from werkzeug.security import generate_password_hash, check_password_hash
 
 def generate_user():
     url = 'http://127.0.0.1:5000/signup'  # Assurez-vous que l'URL est correcte et accessible
@@ -156,3 +157,20 @@ def generate_gallery():
     db.session.commit()
 
     return files_with_parent
+
+# VERY BAD WAY TO DO THIS !!!
+# but no solution in mind for now...
+def generate_admin():
+    email = "admin@email.com"
+    name = "admin"
+    password = "LeMotDePasse1"
+
+    # create a new user with the form data. Hash the password so the plaintext version isn't saved.
+    new_user = User(email=email, name=name, password=generate_password_hash(password, method='pbkdf2:sha256'))
+
+    # add the new user to the database
+    try:
+        db.session.add(new_user)
+        db.session.commit()
+    except(Exception) as e:
+        print(e)

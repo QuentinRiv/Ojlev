@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, json, 
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import User
 from . import db
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 import requests
 
 auth = Blueprint('auth', __name__)
@@ -52,6 +52,11 @@ def signup_post():
 
     if user: # if a user is found, we want to redirect back to signup page so user can try again
         return redirect(url_for('auth.signup_post'))
+    
+    allusers = User.query.all()
+    if len(allusers) == 2:
+        print("Nombre d'admin maximal atteint")
+        return redirect(url_for('auth.login'))
 
     # create a new user with the form data. Hash the password so the plaintext version isn't saved.
     new_user = User(email=email, name=name, password=generate_password_hash(password, method='pbkdf2:sha256'))
@@ -71,3 +76,10 @@ def signup_post():
 def logout():
     logout_user()
     return redirect(url_for('main.index'))
+
+@auth.route('/root')
+@login_required
+def root():
+    if current_user.email != 'admin@email.com':
+        return redirect(url_for('auth.login'))
+    return f'{current_user.email}'

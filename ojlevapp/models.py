@@ -129,10 +129,10 @@ class Gallery(db.Model):
         return f"{self.image_name}.{self.image_extension}"
     
     def gallery_path(self):
-        return f'/gallery/{self.parent_folder.lower()}/{self.image_name}'
+        return f'/gallery/{self.parent_folder.lower()}/{self.image_name}.{self.extension}'
     
     def thumb_path(self):
-        return f'/thumb/{self.parent_folder.lower()}/{self.image_name}'
+        return f'/thumb/{self.parent_folder.lower()}/{self.image_name}.{self.extension}'
      
     def parent_path(self):
         return f'/gallery/{self.parent_folder.lower()}/'

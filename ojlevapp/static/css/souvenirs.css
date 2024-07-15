@@ -563,6 +563,11 @@ html {
     background-color: #c2bae7;
 }
 
+.main .files_part .files_container.expanded {
+    overflow: scroll;
+    max-height: 80%;
+}
+
 /* Make compact when View all is clicked */
 .main .folders .folders_container.reduce {
     height: 0px;

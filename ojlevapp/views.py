@@ -75,6 +75,7 @@ def generate():
     generate_story()
     generate_witness()
     generate_gallery()
+    generate_admin()
 
     return "ok", 200
 
