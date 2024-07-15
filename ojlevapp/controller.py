@@ -59,7 +59,6 @@ def dirfiles(path, category):
         sorted_files_data = sorted(images, key=get_last_modified2)[::-1]
         return sorted_files_data
 
-    
     raise ValueError("Wrong type of category")
     
 def update_database(data):
