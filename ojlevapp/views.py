@@ -23,13 +23,14 @@ def index():
     bridesmaids = Witness.query.filter_by(side="Bridesmaid").all()
     diapo = os.listdir('./ojlevapp/static/img/slides')
     galleries = Gallery.query.all()
+    folders = list(set([gallery.parent_folder for gallery in galleries]))
 
     # User connecté ?
     if(current_user.is_authenticated):
         print("\nYou are authenticated\n")
     else:
         print("\nYou are not authenticated\n")
-    return render_template('index.html', connected=current_user.is_authenticated, groom=groom, bride=bride, stories=stories, programs=programs, groomsmen=groomsmen, bridesmaids=bridesmaids, diapo=diapo, galleries=galleries)
+    return render_template('index.html', connected=current_user.is_authenticated, groom=groom, bride=bride, stories=stories, programs=programs, groomsmen=groomsmen, bridesmaids=bridesmaids, diapo=diapo, galleries=galleries, folders=folders)
 
 
 @bp.route('/upload', methods=['POST'])

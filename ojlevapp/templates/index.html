@@ -330,10 +330,18 @@
             <h2>Our Memories</h2>
           </div>
         </div>
+
+        <div class="gallery_filters">
+          <span class="gallery_tag active" data-filter="all">Tout</span>
+          {% for folder in folders %}
+          <span class="gallery_tag active" data-filter=".{{folder}}">{{folder}}</span>
+          {% endfor %}
+        </div>
+
         <div class="row images">
           {% for gallery in galleries %}
           <!-- gallery item start -->
-          <div class="gallery-item">
+          <div class="gallery-item mix {{gallery.parent_folder}}">
             <div class="gallery-item-inner">
               <img src={{"../static/img/thumb/"+gallery.parent_folder+"/"+gallery.image_name+"."+gallery.extension}} data-large={{"../static/img/gallery/"+gallery.parent_folder+"/"+gallery.image_name+"."+gallery.extension}} alt="couple gallery">
             </div>
@@ -478,6 +486,7 @@
     <script src="../static/js/main.js"></script>
     <script src="../static/js/admin.js"></script>
     <script src="../static/js/settings.js"></script>
+    <script src="../static/js/mixitup.min.js"></script>
   </body>
 </html>
 
