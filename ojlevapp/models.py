@@ -93,6 +93,8 @@ class Gallery(db.Model):
             print("Image = {0}".format(image_name))
             name, ext = self.split_filename(image_name)
             self.extension = self.validate_extension('extension', ext)
+        elif "." in image_name:
+            name, ext = self.split_filename(image_name)
         else:
             name = image_name
 
@@ -147,6 +149,7 @@ class Gallery(db.Model):
         if new_parent_folder:
             self._rename_and_update_parent_folder(new_parent_folder)
         if new_image_name:
+            print("Nouveau nom : " + new_image_name)
             self._rename_and_update_image_name(new_image_name)
         db.session.commit()
 
@@ -157,8 +160,11 @@ class Gallery(db.Model):
         self.parent_folder = new_parent_folder
 
     def _rename_and_update_image_name(self, new_image_name):
+        # Regex pour trouver l'extension
         match = re.search(r'\.([a-zA-Z0-9]+)$', new_image_name)
-        current_extension = re.search(r'\.([a-zA-Z0-9]+)$', self.image_name).group(1)
+        current_extension = self.extension
+
+        print("Current extension : " + current_extension)
         
         if match:
             new_extension = match.group(1)
@@ -175,9 +181,10 @@ class Gallery(db.Model):
 
     def _rename_file(self, old_name, new_name):
         if os.path.exists(new_name):
-            raise Exception("Careful: image already existing")
+            raise Exception("Careful: image with that name already existing")
         try:
             os.rename(old_name, new_name)
+            print("Old image existe ? : ", os.path.exists(old_name))
         except FileNotFoundError:
             raise Exception(f'The file {old_name} does not exist')
         except PermissionError:

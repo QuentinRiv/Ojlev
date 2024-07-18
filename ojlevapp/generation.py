@@ -98,25 +98,30 @@ def generate_program():
         
     return "ok", 202
 
-
+def delete_files_in_directory(directory):
+        for filename in os.listdir(directory):
+            file_path = os.path.join(directory, filename)
+            try:
+                if os.path.isfile(file_path) or os.path.islink(file_path):
+                    os.unlink(file_path)  # Supprimer les fichiers et les liens symboliques
+                elif os.path.isdir(file_path):
+                    shutil.rmtree(file_path)  # Supprimer les sous-dossiers
+            except Exception as e:
+                print(f'Failed to delete {file_path}. Reason: {e}')
 
 def generate_gallery():
 
-    directory = ".\\ojlevapp\\static\\img\\gallery"
-    for filename in os.listdir(directory):
-        file_path = os.path.join(directory, filename)
-        try:
-            if os.path.isfile(file_path) or os.path.islink(file_path):
-                os.unlink(file_path)  # Supprimer les fichiers et les liens symboliques
-            elif os.path.isdir(file_path):
-                shutil.rmtree(file_path)  # Supprimer les sous-dossiers
-        except Exception as e:
-            print(f'Failed to delete {file_path}. Reason: {e}')
+    directory_gall = ".\\ojlevapp\\static\\img\\gallery"
+    directory_thumb = ".\\ojlevapp\\static\\img\\thumb"
+
+    # Supprimer les fichiers dans directory_gall
+    delete_files_in_directory(directory_gall)
+    delete_files_in_directory(directory_thumb)
 
     files_with_parent = []
 
-    shutil.copytree(".\ojlevapp\static\img\other\\large", ".\\ojlevapp\\static\\img\\gallery\\large")
-    # shutil.copytree(".\ojlevapp\static\img\other\\thumb", ".\\ojlevapp\\static\\img\\gallery\\thumb")
+    shutil.copytree(".\\ojlevapp\\static\\img\\other\\large", ".\\ojlevapp\\static\\img\\gallery\\large")
+    shutil.copytree(".\\ojlevapp\\static\\img\\other\\thumb", ".\\ojlevapp\\static\\img\\thumb\\large")
 
     for dirpath, _, filenames in os.walk(".\\ojlevapp\\static\\img\\gallery\\"):
         for filename in filenames:

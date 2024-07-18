@@ -8,6 +8,7 @@ from .controller import *
 from PIL import Image
 from pathlib import Path
 from .gallery_controller import *
+from .generation import delete_files_in_directory
 
 gallery_bp = Blueprint('gallery', __name__)
 
@@ -101,17 +102,18 @@ def new_folder():
 @gallery_bp.route('/gallery/upload', methods=['POST'])
 def upload():
     
-    # The image, its name, its directory
-    file = request.files['image']
-    filename = request.form['filename']
+    files = request.files.getlist('files[]')
     parent_folder = request.form['path']
-    extension = request.form['extension']
 
-    print("Filename = " + filename)
+    for i, file in enumerate(files):
+        name = request.form.get(f'names[{i}]')
+        extension = request.form.get(f'extensions[{i}]')
+        print("Extension = {0}".format(extension))
+        print("Name = {0}".format(name))
     
-    answer = gallery_upload(file, filename, parent_folder, extension)
+        answer = gallery_upload(file, name, parent_folder, extension)
 
-    return answer
+    return "oui", 202
 
 
 
@@ -168,3 +170,60 @@ def move():
 
     return "Okay", 202
 
+
+
+@gallery_bp.route('/folder/rename', methods=['UPDATE'])
+def folder_rename():
+    data = request.form.to_dict()
+    folder = data['folder']
+    new_name = data['new_name']
+    images = Gallery.query.filter_by(parent_folder=folder).all()
+
+    if images:
+        # Modifier les attributs de l'instance
+        for image in images:
+            image.parent_folder = new_name
+
+        try:
+            db.session.commit()
+            print("Success !")
+        except Exception as e :
+            return jsonify({'error': str(e)}), 409
+        
+        old_folder_name = 'ojlevapp/static/img/gallery/' + folder
+        new_folder_name = 'ojlevapp/static/img/gallery/' + new_name
+        os.rename(old_folder_name, new_folder_name)
+
+        old_folder_name = 'ojlevapp/static/img/thumb/' + folder
+        new_folder_name = 'ojlevapp/static/img/thumb/' + new_name
+        os.rename(old_folder_name, new_folder_name)
+    else:
+        print("\n=== Pas d'images trouvés ===\n")
+
+
+    return "Okay", 202
+
+
+@gallery_bp.route('/folder/delete', methods=['UPDATE'])
+def folder_delete():
+    data = request.form.to_dict()
+    folder = data['folder']
+    images = Gallery.query.filter_by(parent_folder=folder).all()
+
+    try:
+        for image in images:
+            db.session.delete(image)
+
+        db.session.commit()
+
+        directory_gall = "./ojlevapp/static/img/gallery/" + folder
+        delete_files_in_directory(directory_gall)
+        directory_thumb = "./ojlevapp/static/img/thumb/" + folder
+        delete_files_in_directory(directory_thumb)
+        os.rmdir(directory_gall)
+        os.rmdir(directory_thumb)
+
+    except Exception as e :
+            return jsonify({'error': str(e)}), 409
+
+    return "Okay", 202

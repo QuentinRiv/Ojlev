@@ -72,6 +72,7 @@ $(document).ready( function() {
     $(".filter-img[data-target='" + target + "']").addClass("active");
   }
 
+  // Big Gallery
   const wHeight = $(window).height();
   $(".gallery-popup .gp-img").css("max-height", wHeight + "px");
 
@@ -86,6 +87,14 @@ $(document).ready( function() {
   });
 
   $(".gp-controls .next").click(function () {
+    nextImage();
+  });
+
+  $(".gp-controls .prev").click(function () {
+    previousImage();
+  });
+
+  function nextImage() {
     if (itemIndex === totalGalleryItems - 1) {
       itemIndex = 0;
     } else {
@@ -94,9 +103,9 @@ $(document).ready( function() {
     $(".gallery-popup .gp-img").fadeOut(function () {
       gpSlideShow();
     });
-  });
+  }
 
-  $(".gp-controls .prev").click(function () {
+  function previousImage() {
     if (itemIndex === 0) {
       itemIndex = totalGalleryItems - 1;
     } else {
@@ -105,6 +114,26 @@ $(document).ready( function() {
     $(".gallery-popup .gp-img").fadeOut(function () {
       gpSlideShow();
     });
+  }
+
+  function closeGallery() {
+    $(".gallery-popup").removeClass("open");
+  }
+
+  // Écouter l'événement keydown sur le document
+  $(document).on("keydown", function (event) {
+    // Vérifier si la touche appuyée est la flèche droite (code 39)
+    if ($(".gallery-popup").hasClass("open")) {
+      if (event.keyCode === 39) {
+        nextImage();
+      }
+      if (event.keyCode === 37) {
+        previousImage();
+      }
+      if (event.keyCode === 27) {
+        closeGallery();
+      }
+    }
   });
 
   function gpSlideShow() {
@@ -118,8 +147,8 @@ $(document).ready( function() {
 
   // close gallery popup
   $(".gp-close").click(function () {
-    $(".gallery-popup").removeClass("open");
-  });
+    closeGallery();
+});
 
   // hide gallery popup when clicked outside
   $(".gallery-popup").click(function (event) {

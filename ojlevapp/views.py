@@ -67,7 +67,7 @@ def update_db():
 
 
 
-
+@login_required 
 @bp.route('/generate', methods=['GET'])
 def generate():
     generate_user()

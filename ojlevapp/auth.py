@@ -82,4 +82,29 @@ def logout():
 def root():
     if current_user.email != 'admin@email.com':
         return redirect(url_for('auth.login'))
-    return f'{current_user.email}'
+    return render_template('reset.html')
+
+@auth.route('/update_password', methods=['POST'])
+@login_required
+def update_password():
+    if current_user.email != 'admin@email.com':
+        return redirect(url_for('auth.login'))
+    
+    data = json.loads(request.data)
+
+    email = data['email']
+    password = data['password']
+
+    user = User.query.filter_by(email=email).first() # if this returns a user, then the email already exists in database
+
+    if not user: # if a user is found, we want to redirect back to signup page so user can try again
+        return jsonify({'status': 400, 'message': 'Email non valide.'}), 400
+    
+    try:
+        user.password = generate_password_hash(password, method='pbkdf2:sha256')
+        db.session.commit()
+    except Exception:
+        return jsonify({'status': 400, 'message': 'Impossible to reset the password'}), 400
+
+
+    return jsonify({'status': 200, 'message': 'Password correctly reset'}), 200

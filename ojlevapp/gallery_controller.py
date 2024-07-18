@@ -35,7 +35,11 @@ def get_directories():
     if (gallery_directories == thumb_directories):
         return thumb_directories
     else:
-        raise Exception("Not the same directories between the DB, gallery and thumb folders")
+        missing = list(sorted(set(gallery_directories) - set(thumb_directories)))
+        added = list(sorted(set(thumb_directories) - set(gallery_directories)))
+        missing += added
+
+        raise Exception(f"Not the same directories between the DB, gallery and thumb folders (folder(s) {" - ".join(missing)} mising)")
     
 
 def allowed_file(extension):
