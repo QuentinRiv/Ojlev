@@ -64,18 +64,16 @@
                 </ul>
 
                 <div class="black_bg_form" id="folder_form">
-                    <div class="folder_popup">
-                        <div class="form-popup" id="popupForm">
-                            <form class="form-container">
-                                <h2>Type the new folder's name</h2>
-                                <label for="folder_name">
-                                    <strong>Name</strong>
-                                </label>
-                                <input type="text" id="folder_name" placeholder="Folder's name" name="folder_name" required />
-                                <button type="button" class="btn create_folder">Create</button>
-                                <button type="button" class="btn cancel">Fermer</button>
-                            </form>
-                        </div>
+                    <div class="form-popup">
+                        <form class="form-container">
+                            <h2>Type the new folder's name</h2>
+                            <label for="folder_name">
+                                <strong>Name</strong>
+                            </label>
+                            <input type="text" id="folder_name" placeholder="Folder's name" name="folder_name" required />
+                            <button type="button" class="btn create_folder">Create</button>
+                            <button type="button" class="btn cancel">Fermer</button>
+                        </form>
                     </div>
                 </div>
 
@@ -118,14 +116,14 @@
                 <span class="button_span">Create New</span>
                 <span><i class="fas fa-plus"></i></span>
             </button>
-            <!-- Add ney image START -->
+            <!-- Add new image START -->
         </div>
     </section>
     <section class="main">
 
         <div class="toptitle">
             <h3>My Cloud</h3>
-            <p>Hi Jim, Welcome back !</p>
+            <p>Hi dear User, Welcome back !</p>
         </div>
 
         <div class="clouds" style="display: none;">
@@ -281,32 +279,28 @@
         </div>
 
         <!-- Rename file START -->
-        <div class="black_bg_form" id="rename_form">
-            <div class="rename_popup">
-                <div class="form-popup" id="popupForm">
-                    <form class="form-container">
-                        <h2>Type the new image name</h2>
-                        <label for="image_name">
-                            <strong>Name</strong>
-                        </label>
-                        <input type="text" id="new_name" placeholder="New name" name="image_name" required />
-                        <button type="button" class="btn rename_image">Rename</button>
-                        <button type="button" class="btn cancel">Close</button>
-                    </form>
-                </div>
+        <div class="black_bg_form" id="rename_file">
+            <div class="form-popup">
+                <form class="form-container">
+                    <h2>Type the new image name</h2>
+                    <label for="image_name">
+                        <strong>Name</strong>
+                    </label>
+                    <input type="text" id="new_name" placeholder="New name" name="image_name" required />
+                    <button type="button" class="btn rename_image">Rename</button>
+                    <button type="button" class="btn cancel">Close</button>
+                </form>
             </div>
         </div>
         <!-- Rename file END -->
 
         <!-- Delete file START -->
         <div class="black_bg_form" id="delete_form">
-            <div class="delete_popup">
-                <div class="form-popup" id="popupForm">
-                    <form class="form-container">
-                        <button type="button" class="btn delete_image">Delete</button>
-                        <button type="button" class="btn cancel">Close</button>
-                    </form>
-                </div>
+            <div class="form-popup">
+                <form class="form-container">
+                    <button type="button" class="btn delete_image">Delete</button>
+                    <button type="button" class="btn cancel">Close</button>
+                </form>
             </div>
         </div>
         <!-- Delete file END -->
@@ -337,32 +331,28 @@
 
         <!-- Rename folder START -->
         <div class="black_bg_form" id="rename_folder">
-            <div class="rename_popup">
-                <div class="rename_popup form-popup" id="popupForm">
-                    <form class="form-container">
-                        <h2>Type the new Folder name</h2>
-                        <label for="folder_name">
-                            <strong>Name</strong>
-                        </label>
-                        <input type="text" id="new_name" placeholder="New name" name="folder_name" required />
-                        <button type="button" class="btn rename_folder">Rename</button>
-                        <button type="button" class="btn cancel">Close</button>
-                    </form>
-                </div>
+            <div class="form-popup">
+                <form class="form-container">
+                    <h2>Type the new Folder name</h2>
+                    <label for="folder_name">
+                        <strong>Name</strong>
+                    </label>
+                    <input type="text" id="new_name" placeholder="New name" name="folder_name" required />
+                    <button type="button" class="btn rename_folder">Rename</button>
+                    <button type="button" class="btn cancel">Close</button>
+                </form>
             </div>
         </div>
         <!-- Rename folder END -->
 
         <!-- Delete folder START -->
         <div class="black_bg_form" id="delete_folder">
-            <div class="delete_popup">
-                <div class="form-popup" id="popupForm">
-                    <form class="form-container">
-                        <h2>Do you really want to delete this folder ?</h2>
-                        <button type="button" class="btn delete_folder">Delete</button>
-                        <button type="button" class="btn cancel">Close</button>
-                    </form>
-                </div>
+            <div class="form-popup">
+                <form class="form-container">
+                    <h2>Do you really want to delete this folder ?</h2>
+                    <button type="button" class="btn delete_folder">Delete</button>
+                    <button type="button" class="btn cancel">Close</button>
+                </form>
             </div>
         </div>
         <!-- Delete folder END -->

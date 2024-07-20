@@ -55,6 +55,8 @@ function showFolders() {
 
     // Initialize, by showing the files of the first folder
     show_files(data[0]);
+
+    adaptFolderSize();
   });
 
   //  Second column displays
@@ -68,10 +70,33 @@ function showFolders() {
     $(".file_nav ul").html(folderHtml);
     $(".folder_li").first().addClass("active");
   });
+
+  
 }
 
+function adaptFolderSize() {
+  $folders = $(".folder_elem");
+  $folder_container_width = $(".folders").width();
+  var excess = Math.ceil(($folders.length * (100 + 15) - $folder_container_width) / 100);
+  var last_acceptable = $folders.length - excess - 1;
 
-$(document).ready(function () {
+  if (excess > 0) {
+    console.log("Trop de folders :", excess);
+    console.log("Index dernier folder ok :", last_acceptable);
+    for (let index = last_acceptable + 1; index < $folders.length; index++) {
+      const element = $folders[index];
+      $(element).remove();
+      let showMoreElement = ` <div class="other_folders">
+                                <p>${excess} other folders</p>
+                              </div>`;
+      $(".folders_container").append(showMoreElement);
+    }
+  }
+  else {
+    console.log("Trop de folders :", excess);
+  }
+}
+
 
   function splitFilename(filename) {
     // Trouve la position du dernier point dans le nom de fichier
@@ -99,26 +124,22 @@ $(document).ready(function () {
           $("#imagePreview").hide();
           $("#imagePreview").fadeIn(index * 500);
           const img = $("<img>").attr("src", e.target.result);
-          console.log("Image ", index, " chargée !");
         };
         reader.readAsDataURL(file);
         let [name, extension] = splitFilename(file.name);
-        console.log("File :", file);
         imageFiles.push({ file: file, name: name, extension: extension });
       });
 
-      console.log("ImageFiles après la boucle :", imageFiles);
 
     }
   }
 
   var imageFiles = [];
 
-  $(".upload_file").click(function () {
+$(document).on("click", ".upload_file", function () {
     var fileData = new FormData();
     var resul = checkEmpty([$("#file_name"), $("#file_form .dropdown-toggle span")]);
 
-    console.log(imageFiles);
     if (imageFiles.length > 0) {
       var folder = $("#file_form .dropdown-toggle span").html();
       imageFiles.forEach((imageFile, index) => {
@@ -127,9 +148,7 @@ $(document).ready(function () {
         fileData.append(`extensions[${index}]`, imageFile.extension);
       });
 
-
       fileData.append("path", folder);
-      console.log("fileData :", fileData);
 
       // Envoie le fichier en AJAX à l'URL '/upload'
       $.ajax({
@@ -151,7 +170,6 @@ $(document).ready(function () {
       alert("No file selected.");
     }
   });
-});
 
 async function fetchData(url) {
   const response = await fetch(url);
@@ -168,7 +186,6 @@ async function fetchData(url) {
 async function get_directories() {
   try {
     let data = await fetchData("/directory");
-    console.log(data); // Utilisez les données obtenues ici
     return data;
   } catch (error) {
     alert("Error fetching data: " + error.message);
@@ -380,8 +397,8 @@ $(document).on("click", ".move_image", function () {
 
 // Rename image START
 $(document).on("click", ".menu-item.rename", function (event) {
-  $("#rename_form").toggle();
-  $("#rename_form").attr(
+  $("#rename_file").toggle();
+  $("#rename_file").attr(
     "data-index",
     $(this).closest(".file_menu").attr("data-index")
   );
@@ -393,7 +410,7 @@ $(document).on("click", ".btn.cancel", function () {
 
 $(document).on("click", ".rename_image", function () {
   let new_name = $("#new_name").val();
-  let image_id = $("#rename_form").attr("data-index");
+  let image_id = $("#rename_file").attr("data-index");
 
   let data = {
     new_name: new_name,
@@ -675,8 +692,9 @@ $(document).on("click", ".btn.rename_folder", function () {
     type: "UPDATE",
     data: data,
     success: function (response) {
-      showSuccess(".ma_classe", "Opération réussie!");
-      // closeAndUpdateFolders();
+      // showSuccess("#rename_folder .form-popup", "Opération réussie!");
+      successPopup("Bien joué !");
+      closeAndUpdateFolders();
     },
     error: function (xhr, status, error) {
       console.log(error);
@@ -855,9 +873,11 @@ function showSuccess(selector, text) {
     $element.css("opacity", "0");
     // Supprimer l'élément du DOM après la transition
     setTimeout(() => {
-      $element.remove();
+      closePopup();
     }, 500);
-  }, 3000);
+  }, 2000);
+
+  
 }
 
 // ================== OTHER end ======================
