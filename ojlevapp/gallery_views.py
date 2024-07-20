@@ -1,5 +1,5 @@
 from flask import render_template, request
-from flask import Blueprint, current_app, jsonify
+from flask import Blueprint, jsonify
 import os
 from .models import Gallery
 from . import db
@@ -22,56 +22,53 @@ def gallery():
 
 @gallery_bp.route('/directory')
 def directory():
-    directories = get_directories()
-    return jsonify(directories)
+    try: 
+        directories = get_directories()
+        return jsonify(directories), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @gallery_bp.route('/files')
 def files():
     folder = request.args.get("folder")
-    images = Gallery.query.filter_by(parent_folder=folder).all()
-    sorted_images = sorted(images, key=get_last_modified)[::-1]
-    image_list = []
-    for image in sorted_images:
-        image_data = {
-            'id': image.id,
-            'name': f'{image.image_name}.{image.extension}',
-            'size': image.size,
-            'weight': image.weight,
-            'parent_folder': image.parent_folder,
-            'date': image.date,
-        }
-        image_list.append(image_data)
-    return jsonify(image_list)
+    answer = get_files(folder)
+    return answer
+
+
 
 
 @gallery_bp.route('/gallery/image_thumb', methods=['POST'])
 def image_thumb():
-    data = request.form.to_dict()
-    print("Data = {}".format(data))
-    img_path = data["img_path"]
-    parent_folder = img_path.split("/")[-2]
-    fullname = img_path.split("/")[-1]
-    image_name, _ = split_filename(fullname)
-    
-    original = Image.open('./ojlevapp/static/img/gallery/' + parent_folder + '/' + fullname )
-    box = ()
-    for position in ["left", "top", "right", "bottom"]:
-        box += (round(float(data[position])),)
+    try:
+        data = request.form.to_dict()
+        print("Data = {}".format(data))
+        img_path = data["img_path"]
+        parent_folder = img_path.split("/")[-2]
+        fullname = img_path.split("/")[-1]
+        image_name, _ = split_filename(fullname)
+        
+        original = Image.open('./ojlevapp/static/img/gallery/' + parent_folder + '/' + fullname )
+        box = ()
+        for position in ["left", "top", "right", "bottom"]:
+            box += (round(float(data[position])),)
 
-    cropped_img = original.crop(box)
+        cropped_img = original.crop(box)
 
-    Path('./ojlevapp/static/img/thumb/' + parent_folder).mkdir(parents=True, exist_ok=True)
-    cropped_img.save('./ojlevapp/static/img/thumb/' + parent_folder + '/' + fullname)
+        Path('./ojlevapp/static/img/thumb/' + parent_folder).mkdir(parents=True, exist_ok=True)
+        cropped_img.save('./ojlevapp/static/img/thumb/' + parent_folder + '/' + fullname)
 
-    image = Gallery.query.filter_by(image_name=image_name, parent_folder=parent_folder).first()
-    image.thumb_top = float(data["top"])
-    image.thumb_left = float(data["left"])
-    image.thumb_right = float(data["right"])
-    image.thumb_bottom = float(data["bottom"])
+        image = Gallery.query.filter_by(image_name=image_name, parent_folder=parent_folder).first()
+        image.thumb_top = float(data["top"])
+        image.thumb_left = float(data["left"])
+        image.thumb_right = float(data["right"])
+        image.thumb_bottom = float(data["bottom"])
 
-    db.session.commit()
+        db.session.commit()
 
-    return "Bingo", 202
+        return "Bingo", 202
+
+    except Exception:
+        return jsonify({'error': "Problem to create the thumbnail of the image"}), 500
 
 
 @gallery_bp.route('/gallery/image_info')
@@ -79,7 +76,13 @@ def image_info():
     image_name = request.args.get("image_name")
     image_parent = request.args.get("image_parent")
     imageName, _ = split_filename(image_name)
+
+    if (image_name == "") or (image_parent == "") or (imageName == ""):
+        return jsonify({'error': "Problem to get image info"}), 500
+        
     image = Gallery.query.filter_by(image_name=imageName, parent_folder=image_parent).first()
+    if not image:
+        return jsonify({'error': "Problem to get image in DB"}), 500
 
     image_data = {
             'thumb_top': image.thumb_top,
@@ -88,33 +91,40 @@ def image_info():
             'thumb_bottom': image.thumb_bottom,
         }
 
-    return jsonify(image_data)
+    return jsonify(image_data), 202
 
 @gallery_bp.route('/gallery/new_folder', methods=['POST'])
 def new_folder():
     folder_name = request.args.get("name")
-    Path('./ojlevapp/static/img/gallery/' + folder_name).mkdir(parents=True, exist_ok=True)
-    Path('./ojlevapp/static/img/thumb/' + folder_name).mkdir(parents=True, exist_ok=True)
-    return "OK", 202
+    try:
+        Path('./ojlevapp/static/img/gallery/' + folder_name).mkdir(parents=True, exist_ok=True)
+        Path('./ojlevapp/static/img/thumb/' + folder_name).mkdir(parents=True, exist_ok=True)
+        return "OK", 202
+    except Exception:
+        return jsonify("Problem to create new folder"), 409
+
 
 
 
 @gallery_bp.route('/gallery/upload', methods=['POST'])
 def upload():
     
-    files = request.files.getlist('files[]')
-    parent_folder = request.form['path']
+    try:
+        files = request.files.getlist('files[]')
+        parent_folder = request.form['path']
 
-    for i, file in enumerate(files):
-        name = request.form.get(f'names[{i}]')
-        extension = request.form.get(f'extensions[{i}]')
-        print("Extension = {0}".format(extension))
-        print("Name = {0}".format(name))
+        for i, file in enumerate(files):
+            name = request.form.get(f'names[{i}]')
+            extension = request.form.get(f'extensions[{i}]')
+            print("Extension = {0}".format(extension))
+            print("Name = {0}".format(name))
+        
+            gallery_upload(file, name, parent_folder, extension)
+
+        return "oui", 202
     
-        answer = gallery_upload(file, name, parent_folder, extension)
-
-    return "oui", 202
-
+    except Exception as e :
+        return jsonify({'error': str(e)}), 409
 
 
 
@@ -145,10 +155,13 @@ def delete():
     data = request.form.to_dict()
     image_id = data['image_id']
     image = Gallery.query.get(image_id)
-    if image:
-        db.session.delete(image)
+    try:
+        if image:
+            db.session.delete(image)
 
-    db.session.commit()
+        db.session.commit()
+    except Exception as e :
+            return jsonify({'error': str(e)}), 409
 
     return "Okay", 202
 
@@ -164,9 +177,6 @@ def move():
         # Modifier les attributs de l'instance
         image.update_details(new_parent_folder=new_folder)
 
-    else:
-        print("\nX\n")
-
 
     return "Okay", 202
 
@@ -177,6 +187,19 @@ def folder_rename():
     data = request.form.to_dict()
     folder = data['folder']
     new_name = data['new_name']
+
+    old_folder_name = 'ojlevapp/static/img/gallery/' + folder
+    new_folder_name = 'ojlevapp/static/img/gallery/' + new_name
+
+    if os.path.exists(new_folder_name):
+        return jsonify({'error': "Folder name already existing !"}), 409
+
+    os.rename(old_folder_name, new_folder_name)
+
+    old_folder_name = 'ojlevapp/static/img/thumb/' + folder
+    new_folder_name = 'ojlevapp/static/img/thumb/' + new_name
+    os.rename(old_folder_name, new_folder_name)
+    
     images = Gallery.query.filter_by(parent_folder=folder).all()
 
     if images:
@@ -190,13 +213,6 @@ def folder_rename():
         except Exception as e :
             return jsonify({'error': str(e)}), 409
         
-        old_folder_name = 'ojlevapp/static/img/gallery/' + folder
-        new_folder_name = 'ojlevapp/static/img/gallery/' + new_name
-        os.rename(old_folder_name, new_folder_name)
-
-        old_folder_name = 'ojlevapp/static/img/thumb/' + folder
-        new_folder_name = 'ojlevapp/static/img/thumb/' + new_name
-        os.rename(old_folder_name, new_folder_name)
     else:
         print("\n=== Pas d'images trouvés ===\n")
 
@@ -208,6 +224,7 @@ def folder_rename():
 def folder_delete():
     data = request.form.to_dict()
     folder = data['folder']
+    # Toutes les images dans le dossier 'folder'
     images = Gallery.query.filter_by(parent_folder=folder).all()
 
     try:

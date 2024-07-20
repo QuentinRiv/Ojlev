@@ -5,7 +5,8 @@ from flask import Blueprint, current_app, jsonify
 from werkzeug.utils import secure_filename
 from PIL import Image
 from . import db
-import os 
+import os, logging
+from sqlalchemy.exc import SQLAlchemyError
 
 def get_last_modified(file):
     return datetime.strptime(file.date, "%d %b %Y %H:%M")
@@ -20,6 +21,9 @@ def get_directories():
     DB_directories = set()
     for image in images:
         DB_directories.add(image.parent_folder)
+
+    if (not os.path.exists(current_app.config['UPLOAD_FOLDER'] + '/gallery')) or (not os.path.exists(current_app.config['UPLOAD_FOLDER'] + '/thumb')):
+        raise Exception(f"Folder Gallery or Thumb not there...")
 
     # Dir in the gallery folder
     gallery_directories = []
@@ -101,3 +105,29 @@ def gallery_upload(file, filename, parent_folder, extension):
     print(f"Image uploaded successfully to '{file_path}'")
 
     return jsonify("Success"), 202
+
+# Récupère les images dans le dossier 'folder', avec toutes les infos liées
+def get_files(folder):
+    try: 
+        images = Gallery.query.filter_by(parent_folder=folder).all()
+        sorted_images = sorted(images, key=get_last_modified, reverse=True)
+        image_list = []
+        for image in sorted_images:
+            image_data = {
+                'id': image.id,
+                'name': f'{image.image_name}.{image.extension}',
+                'size': image.size,
+                'weight': image.weight,
+                'parent_folder': image.parent_folder,
+                'date': image.date,
+            }
+            image_list.append(image_data)
+        return jsonify(image_list)
+    
+    except SQLAlchemyError as e:
+        logging.error(f"Database error: {e}")
+        return jsonify({'error': "Problem to gather files"}), 500
+    
+    except Exception as e:
+        logging.error(f"Unexpected error: {e}")
+        return jsonify({'error': "Problem to gather files"}), 500

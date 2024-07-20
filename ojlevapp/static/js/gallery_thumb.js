@@ -21,8 +21,6 @@
 
   let showgallery = false;
   function gpSlideShow() {
-    let text = "Visit Microsoft!";
-    let result = text.replace("Microsoft", "W3Schools");
     $(".gallery-popup .gp-img").fadeIn().attr("src", imageSrc);
     showgallery = true;
 
@@ -32,27 +30,62 @@
 
     // Pour obtenir les infos du mask
     $.ajax({
-      url: "/gallery/image_info?image_name=" + image_name + "&image_parent=" + image_parent,
+      url:
+        "/gallery/image_info?image_name=" +
+        image_name +
+        "&image_parent=" +
+        image_parent,
       type: "GET",
       success: function (data) {
         console.log("Succès pour avoir les infos :", data);
         var exactImgWidth = $(".gp-img").prop("naturalWidth");
         var exactImgHeight = $(".gp-img").prop("naturalHeight");
 
-        $("#thumbselect").css("top", Math.round(data.thumb_top / exactImgHeight * $(".gp-img").height() * 100) / 100);
-        $("#thumbselect").css("left", Math.round(data.thumb_left / exactImgWidth * $(".gp-img").width() * 100) / 100);
-        $("#thumbselect").css("width", Math.round((data.thumb_right - data.thumb_left) / exactImgWidth * $(".gp-img").width() * 100) / 100);
-        $("#thumbselect").css("height", Math.round((data.thumb_bottom - data.thumb_top) / exactImgHeight * $(".gp-img").height() * 100) / 100);
+        $("#thumbselect").css(
+          "top",
+          Math.round(
+            (data.thumb_top / exactImgHeight) * $(".gp-img").height() * 100
+          ) / 100
+        );
+        $("#thumbselect").css(
+          "left",
+          Math.round(
+            (data.thumb_left / exactImgWidth) * $(".gp-img").width() * 100
+          ) / 100
+        );
+        $("#thumbselect").css(
+          "width",
+          Math.round(
+            ((data.thumb_right - data.thumb_left) / exactImgWidth) *
+              $(".gp-img").width() *
+              100
+          ) / 100
+        );
+        $("#thumbselect").css(
+          "height",
+          Math.round(
+            ((data.thumb_bottom - data.thumb_top) / exactImgHeight) *
+              $(".gp-img").height() *
+              100
+          ) / 100
+        );
 
-        
         console.log("Hauteur", data.thumb_bottom - data.thumb_top);
         console.log(" / ", exactImgHeight);
         console.log(" * ", $(".gp-img").height());
-        console.log(" = ", Math.round((data.thumb_bottom - data.thumb_top) / exactImgHeight * $(".gp-img").height() * 100) / 100);
+        console.log(
+          " = ",
+          Math.round(
+            ((data.thumb_bottom - data.thumb_top) / exactImgHeight) *
+              $(".gp-img").height() *
+              100
+          ) / 100
+        );
         console.log("----------------------------------");
       },
       error: function (xhr, status, error) {
-        console.error(`Failed to update :`, error);
+        let errorMessage = JSON.parse(xhr.responseText).error;
+        alert(`Error: ${errorMessage}`);
       },
     });
   }

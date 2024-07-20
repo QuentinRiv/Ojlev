@@ -5,6 +5,7 @@ from sqlalchemy import event
 from flask import current_app
 from . import db
 import os, re, string
+from datetime import datetime, timedelta
 
 img_server = 'ojlevapp/static/img'
 gallery_path = img_server + '/gallery'
@@ -145,6 +146,8 @@ class Gallery(db.Model):
     def __repr__(self):
         return f'Image {self.image_name}'
     
+
+    
     def update_details(self, new_parent_folder=None, new_image_name=None):
         if new_parent_folder:
             self._rename_and_update_parent_folder(new_parent_folder)
@@ -220,3 +223,9 @@ event.listen(Program, 'before_delete', delete_image)
 event.listen(Story, 'before_delete', delete_image)
 event.listen(Witness, 'before_delete', delete_image)
 event.listen(Gallery, 'before_delete', delete_image)
+
+def update_date(mapper, connection, target):
+    new_time = datetime.utcnow() + timedelta(hours=2)
+    target.date = new_time.strftime("%d %b %Y %H:%M")
+# Attacher la fonction à l'événement before_update
+event.listen(Gallery, 'before_update', update_date)
