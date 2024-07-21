@@ -137,7 +137,7 @@ $(document).on("click", ".upload_file", function () {
         processData: false,
         contentType: false,
         success: function (response) {
-          successPopup("success", "Image uploaded successfully!");
+          actionPopup("success", response.message);
           closeAndUpdateFiles();
         },
         error: function (xhr, status, error) {
@@ -364,7 +364,8 @@ $(document).on("click", ".move_image", function () {
     type: "UPDATE",
     data: data,
     success: function (response) {
-      successPopup("success", "Image successfully moved !");
+      actionPopup("success", response.message);
+      console.log(response.message);
       closeAndUpdateFiles();
     },
     error: function (xhr, status, error) {
@@ -401,12 +402,11 @@ $(document).on("click", ".rename_image", function () {
     type: "UPDATE",
     data: data,
     success: function (response) {
-      successPopup("success", "Image successfully renamed !");
+      actionPopup("success", response.message);
       closeAndUpdateFiles();
     },
     error: function (xhr, status, error) {
-      successPopup("fail", "Image NOT successfully renamed !");
-      alert("Error: " + xhr.responseJSON.error);
+      actionPopup("fail", xhr.responseJSON.error);
     },
   });
 });
@@ -433,7 +433,7 @@ $(document).on("click", ".delete_image", function () {
     type: "UPDATE",
     data: data,
     success: function (response) {
-      successPopup("success", "Image successfully deleted!");
+      actionPopup("success", response.message);
       closeAndUpdateFiles();
     },
     error: function (xhr, status, error) {
@@ -636,7 +636,7 @@ $(document).on("click", ".create_folder", function () {
     url: "/gallery/new_folder?name=" + new_folder_name,
     type: "POST",
     success: function (data) {
-      successPopup("success", "Image successfully imported !");
+      actionPopup("success", response.message);
       closeAndUpdateFolders();
     },
     error: function (xhr, status, error) {
@@ -671,7 +671,7 @@ $(document).on("click", ".btn.rename_folder", function () {
     data: data,
     success: function (response) {
       // showSuccess("#rename_folder .form-popup", "Opération réussie!");
-      successPopup("success", "Folder correctly renamed !");
+      actionPopup("success", response.message);
       closeAndUpdateFolders();
     },
     error: function (xhr, status, error) {
@@ -703,7 +703,7 @@ $(document).on("click", ".btn.delete_folder", function () {
     type: "UPDATE",
     data: data,
     success: function (response) {
-      successPopup("success", "Folder correctly deleted !");
+      actionPopup("success", response.message);
       closeAndUpdateFolders();
     },
     error: function (xhr, status, error) {
@@ -768,7 +768,7 @@ $(document).on("click", ".icon_container", function () {
 });
 
 // Affiche un popup en cas de réussite d'une action
-function successPopup(status, text) {
+function actionPopup(status, text) {
   // Créer l'élément popup
   const popup = document.createElement("div");
   popup.style.position = "fixed";
@@ -776,6 +776,7 @@ function successPopup(status, text) {
   popup.style.right = "20px";
   popup.style.padding = "10px 20px";
   popup.style.color = "black";
+  popup.style.fontWeight = 550;
   popup.style.borderRadius = "10px";
   popup.style.opacity = "0";
   popup.style.transition = "opacity 0.5s";
@@ -805,7 +806,10 @@ function successPopup(status, text) {
     setTimeout(() => {
       document.body.removeChild(popup);
     }, 500);
-  }, 3000);
+  }, 4000);
+
+  console.log(text);
+
 }
 
 function showSuccess(selector, text) {
@@ -864,6 +868,7 @@ function showSuccess(selector, text) {
       closePopup();
     }, 500);
   }, 2000);
+
 
   
 }

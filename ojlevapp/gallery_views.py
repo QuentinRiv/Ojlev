@@ -99,7 +99,7 @@ def new_folder():
     try:
         Path('./ojlevapp/static/img/gallery/' + folder_name).mkdir(parents=True, exist_ok=True)
         Path('./ojlevapp/static/img/thumb/' + folder_name).mkdir(parents=True, exist_ok=True)
-        return "OK", 202
+        return jsonify({'message': "Folder successfully created!"}), 202
     except Exception:
         return jsonify("Problem to create new folder"), 409
 
@@ -121,7 +121,7 @@ def upload():
         
             gallery_upload(file, name, parent_folder, extension)
 
-        return "oui", 202
+        return jsonify({'message': "Image successfully uploaded!"}), 202
     
     except Exception as e :
         return jsonify({'error': str(e)}), 409
@@ -147,7 +147,7 @@ def rename():
         print("\nX\n")
 
 
-    return "Okay", 202
+    return jsonify({'message': "Image successfully renamed!"}), 202
 
 
 @gallery_bp.route('/gallery/delete', methods=['UPDATE'])
@@ -163,7 +163,7 @@ def delete():
     except Exception as e :
             return jsonify({'error': str(e)}), 409
 
-    return "Okay", 202
+    return jsonify({'message': "Image successfully deleted!"}), 202
 
 
 @gallery_bp.route('/gallery/move', methods=['UPDATE'])
@@ -178,7 +178,7 @@ def move():
         image.update_details(new_parent_folder=new_folder)
 
 
-    return "Okay", 202
+    return jsonify({'message': "Sucessful move!"}), 202
 
 
 
@@ -187,8 +187,6 @@ def folder_rename():
     data = request.form.to_dict()
     folder = data['folder']
     new_name = data['new_name']
-
-    print("\n\nData =", data)
 
     old_folder_name = 'ojlevapp/static/img/gallery/' + folder
     new_folder_name = 'ojlevapp/static/img/gallery/' + new_name
@@ -219,7 +217,7 @@ def folder_rename():
         print("\n=== Pas d'images trouvés ===\n")
 
 
-    return "Okay", 202
+    return jsonify({'message': "Folder successfully renamed!"}), 202
 
 
 @gallery_bp.route('/folder/delete', methods=['UPDATE'])
@@ -245,4 +243,4 @@ def folder_delete():
     except Exception as e :
             return jsonify({'error': str(e)}), 409
 
-    return "Okay", 202
+    return jsonify({'message': "Folder successfully deleted!"}), 202

@@ -152,7 +152,6 @@ class Gallery(db.Model):
         if new_parent_folder:
             self._rename_and_update_parent_folder(new_parent_folder)
         if new_image_name:
-            print("Nouveau nom : " + new_image_name)
             self._rename_and_update_image_name(new_image_name)
         db.session.commit()
 
@@ -166,8 +165,6 @@ class Gallery(db.Model):
         # Regex pour trouver l'extension
         match = re.search(r'\.([a-zA-Z0-9]+)$', new_image_name)
         current_extension = self.extension
-
-        print("Current extension : " + current_extension)
         
         if match:
             new_extension = match.group(1)
