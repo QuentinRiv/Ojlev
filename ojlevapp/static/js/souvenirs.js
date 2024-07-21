@@ -451,6 +451,7 @@ $(document).ready(function () {
     $(".folders_container.reduce").one("transitionend", function () {
       // adjustGridContainer();
       $(".file").addClass("show");
+      console.log($(".file"));
     });
     $(".files_container").toggleClass("expanded");
     if (!$(".files_container.expanded")[0]) {
@@ -635,7 +636,7 @@ $(document).on("click", ".create_folder", function () {
   $.ajax({
     url: "/gallery/new_folder?name=" + new_folder_name,
     type: "POST",
-    success: function (data) {
+    success: function (response) {
       actionPopup("success", response.message);
       closeAndUpdateFolders();
     },
