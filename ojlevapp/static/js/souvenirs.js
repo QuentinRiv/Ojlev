@@ -114,7 +114,7 @@ function showFolders() {
 
 $(document).on("click", ".upload_file", function () {
     var fileData = new FormData();
-    var resul = checkEmpty([$("#file_name"), $("#file_form .dropdown-toggle span")]);
+    var resul = checkEmpty([$("#file_form .dropdown-toggle span")]);
 
     if (imageFiles.length > 0) {
       var folder = $("#file_form .dropdown-toggle span").html();
@@ -134,7 +134,7 @@ $(document).on("click", ".upload_file", function () {
         processData: false,
         contentType: false,
         success: function (response) {
-          console.log("Image uploaded successfully!");
+          successPopup("success", "Image uploaded successfully!");
           closeAndUpdateFiles();
         },
         error: function (xhr, status, error) {
@@ -361,7 +361,7 @@ $(document).on("click", ".move_image", function () {
     type: "UPDATE",
     data: data,
     success: function (response) {
-      console.log("Succès du move");
+      successPopup("success", "Image successfully moved !");
       closeAndUpdateFiles();
     },
     error: function (xhr, status, error) {
@@ -398,11 +398,11 @@ $(document).on("click", ".rename_image", function () {
     type: "UPDATE",
     data: data,
     success: function (response) {
-      console.log("Succès du renommage");
+      successPopup("success", "Image successfully renamed !");
       closeAndUpdateFiles();
     },
     error: function (xhr, status, error) {
-      console.log(error);
+      successPopup("fail", "Image NOT successfully renamed !");
       alert("Error: " + xhr.responseJSON.error);
     },
   });
@@ -430,7 +430,7 @@ $(document).on("click", ".delete_image", function () {
     type: "UPDATE",
     data: data,
     success: function (response) {
-      console.log("Succès de la suppression");
+      successPopup("success", "Image successfully deleted!");
       closeAndUpdateFiles();
     },
     error: function (xhr, status, error) {
@@ -633,7 +633,7 @@ $(document).on("click", ".create_folder", function () {
     url: "/gallery/new_folder?name=" + new_folder_name,
     type: "POST",
     success: function (data) {
-      console.log("Succès de la création");
+      successPopup("success", "Image successfully imported !");
       closeAndUpdateFolders();
     },
     error: function (xhr, status, error) {
@@ -669,7 +669,7 @@ $(document).on("click", ".btn.rename_folder", function () {
     data: data,
     success: function (response) {
       // showSuccess("#rename_folder .form-popup", "Opération réussie!");
-      successPopup("Bien joué !");
+      successPopup("success", "Folder correctly renamed !");
       closeAndUpdateFolders();
     },
     error: function (xhr, status, error) {
@@ -701,7 +701,7 @@ $(document).on("click", ".btn.delete_folder", function () {
     type: "UPDATE",
     data: data,
     success: function (response) {
-      console.log("Succès de la suppression");
+      successPopup("success", "Folder correctly deleted !");
       closeAndUpdateFolders();
     },
     error: function (xhr, status, error) {
@@ -711,25 +711,7 @@ $(document).on("click", ".btn.delete_folder", function () {
 });
 // Delete folder END
 
-// Scrolling folder START
-document.addEventListener("DOMContentLoaded", function() {
-  const scrollRight = document.getElementById("scrollRight");
-  const productListContainer = document.querySelector(".product-list-container");
 
-  console.log("Initial Scroll Left:", productListContainer.scrollLeft);
-
-  scrollRight.addEventListener("click", function() {
-    console.log("Clicked!");
-    productListContainer.scrollBy({
-      top: 0, 
-      left: 620, 
-      behavior: 'smooth'
-    });
-    console.log("Scroll Left After:", productListContainer.scrollLeft);
-  });
-});
-
-// Scrolling folder END
 
 // ============= FOLDER END ====================== 
 
@@ -784,19 +766,27 @@ $(document).on("click", ".icon_container", function () {
 });
 
 // Affiche un popup en cas de réussite d'une action
-function successPopup(text) {
+function successPopup(status, text) {
   // Créer l'élément popup
   const popup = document.createElement("div");
   popup.style.position = "fixed";
   popup.style.bottom = "20px";
   popup.style.right = "20px";
   popup.style.padding = "10px 20px";
-  popup.style.backgroundColor = "rgba(29, 195, 52, 0.8)";
-  popup.style.color = "white";
+  popup.style.color = "black";
   popup.style.borderRadius = "10px";
   popup.style.opacity = "0";
   popup.style.transition = "opacity 0.5s";
   popup.innerText = text;
+  popup.style.zIndex = "999999999";
+
+  if (status == "success") {
+    popup.style.backgroundColor = "rgba(29, 195, 52, 0.8)";
+  }
+  if (status == "fail") {
+    popup.style.backgroundColor = "rgba(183, 5, 5, 0.8)";
+  }
+  
 
   // Ajouter l'élément popup au corps du document
   document.body.appendChild(popup);
@@ -875,6 +865,7 @@ function showSuccess(selector, text) {
 
   
 }
+
 
 // ================== OTHER end ======================
  
