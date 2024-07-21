@@ -48,7 +48,7 @@ function showFolders() {
     let folderHtml = folderItems.join("");
 
     // Append the new HTML to the existing content
-    $(".folders_container").html(folderHtml);
+    $("#productList").html(folderHtml);
 
     // Add .active for the first elem
     $(".folder_elem").first().addClass("active");
@@ -56,7 +56,6 @@ function showFolders() {
     // Initialize, by showing the files of the first folder
     show_files(data[0]);
 
-    adaptFolderSize();
   });
 
   //  Second column displays
@@ -72,29 +71,6 @@ function showFolders() {
   });
 
   
-}
-
-function adaptFolderSize() {
-  $folders = $(".folder_elem");
-  $folder_container_width = $(".folders").width();
-  var excess = Math.ceil(($folders.length * (100 + 15) - $folder_container_width) / 100);
-  var last_acceptable = $folders.length - excess - 1;
-
-  if (excess > 0) {
-    console.log("Trop de folders :", excess);
-    console.log("Index dernier folder ok :", last_acceptable);
-    for (let index = last_acceptable + 1; index < $folders.length; index++) {
-      const element = $folders[index];
-      $(element).remove();
-      let showMoreElement = ` <div class="other_folders">
-                                <p>${excess} other folders</p>
-                              </div>`;
-      $(".folders_container").append(showMoreElement);
-    }
-  }
-  else {
-    console.log("Trop de folders :", excess);
-  }
 }
 
 
@@ -734,6 +710,26 @@ $(document).on("click", ".btn.delete_folder", function () {
   });
 });
 // Delete folder END
+
+// Scrolling folder START
+document.addEventListener("DOMContentLoaded", function() {
+  const scrollRight = document.getElementById("scrollRight");
+  const productListContainer = document.querySelector(".product-list-container");
+
+  console.log("Initial Scroll Left:", productListContainer.scrollLeft);
+
+  scrollRight.addEventListener("click", function() {
+    console.log("Clicked!");
+    productListContainer.scrollBy({
+      top: 0, 
+      left: 620, 
+      behavior: 'smooth'
+    });
+    console.log("Scroll Left After:", productListContainer.scrollLeft);
+  });
+});
+
+// Scrolling folder END
 
 // ============= FOLDER END ====================== 
 
