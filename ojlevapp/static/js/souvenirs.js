@@ -114,7 +114,10 @@ function showFolders() {
 
 $(document).on("click", ".upload_file", function () {
     var fileData = new FormData();
-    var resul = checkEmpty([$("#file_form .dropdown-toggle span")]);
+    var empty = checkEmpty([$("#file_form .dropdown-toggle span")]);
+
+    if (empty)
+      return
 
     if (imageFiles.length > 0) {
       var folder = $("#file_form .dropdown-toggle span").html();
@@ -288,7 +291,7 @@ function showInfo() {
 
 // Show the files inside a selected folder
 function show_files(folder) {
-  url = "/files?folder=" + folder;
+  url = encodeURI("/files?folder=" + folder);
   $.ajax({
     url: url,
     type: "GET",
@@ -661,7 +664,6 @@ $(document).on("click", ".btn.rename_folder", function () {
     new_name: new_name,
     folder: folder,
   };
-
 
   $.ajax({
     url: "/folder/rename",

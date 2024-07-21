@@ -1108,6 +1108,7 @@ html {
 .dropdown-menu .dropdown-item {
     opacity: 0;
     transition: opacity 0.1 ease;
+    cursor: pointer;
 }
 
 .dropdown-menu.active .dropdown-item {

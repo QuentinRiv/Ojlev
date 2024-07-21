@@ -188,6 +188,8 @@ def folder_rename():
     folder = data['folder']
     new_name = data['new_name']
 
+    print("\n\nData =", data)
+
     old_folder_name = 'ojlevapp/static/img/gallery/' + folder
     new_folder_name = 'ojlevapp/static/img/gallery/' + new_name
 
