@@ -119,7 +119,7 @@ $(window).on("load", function () {
     let folder_path = $(this).closest("div[data-image-path]").attr("data-image-path");
     let image_name = $(this).parent().children("img").attr("src").split("/").pop();
     console.log("=> ", image_name);
-    let image = $(this).parent().children("img");
+    var image = $(this).parent().children("img");
 
     $("#hiddenLoveImageInput").click();
 
@@ -132,6 +132,8 @@ $(window).on("load", function () {
             fileData.append("filename", image_name);
             fileData.append("path", folder_path);
 
+            console.log("Folder :", folder_path);
+
             // Envoie le fichier en AJAX à l'URL '/upload'
             $.ajax({
                 url: "/upload",
@@ -141,8 +143,11 @@ $(window).on("load", function () {
                 contentType: false,
                 success: function (response) {
                     console.log("Image uploaded successfully!");
+                    console.log("Image :", image);
+                    console.log("Chemin :", '../static/img/' + folder_path + '/' + image_name);
                     image.attr("src", '../static/img/' + folder_path + '/' + image_name); // Ajouter un timestamp pour éviter le cache
-                },
+                    location.reload();
+                  },
                 error: function (xhr, status, error) {
                     console.error("Failed to upload image:", error);
                 },
