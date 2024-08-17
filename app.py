@@ -13,3 +13,6 @@ logging.basicConfig(filename='app.log', level=logging.INFO,
 
 logging.info("Application has been restarted")
 # Plus besoin de app.run ici, Gunicorn s'en occupera
+
+# if __name__ == "__main__":
+#     app.run(debug=True)
