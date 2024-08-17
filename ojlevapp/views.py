@@ -71,6 +71,7 @@ def update_db():
 @login_required 
 @bp.route('/generate', methods=['GET'])
 def generate():
+    logging.info("Generate page")
     generate_user()
     generate_program()
     generate_partners()
