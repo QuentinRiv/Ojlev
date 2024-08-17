@@ -118,6 +118,7 @@ def delete_files_in_directory(directory):
 
 def generate_gallery():
 
+    logging.info('Generating gallery START')
     directory_gall = ".\\ojlevapp\\static\\img\\gallery"
     directory_thumb = ".\\ojlevapp\\static\\img\\thumb"
 
@@ -148,25 +149,33 @@ def generate_gallery():
                                       "weight" : file_weight, 
                                       'dimensions': f'{width} x {height}',
                                       "last_modification_date" : last_modification_date})
+
+    try:
+        Gallery.query.delete()
+        db.session.commit()
+    except:
+        logging.error("Error in deleting images")
+
+    try:
+        for image in files_with_parent:
+            img_gallery = Gallery(extension=image["extension"],
+                                image_name=image["image_name"],
+                                size=image["dimensions"],
+                                weight=image["weight"],
+                                parent_folder=image["parent_folder"],
+                                date=image["date"],
+                                thumb_top=0,
+                                thumb_left=0,
+                                thumb_right=500,
+                                thumb_bottom=368)
             
-    Gallery.query.delete()
-    db.session.commit()
+            db.session.add(img_gallery)
 
-    for image in files_with_parent:
-        img_gallery = Gallery(extension=image["extension"],
-                              image_name=image["image_name"],
-                              size=image["dimensions"],
-                              weight=image["weight"],
-                              parent_folder=image["parent_folder"],
-                              date=image["date"],
-                              thumb_top=0,
-                              thumb_left=0,
-                              thumb_right=500,
-                              thumb_bottom=368)
-        
-        db.session.add(img_gallery)
+        db.session.commit()
+    except:
+        logging.error("Error in uploading images")
 
-    db.session.commit()
+    logging.info('Generating gallery END')
 
     return files_with_parent
 
