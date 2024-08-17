@@ -31,6 +31,11 @@
         transition: none;
     }
 
+    body.dark .header .navbar {
+        background: none;
+        background-color: black;
+    }
+
     .header .navbar.active {
         transform: scale(1);
         opacity: 1;
