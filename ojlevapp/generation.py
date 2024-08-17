@@ -106,15 +106,16 @@ def generate_program():
     return "ok", 202
 
 def delete_files_in_directory(directory):
-        for filename in os.listdir(directory):
-            file_path = os.path.join(directory, filename)
-            try:
-                if os.path.isfile(file_path) or os.path.islink(file_path):
-                    os.unlink(file_path)  # Supprimer les fichiers et les liens symboliques
-                elif os.path.isdir(file_path):
-                    shutil.rmtree(file_path)  # Supprimer les sous-dossiers
-            except Exception as e:
-                print(f'Failed to delete {file_path}. Reason: {e}')
+    for filename in os.listdir(directory):
+        file_path = os.path.join(directory, filename)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)  # Supprimer les fichiers et les liens symboliques
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)  # Supprimer les sous-dossiers
+        except Exception as e:
+            logging.error(f'Failed to delete {file_path}. Reason: {e}')
+    logging.info(f"Files deleted in {directory}")
 
 def generate_gallery():
 
