@@ -28,9 +28,9 @@ def index():
 
     # User connecté ?
     if(current_user.is_authenticated):
-        logging.info("\nYou are authenticated\n")
+        logging.info("You are authenticated")
     else:
-        logging.warning("\nYou are not authenticated\n")
+        logging.warning("You are not authenticated")
     return render_template('index.html', connected=current_user.is_authenticated, groom=groom, bride=bride, stories=stories, programs=programs, groomsmen=groomsmen, bridesmaids=bridesmaids, diapo=diapo, galleries=galleries, folders=folders)
 
 
