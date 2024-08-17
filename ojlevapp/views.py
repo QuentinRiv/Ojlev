@@ -72,7 +72,7 @@ def update_db():
 @bp.route('/generate', methods=['GET'])
 def generate():
     logging.info("Generate page")
-    generate_user()
+    # generate_user()
     generate_program()
     generate_partners()
     generate_story()
