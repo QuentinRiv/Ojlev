@@ -11,4 +11,5 @@ app.debug = True
 logging.basicConfig(filename='app.log', level=logging.INFO,
                     format='%(asctime)s %(levelname)s: %(message)s [in %(filename)s:%(lineno)d]')
 
+logging.info("Application has been restarted")
 # Plus besoin de app.run ici, Gunicorn s'en occupera
