@@ -351,3 +351,4 @@ You are not authenticated
 2024-08-17 11:21:16,241 INFO: 127.0.0.1 - - [17/Aug/2024 11:21:16] "[36mGET /static/img/gallery/large/2.jpg HTTP/1.1[0m" 304 - [in _internal.py:96]
 2024-08-17 11:22:23,585 INFO:  * Detected change in 'C:\\Users\\qrivolla\\Desktop\\Informatique\\Dev\\Ojlev\\app.py', reloading [in _internal.py:96]
 2024-08-17 11:22:23,797 INFO:  * Restarting with stat [in _internal.py:96]
+2024-08-17 11:22:25,512 INFO: Application has been restarted [in app.py:14]
