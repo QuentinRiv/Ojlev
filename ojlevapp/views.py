@@ -68,8 +68,8 @@ def update_db():
 
 
 
-@login_required 
 @bp.route('/generate', methods=['GET'])
+@login_required 
 def generate():
     logging.info("Generate page")
     # generate_user()
@@ -78,7 +78,7 @@ def generate():
     generate_story()
     generate_witness()
     generate_gallery()
-    # generate_admin()
+    generate_admin()
     logging.info("Finish generate page")
     return "ok", 200
 
