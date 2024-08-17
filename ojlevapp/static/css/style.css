@@ -1019,4 +1019,5 @@ body.dark .couple-section .couple:nth-child(2)::before {
 
 body.dark .header.fixed {
     border-color: transparent;
+    background-color: black;
 }
