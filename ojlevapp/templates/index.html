@@ -35,7 +35,7 @@
 
           <div class="logo">
             {% if connected %}
-            <a id="name_connected" href="index.html"  data-scroll-nav="0">M & N</a>
+            <a id="name_connected" href="index.html"  data-scroll-nav="0">{{ groom['first_name'][0] }} & {{ bride['first_name'][0] }}</a>
             {% else %}
             <a href="index.html"  data-scroll-nav="0">M & N</a>
             {% endif %}
@@ -71,7 +71,7 @@
         <div class="container">
           <div class="row align-items-center">
             <div class="home-content">
-              <p>We are getting married</p>
+              <p>Nous nous sommes dit Oui</p>
               <h1>{{ groom['first_name'] }} & {{ bride['first_name'] }}</h1>
               <span >30 Feb 2024</span>
             </div>
@@ -171,7 +171,7 @@
       <div class="container">
         <div class="row">
           <div class="section-title">
-            <h2>Our Love Histoire</h2>
+            <h2>Notre Hisoire d'Amour</h2>
           </div>
         </div>
         <div class="row justify-content-center" data-image-path="\story">
@@ -220,7 +220,7 @@
         <div class="container">
             <div class="row">
                 <div class="section-title">
-                    <h2>Celebrate our Love</h2>
+                    <h2>Venez célebrer ce moment</h2>
                 </div>
             </div>
             <div class="row justify-content-center ">
@@ -261,8 +261,8 @@
         </div>
         <div class="row">
           <div class="witness-filter">
-            <a href="javascricpt:void(0)" class="filter-btn" data-target="Groomsman" data-image-path="\witness\groomsmen">Groomsmen</a>
-            <a href="javascricpt:void(0)" class="filter-btn active" data-target="Bridesmaid" data-image-path="\witness\bridesmaids">Bridesmaid</a>
+            <a href="javascricpt:void(0)" class="filter-btn" data-target="Groomsman" data-image-path="\witness\groomsmen">Garçon d'honneur</a>
+            <a href="javascricpt:void(0)" class="filter-btn active" data-target="Bridesmaid" data-image-path="\witness\bridesmaids">Demoiselles d'honneur</a>
           </div>
         </div>
         <!-- groomsmen  start -->
@@ -327,7 +327,7 @@
       <div class="container">
         <div class="row">
           <div class="section-title">
-            <h2>Our Memories</h2>
+            <h2>Nos Souvenirs</h2>
           </div>
         </div>
 
@@ -398,7 +398,7 @@
     </div>
 
     <!-- rsvp section start -->
-    <section class="rsvp-section" data-scroll-nav="6">
+    <section class="rsvp-section" data-scroll-nav="6" display="none">
       <div class="container">
         <div class="row">
           <div class="section-title">
@@ -466,7 +466,7 @@
                 {{ bride['first_name'] }}
               </h2>
             </div>
-            <p>Thank you</p>
+            <p>Merci</p>
           </div>
         </div>
       </div>
