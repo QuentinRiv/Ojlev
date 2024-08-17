@@ -656,6 +656,10 @@ body {
     background-color: #ffffff;
     padding: 15px;
     text-align: center; 
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .witness-section .witness-item-inner img {
