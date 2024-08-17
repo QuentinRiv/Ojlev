@@ -9,6 +9,7 @@ from .generation import *
 from .controller import *
 from PIL import Image
 from pathlib import Path
+import logging
 
 bp = Blueprint('main', __name__)
 
@@ -27,9 +28,9 @@ def index():
 
     # User connecté ?
     if(current_user.is_authenticated):
-        print("\nYou are authenticated\n")
+        logging.info("\nYou are authenticated\n")
     else:
-        print("\nYou are not authenticated\n")
+        logging.warning("\nYou are not authenticated\n")
     return render_template('index.html', connected=current_user.is_authenticated, groom=groom, bride=bride, stories=stories, programs=programs, groomsmen=groomsmen, bridesmaids=bridesmaids, diapo=diapo, galleries=galleries, folders=folders)
 
 
