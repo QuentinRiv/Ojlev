@@ -11,7 +11,7 @@ from .gallery_controller import get_last_modified_time
 from werkzeug.security import generate_password_hash, check_password_hash
 
 def generate_user():
-    url = 'http://127.0.0.1:5000/signup'  # Assurez-vous que l'URL est correcte et accessible
+    url = '/signup'  # Assurez-vous que l'URL est correcte et accessible
     data = {
         'email': 'Jean@email.com',
         'name': 'Jean',
