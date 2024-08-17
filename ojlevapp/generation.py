@@ -9,6 +9,7 @@ from datetime import datetime
 from PIL import Image
 from .gallery_controller import get_last_modified_time
 from werkzeug.security import generate_password_hash, check_password_hash
+import logging
 
 def generate_user():
     url = '/signup'  # Assurez-vous que l'URL est correcte et accessible
@@ -21,9 +22,9 @@ def generate_user():
     response = requests.post(url, json=data)
 
     if response.status_code == 202:
-        print('Request was successful with status 202')
+        logging.info('Generate user successfull')
     else:
-        print(f'Request failed with status {response.status_code}')
+        logging.error(f'Request failed with status {response.status_code}')
 
     return
 
@@ -33,13 +34,19 @@ def generate_witness():
 
     side = ["Groomsman", "Groomsman", "Groomsman", "Bridesmaid", "Bridesmaid", "Bridesmaid", ]
     full_name = ["John Doe", "Tim Allan", "Bill Something", "Maria Carey", "Jane Dae", "Someone"]
-    for i in range(len(full_name)):
-        witness = Witness(  id=i,
-                            side=side[i], 
-                            full_name=full_name[i],
-                            description="Best Friend")
-        db.session.add(witness)
-        db.session.commit()
+    try:
+        for i in range(len(full_name)):
+            witness = Witness(  id=i,
+                                side=side[i], 
+                                full_name=full_name[i],
+                                description="Best Friend")
+            db.session.add(witness)
+            db.session.commit()
+    except:
+        logging.error("Generate witness failed")
+    
+    logging.info('Generate witness successfull')
+
         
     return "ok", 202
 
