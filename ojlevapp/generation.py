@@ -120,8 +120,8 @@ def delete_files_in_directory(directory):
 def generate_gallery():
 
     logging.info('Generating gallery START')
-    directory_gall = ".\\ojlevapp\\static\\img\\gallery"
-    directory_thumb = ".\\ojlevapp\\static\\img\\thumb"
+    directory_gall = "./ojlevapp/static/img/gallery"
+    directory_thumb = "./ojlevapp/static/img/thumb"
 
     # Supprimer les fichiers dans directory_gall
     delete_files_in_directory(directory_gall)
@@ -129,15 +129,15 @@ def generate_gallery():
 
     files_with_parent = []
 
-    shutil.copytree(".\\ojlevapp\\static\\img\\other\\large", ".\\ojlevapp\\static\\img\\gallery\\large")
-    shutil.copytree(".\\ojlevapp\\static\\img\\other\\thumb", ".\\ojlevapp\\static\\img\\thumb\\large")
+    shutil.copytree("./ojlevapp/static/img/other/large", "./ojlevapp/static/img/gallery/large")
+    shutil.copytree("./ojlevapp/static/img/other/thumb", "./ojlevapp/static/img/thumb/large")
 
-    for dirpath, _, filenames in os.walk(".\\ojlevapp\\static\\img\\gallery\\"):
+    for dirpath, _, filenames in os.walk("./ojlevapp/static/img/gallery/"):
         for filename in filenames:
             image_name = filename.split(".")[0]
             extension = filename.split(".")[-1]
             full_path = os.path.join(dirpath, filename)
-            parent = dirpath.split("\\")[-1]
+            parent = dirpath.split("/")[-1]
             file_weight = round(os.path.getsize(full_path) / 1024)
             mod_time = os.path.getmtime(full_path)
             last_modification_date = datetime.fromtimestamp(mod_time).strftime("%d %b %Y %H:%M")
