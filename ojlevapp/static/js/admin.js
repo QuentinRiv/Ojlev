@@ -53,7 +53,7 @@ $(window).on("load", function () {
   // Champs modifiables END
 
 
-  // Ajout d'un nouvel élément pour Diapo, Witness et Story
+  // Ajout d'un nouvel élément pour Diapo, Témoin et Histoire
   function new_elem(element) {
     let newStep = $(element);
 
@@ -82,7 +82,7 @@ $(window).on("load", function () {
       url: "/story/new",
       type: "GET",
       success: function (response) {
-        console.log("Story added successfully!");
+        console.log("Histoire added successfully!");
         // location.reload();
       },
       error: function (xhr, status, error) {
@@ -99,7 +99,7 @@ $(window).on("load", function () {
       url: "/story/remove",
       type: "GET",
       success: function (response) {
-        console.log("Story removed successfully!");
+        console.log("Histoire removed successfully!");
         location.reload();
       },
       error: function (xhr, status, error) {
@@ -109,7 +109,7 @@ $(window).on("load", function () {
   });
   // Ajout/Retrait d'une histoire END
 
-  // Upload d'une image Witness START
+  // Upload d'une image Témoin START
   // var id = "";
   // var folder_path = "";
   // var image_name = "";
@@ -158,7 +158,7 @@ $(window).on("load", function () {
     });
 });
 
-  // Upload d'une image Story FIN
+  // Upload d'une image Histoire FIN
 
   // Ajout/Retrait d'une histoire START
   // Ajout
@@ -172,7 +172,7 @@ $(window).on("load", function () {
       url: "/witness/new?side=" + side,
       type: "GET",
       success: function (response) {
-        console.log("Witness added successfully!");
+        console.log("Témoin added successfully!");
       },
       error: function (xhr, status, error) {
         console.error("Failed to add witness:", error);
@@ -189,7 +189,7 @@ $(window).on("load", function () {
       url: "/witness/remove?side=" + side,
       type: "GET",
       success: function (response) {
-        console.log("Witness removed successfully!");
+        console.log("Témoin removed successfully!");
         // location.reload();
       },
       error: function (xhr, status, error) {
@@ -214,7 +214,7 @@ $(window).on("load", function () {
       url: "/slide/new",
       type: "GET",
       success: function (response) {
-        console.log("Story added successfully!");
+        console.log("Histoire added successfully!");
         var image_path = elem.find("img").attr("src"); // Ajouter un timestamp pour éviter le cache
         elem.find("img").attr("src", image_path);
       },
@@ -242,7 +242,7 @@ function remove_img(container) {
     type: "POST",
     data: { folder_path: folder_path },
     success: function (response) {
-      console.log("Witness removed successfully!");
+      console.log("Témoin removed successfully!");
       // location.reload();
     },
     error: function (xhr, status, error) {

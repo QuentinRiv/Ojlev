@@ -72,7 +72,7 @@ $(document).ready( function() {
     $(".filter-img[data-target='" + target + "']").addClass("active");
   }
 
-  // Big Gallery
+  // Big Photos
   const wHeight = $(window).height();
   $(".gallery-popup .gp-img").css("max-height", wHeight + "px");
 
