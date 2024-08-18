@@ -187,7 +187,8 @@ class Gallery(db.Model):
             logging.info(f"Old image '{old_name}' existe ? : {os.path.exists(old_name)}")
             logging.info(f"old_name : {old_name}")
             logging.info(f"new_name : {new_name}")
-            shutil.move(old_name, new_name)
+            dest = shutil.move(old_name, new_name)
+            logging.info(f"dest : {dest}")
         except FileNotFoundError:
             raise Exception(f'The file {old_name} does not exist')
         except PermissionError:
