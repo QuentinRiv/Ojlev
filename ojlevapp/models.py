@@ -184,6 +184,8 @@ class Gallery(db.Model):
         if os.path.exists(new_name):
             raise Exception("Careful: image with that name already existing")
         try:
+            logging.info(f"old_name : {old_name}")
+            logging.info(f"new_name : {new_name}")
             shutil.move(old_name, new_name)
             print("Old image existe ? : ", os.path.exists(old_name))
         except FileNotFoundError:
