@@ -80,7 +80,6 @@ def generate():
     generate_story()
     generate_witness()
     generate_gallery()
-    generate_admin()
     logging.info("Finish generate page")
     return "ok", 200
 
