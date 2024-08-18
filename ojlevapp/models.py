@@ -160,6 +160,11 @@ class Gallery(db.Model):
         old_gallery_path = img_server + self.gallery_path()
         new_gallery_path = old_gallery_path.replace(self.parent_folder, new_parent_folder, 1)
         self._rename_file(old_gallery_path, new_gallery_path)
+
+        old_thumb_path = img_server + self.thumb_path()
+        new_thumb_path = old_thumb_path.replace(self.parent_folder, new_parent_folder, 1)
+        self._rename_file(old_thumb_path, new_thumb_path)
+
         self.parent_folder = new_parent_folder
 
     def _rename_and_update_image_name(self, new_image_name):
