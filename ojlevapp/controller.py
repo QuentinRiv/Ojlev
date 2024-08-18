@@ -21,7 +21,7 @@ def dirfiles(path, category):
     directories = []
     files = []
     files_data = []
-    for (dirpath, dirnames, filenames) in os.walk(".\\ojlevapp\\static\\img\\gallery\\" + path):
+    for (dirpath, dirnames, filenames) in os.walk("./ojlevapp/static/img/gallery/" + path):
         directories.extend(dirnames)
         files.extend(filenames)
     
