@@ -84,6 +84,11 @@ def generate():
     return "ok", 200
 
 
+@bp.route('/generate_admin', methods=['GET'])
+def generate_administrator():
+    generate_admin()
+    return "ok", 200
+
 @bp.route('/story/new', methods=['GET'])
 def new_story():
     high_id = len(Story.query.all())
