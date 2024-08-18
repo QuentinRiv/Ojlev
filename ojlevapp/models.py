@@ -181,14 +181,13 @@ class Gallery(db.Model):
         self.image_name = new_full_name
 
     def _rename_file(self, old_name, new_name):
+        logging.info(f"old_name : {old_name}")
+        logging.info(f"new_name : {new_name}")
         if os.path.exists(new_name):
             raise Exception("Careful: image with that name already existing")
         try:
             logging.info(f"Old image '{old_name}' existe ? : {os.path.exists(old_name)}")
-            logging.info(f"old_name : {old_name}")
-            logging.info(f"new_name : {new_name}")
             dest = shutil.move(old_name, new_name)
-            logging.info(f"dest : {dest}")
         except FileNotFoundError:
             raise Exception(f'The file {old_name} does not exist')
         except PermissionError:
@@ -196,6 +195,7 @@ class Gallery(db.Model):
         except Exception as e:
             raise Exception(f'An error occurred: {e}')
         logging.info(f"File renamed, from '{old_name}' to '{new_name}'")
+        return
 
 def delete_image(mapper, connection, target):
     image_path = target.gallery_path()
