@@ -56,11 +56,11 @@ def generate_partners():
     Couple.query.delete()
     db.session.commit()
     partner1 = Couple(id=1, 
-                       full_name="David Beckham" ,
-                       description="A very nice footballer")
+                       full_name="Nicolas Abc" ,
+                       description="Description of the future husband")
     partner2 = Couple(id=2, 
-                       full_name="Victoria Beckham", 
-                       description="A very nice singer")
+                       full_name="Mélanie Xyz", 
+                       description="Description of the future married")
 
     # add the new user to the database
     db.session.add(partner1)
@@ -119,7 +119,6 @@ def delete_files_in_directory(directory):
 
 def generate_gallery():
 
-    logging.info('Generating gallery START')
     directory_gall = "./ojlevapp/static/img/gallery"
     directory_thumb = "./ojlevapp/static/img/thumb"
 
@@ -176,7 +175,6 @@ def generate_gallery():
     except:
         logging.error("Error in uploading images")
 
-    logging.info('Generating gallery END')
 
     return files_with_parent
 
