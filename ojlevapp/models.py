@@ -5,6 +5,7 @@ from sqlalchemy import event
 from flask import current_app
 from . import db
 import os, re, string
+import logging
 from datetime import datetime, timedelta
 
 img_server = 'ojlevapp/static/img'
@@ -191,6 +192,7 @@ class Gallery(db.Model):
             raise Exception(f'Permission denied to rename {old_name}')
         except Exception as e:
             raise Exception(f'An error occurred: {e}')
+        logging.info(f"File renamed, from '{old_name}' to '{new_name}'")
         
 def delete_image(mapper, connection, target):
     image_path = target.gallery_path()
