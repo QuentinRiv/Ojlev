@@ -4,7 +4,7 @@ from sqlalchemy.orm import validates
 from sqlalchemy import event
 from flask import current_app
 from . import db
-import os, re, string
+import os, re, shutil
 import logging
 from datetime import datetime, timedelta
 
@@ -184,7 +184,7 @@ class Gallery(db.Model):
         if os.path.exists(new_name):
             raise Exception("Careful: image with that name already existing")
         try:
-            os.rename(old_name, new_name)
+            shutil.move(old_name, new_name)
             print("Old image existe ? : ", os.path.exists(old_name))
         except FileNotFoundError:
             raise Exception(f'The file {old_name} does not exist')
@@ -193,7 +193,7 @@ class Gallery(db.Model):
         except Exception as e:
             raise Exception(f'An error occurred: {e}')
         logging.info(f"File renamed, from '{old_name}' to '{new_name}'")
-        
+
 def delete_image(mapper, connection, target):
     image_path = target.gallery_path()
     absolute_path = img_server + image_path
