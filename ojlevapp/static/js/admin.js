@@ -133,7 +133,6 @@ $(window).on("load", function () {
             fileData.append("path", folder_path);
 
             console.log("Folder :", folder_path);
-            console.log("path :", path);
             console.log("image_name :", image_name);
 
             // Envoie le fichier en AJAX à l'URL '/upload'
