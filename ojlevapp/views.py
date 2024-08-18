@@ -43,6 +43,8 @@ def upload_file():
     file = request.files['image']
     filename = request.form['filename']
     path = "./ojlevapp/static/img/" + request.form['path']
+    logging.info(f"Path de data : {request.form['path']}")
+    logging.info(f"Path total : {path}")
 
     if file.filename == '':
         return redirect(request.url)
