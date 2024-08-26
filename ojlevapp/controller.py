@@ -66,11 +66,14 @@ def update_database(data):
     id = data['id']
     attribute_name = data['attribute_name']
     new_value = data['new_value']
+    print("Table =", table)
     # Need : Table, id, key, value
     if (table == "Program"): tablequery = db.session.query(Program)
     if (table == "Story"): tablequery = db.session.query(Story)
     if (table == "Couple"): tablequery = db.session.query(Couple)
     if (table == "Witness"): tablequery = db.session.query(Witness)
+    else:
+        raise Exception("Gros problème avec tablequery")
 
     element = tablequery.filter_by(id=id).first()
 

@@ -6,3 +6,4 @@ SECRET_KEY = 'dev'
 FLASK_DEBUG=1
 UPLOAD_FOLDER = 'ojlevapp/static/img'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'PNG'}
+SQLALCHEMY_TRACK_MODIFICATIONS = False
