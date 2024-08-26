@@ -121,21 +121,8 @@
           </div>
         </div>
         <div class="row" data-image-path="couple">
+          
           <div class="couple item" data-index="1">
-            <div class="image-container">
-              <img
-                id="groomImg"
-                src="../static/img/couple/groom.png"
-                alt="Click here to upload image"
-              />
-              <div class="update_image" id="groom">
-                <i class="fas fa-camera"></i>
-              </div>
-            </div>
-            <h3 name="full_name" class="editable">{{ groom['first_name'] }} {{ groom['last_name'] }}</h3>
-            <p name="description" class="editable">{{ groom['description'] }}</p>
-          </div>
-          <div class="couple item" data-index="2">
             <i class="fas fa-heart"></i>
             <div class="image-container">
                 <input type="file" id="hiddenImageInput" style="display: none;" name="image">
@@ -150,6 +137,16 @@
               </div>
               <h3 name="full_name" class="editable">{{ bride['first_name'] }} {{ bride['last_name'] }}</h3>
               <p name="description" class="editable"> {{ bride['description'] }}</p>
+          </div>
+          <div class="couple item" data-index="2">
+            <div class="image-container">
+              <img id="groomImg" src="../static/img/couple/groom.png" alt="Click here to upload image" />
+              <div class="update_image" id="groom">
+                <i class="fas fa-camera"></i>
+              </div>
+            </div>
+            <h3 name="full_name" class="editable">{{ groom['first_name'] }} {{ groom['last_name'] }}</h3>
+            <p name="description" class="editable">{{ groom['description'] }}</p>
           </div>
         </div>
       </div>
