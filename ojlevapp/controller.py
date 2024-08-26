@@ -69,10 +69,14 @@ def update_database(data):
     new_value = data['new_value']
     logging.info(f"Table = {table}")
     # Need : Table, id, key, value
-    if (table == "Program"): tablequery = db.session.query(Program)
-    if (table == "Story"): tablequery = db.session.query(Story)
-    if (table == "Couple"): tablequery = db.session.query(Couple)
-    if (table == "Witness"): tablequery = db.session.query(Witness)
+    if (table == "Program"):
+        tablequery = db.session.query(Program)
+    elif (table == "Story"):
+        tablequery = db.session.query(Story)
+    elif (table == "Couple"):
+        tablequery = db.session.query(Couple)
+    elif (table == "Witness"):
+        tablequery = db.session.query(Witness)
     else:
         raise Exception("Gros problème avec tablequery")
 
