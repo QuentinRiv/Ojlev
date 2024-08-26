@@ -167,13 +167,13 @@ def remove_witness():
 def remove_lastimage():
     data = request.form.to_dict()
     logging.info(f"{data}")
-    logging.info("./ojlevapp/static/img" + data["folder_path"])
-    logging.info("./ojlevapp/static/img" + data["folder_path"] + "/" + diapo[-1])
+    logging.info("./ojlevapp/static/img/" + data["folder_path"])
+    logging.info("./ojlevapp/static/img/" + data["folder_path"] + "/" + diapo[-1])
     print(data)
 
     try:
-        diapo = os.listdir("./ojlevapp/static/img" + data["folder_path"])
-        os.remove("./ojlevapp/static/img" + data["folder_path"] + "/" + diapo[-1])
+        diapo = os.listdir("./ojlevapp/static/img/" + data["folder_path"])
+        os.remove("./ojlevapp/static/img/" + data["folder_path"] + "/" + diapo[-1])
     except Exception as e:
         print("Problème pour supprimer l'image dans " + data["folder_path"])
         return "ERROR for the image deletion", 500
