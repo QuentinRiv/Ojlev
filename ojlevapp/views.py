@@ -168,11 +168,10 @@ def remove_lastimage():
     data = request.form.to_dict()
     logging.info(f"{data}")
     logging.info("./ojlevapp/static/img/" + data["folder_path"])
-    logging.info("./ojlevapp/static/img/" + data["folder_path"] + "/" + diapo[-1])
-    print(data)
 
     try:
         diapo = os.listdir("./ojlevapp/static/img/" + data["folder_path"])
+        logging.info("./ojlevapp/static/img/" + data["folder_path"] + "/" + diapo[-1])
         logging.info(diapo)
         
         os.remove("./ojlevapp/static/img/" + data["folder_path"] + "/" + diapo[-1])
