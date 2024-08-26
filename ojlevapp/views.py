@@ -166,6 +166,10 @@ def remove_witness():
 @bp.route('/remove_lastimage', methods=['POST'])
 def remove_lastimage():
     data = request.form.to_dict()
+    logging.info(f"{data}")
+    logging.info("./ojlevapp/static/img" + data["folder_path"])
+    logging.info("./ojlevapp/static/img" + data["folder_path"] + "/" + diapo[-1])
+    print(data)
 
     try:
         diapo = os.listdir("./ojlevapp/static/img" + data["folder_path"])
