@@ -100,7 +100,7 @@ $(window).on("load", function () {
       type: "GET",
       success: function (response) {
         console.log("Histoire removed successfully!");
-        window.location.replace(window.location.href)
+        window.location.href = window.location.href + "?t=" + new Date().getTime();
       },
       error: function (xhr, status, error) {
         console.error("Failed to remove story:", error);
@@ -147,7 +147,7 @@ $(window).on("load", function () {
                     console.log("Image :", image);
                     console.log("Chemin :", '../static/img/' + folder_path + '/' + image_name);
                     image.attr("src", '../static/img/' + folder_path + '/' + image_name); // Ajouter un timestamp pour éviter le cache
-                    window.location.replace(window.location.href)
+                    window.location.href = window.location.href + "?t=" + new Date().getTime();
                   },
                 error: function (xhr, status, error) {
                     console.error("Failed to upload image:", error);
