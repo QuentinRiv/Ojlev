@@ -525,6 +525,7 @@ body {
     line-height: 26px;
     margin: 0;
     color: #555555;
+    text-align: justify;
 }
 
 /* event section */
