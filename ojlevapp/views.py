@@ -126,7 +126,7 @@ def slide_remove():
 
     diapo = os.listdir('./ojlevapp/static/img/slides')
     print("Diapo :", diapo)
-    os.remove('./ojlevapp/static/img/slides/' + diapo[-1])
+    os.remove('./ojlevapp/static/img/slides' + diapo[-1])
 
     return redirect(url_for("main.index"))
 
