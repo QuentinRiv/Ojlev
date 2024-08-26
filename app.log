@@ -147,3 +147,7 @@
 2024-08-26 21:32:27,603 INFO:  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit) [in _internal.py:225]
 2024-08-26 21:32:49,187 INFO:  * Detected change in 'C:\\Users\\quent\\Desktop\\Dev\\Ojlev\\ojlevapp\\controller.py', reloading [in _internal.py:225]
 2024-08-26 21:32:50,003 INFO:  * Restarting with stat [in _internal.py:225]
+2024-08-26 21:32:54,265 INFO: Application has been restarted [in app.py:15]
+2024-08-26 21:32:54,295 WARNING:  * Debugger is active! [in _internal.py:225]
+2024-08-26 21:32:54,305 INFO:  * Debugger PIN: 957-286-548 [in _internal.py:225]
+2024-08-26 21:32:54,514 INFO:  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit) [in _internal.py:225]

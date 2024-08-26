@@ -60,13 +60,14 @@ def dirfiles(path, category):
         return sorted_files_data
 
     raise ValueError("Wrong type of category")
-    
+
+import logging  
 def update_database(data):
     table = data['table']
     id = data['id']
     attribute_name = data['attribute_name']
     new_value = data['new_value']
-    print("Table =", table)
+    logging.info(f"Table = {table}")
     # Need : Table, id, key, value
     if (table == "Program"): tablequery = db.session.query(Program)
     if (table == "Story"): tablequery = db.session.query(Story)
