@@ -173,6 +173,8 @@ def remove_lastimage():
 
     try:
         diapo = os.listdir("./ojlevapp/static/img/" + data["folder_path"])
+        logging.info(diapo)
+        
         os.remove("./ojlevapp/static/img/" + data["folder_path"] + "/" + diapo[-1])
     except Exception as e:
         print("Problème pour supprimer l'image dans " + data["folder_path"])
