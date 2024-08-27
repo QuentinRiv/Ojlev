@@ -72,7 +72,7 @@
           <div class="row align-items-center">
             <div class="home-content">
               <p>Nous nous marions !</p>
-              <h1>{{ groom['first_name'] }} & {{ bride['first_name'] }}</h1>
+              <h1>{{ bride['first_name'] }} & {{ groom['first_name'] }}</h1>
               <span >7 Sept 2024</span>
             </div>
           </div>
@@ -121,21 +121,8 @@
           </div>
         </div>
         <div class="row" data-image-path="couple">
+          
           <div class="couple item" data-index="1">
-            <div class="image-container">
-              <img
-                id="groomImg"
-                src="../static/img/couple/groom.png"
-                alt="Click here to upload image"
-              />
-              <div class="update_image" id="groom">
-                <i class="fas fa-camera"></i>
-              </div>
-            </div>
-            <h3 name="full_name" class="editable">{{ groom['first_name'] }} {{ groom['last_name'] }}</h3>
-            <p name="description" class="editable">{{ groom['description'] }}</p>
-          </div>
-          <div class="couple item" data-index="2">
             <i class="fas fa-heart"></i>
             <div class="image-container">
                 <input type="file" id="hiddenImageInput" style="display: none;" name="image">
@@ -151,20 +138,30 @@
               <h3 name="full_name" class="editable">{{ bride['first_name'] }} {{ bride['last_name'] }}</h3>
               <p name="description" class="editable"> {{ bride['description'] }}</p>
           </div>
+          <div class="couple item" data-index="2">
+            <div class="image-container">
+              <img id="groomImg" src="../static/img/couple/groom.png" alt="Click here to upload image" />
+              <div class="update_image" id="groom">
+                <i class="fas fa-camera"></i>
+              </div>
+            </div>
+            <h3 name="full_name" class="editable">{{ groom['first_name'] }} {{ groom['last_name'] }}</h3>
+            <p name="description" class="editable">{{ groom['description'] }}</p>
+          </div>
         </div>
       </div>
     </section>
     <!-- couple section end -->
 
     <!-- story section start -->
-    <section class="story-section" data-db="Histoire" data-scroll-nav="2">
+    <section class="story-section" data-db="Story" data-scroll-nav="2">
       <div class="container">
         <div class="row">
           <div class="section-title">
             <h2>Notre Hisoire d'Amour</h2>
           </div>
         </div>
-        <div class="row justify-content-center" data-image-path="\story">
+        <div class="row justify-content-center" data-image-path="story">
           <div class="story-content">
             <div class="row justify-content-center">
               <!-- story item start -->
@@ -242,7 +239,7 @@
     <!-- Event section end -->
 
     <!-- witness section start -->
-    <section class="witness-section" data-db="Témoin" data-scroll-nav="4">
+    <section class="witness-section" data-db="Witness" data-scroll-nav="4">
       <div class="container">
         <div class="row">
           <div class="section-title">
@@ -378,12 +375,12 @@
       <!-- Clair / Sombre mode -->
       <h4>Mode</h4>
       <label>
-        <input type="radio" name="ld" value="Clair" class="theme-mode">
-        Light
+        <input type="radio" name="ld" value="light" class="theme-mode">
+        Clair
       </label>
       <label>
-        <input type="radio" name="ld" value="Sombre" class="theme-mode">
-        Dark
+        <input type="radio" name="ld" value="dark" class="theme-mode">
+        Sombre
       </label>
     </div>
 

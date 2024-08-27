@@ -43,7 +43,7 @@ def get_directories():
         added = list(sorted(set(thumb_directories) - set(gallery_directories)))
         missing += added
 
-        raise Exception(f"Not the same directories between the DB, gallery and thumb folders (folder(s) {" - ".join(missing)} mising)")
+        raise Exception(f"Not the same directories between the DB, gallery and thumb folders (folder(s) {' - '.join(missing)} missing)")
     
 
 def allowed_file(extension):

@@ -125,7 +125,8 @@ def slide():
 def slide_remove():
 
     diapo = os.listdir('./ojlevapp/static/img/slides')
-    os.remove('./ojlevapp/static/img/slides/' + diapo[-1])
+    print("Diapo :", diapo)
+    os.remove('./ojlevapp/static/img/slides' + diapo[-1])
 
     return redirect(url_for("main.index"))
 
@@ -165,10 +166,15 @@ def remove_witness():
 @bp.route('/remove_lastimage', methods=['POST'])
 def remove_lastimage():
     data = request.form.to_dict()
+    logging.info(f"{data}")
+    logging.info("./ojlevapp/static/img/" + data["folder_path"])
 
     try:
-        diapo = os.listdir("./ojlevapp/static/img" + data["folder_path"])
-        os.remove("./ojlevapp/static/img" + data["folder_path"] + "/" + diapo[-1])
+        diapo = os.listdir("./ojlevapp/static/img/" + data["folder_path"])
+        logging.info("./ojlevapp/static/img/" + data["folder_path"] + "/" + diapo[-1])
+        logging.info(diapo)
+        
+        os.remove("./ojlevapp/static/img/" + data["folder_path"] + "/" + diapo[-1])
     except Exception as e:
         print("Problème pour supprimer l'image dans " + data["folder_path"])
         return "ERROR for the image deletion", 500
