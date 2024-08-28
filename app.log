@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 2024-08-26 21:20:36,907 INFO: Application has been restarted [in app.py:14]
 2024-08-26 21:20:58,551 INFO: Application has been restarted [in app.py:14]
 2024-08-26 21:23:27,218 INFO: Application has been restarted [in app.py:15]
@@ -425,3 +426,8 @@
 2024-08-28 19:25:13,490 WARNING:  * Debugger is active! [in _internal.py:225]
 2024-08-28 19:25:13,507 INFO:  * Debugger PIN: 957-286-548 [in _internal.py:225]
 2024-08-28 19:25:13,640 INFO:  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit) [in _internal.py:225]
+=======
+2024-08-28 17:26:32,284 INFO: Application has been restarted [in app.py:15]
+2024-08-28 17:26:32,479 INFO: Application has been restarted [in app.py:15]
+2024-08-28 17:26:32,524 INFO: Application has been restarted [in app.py:15]
+>>>>>>> 6150fbca80180fccb06ce9241a99081b0168e852
