@@ -7,7 +7,7 @@ env/
 __pycache__/
 
 # Ignorer les fichiers de logs
-*.log
+app.log
 *.db
 
 # Ignorer les fichiers de base de données SQLite
