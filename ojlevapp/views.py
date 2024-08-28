@@ -10,6 +10,9 @@ from .controller import *
 from PIL import Image
 from pathlib import Path
 import logging
+import sqlite3
+from flask import render_template, request, flash, redirect, url_for
+from flask_login import login_required
 
 bp = Blueprint('main', __name__)
 
@@ -161,6 +164,36 @@ def remove_witness():
         print("Aucun élément trouvé avec le critère spécifié.")
 
     return redirect(url_for("main.index"))
+
+@bp.route('/show_db', methods=['GET'])
+@login_required
+def show_db():
+    table_name = request.args.get('table')
+    print("Table :", table_name)
+    if not table_name:
+        flash('Le paramètre "table" est requis', 'danger')
+        return redirect(url_for('main.index'))
+
+    try:
+        # Connexion à la base de données SQLite (à adapter selon votre cas)
+        conn = sqlite3.connect('./data/app.db')
+        cursor = conn.cursor()
+
+        # Récupérer les données de la table spécifiée
+        cursor.execute(f"SELECT * FROM {table_name}")
+        rows = cursor.fetchall()
+
+        # Récupérer les noms des colonnes
+        column_names = [description[0] for description in cursor.description]
+
+    except sqlite3.Error as e:
+        flash(f'Erreur lors de la récupération des données: {e}', 'danger')
+        return redirect(url_for('main.index'))
+    finally:
+        conn.close()
+
+    # Rendre la page HTML avec les données récupérées
+    return render_template('show_db.html', table_name=table_name, rows=rows, column_names=column_names)
 
 # Supprime la dernière image d'un dossier
 @bp.route('/remove_lastimage', methods=['POST'])
