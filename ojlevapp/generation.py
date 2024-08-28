@@ -14,8 +14,8 @@ import logging
 def generate_user():
     url = '/signup'  # Assurez-vous que l'URL est correcte et accessible
     data = {
-        'email': 'Jean@email.com',
-        'name': 'Jean',
+        'email': 'Nicolas@email.com',
+        'name': 'Nicolas',
         'password': '1234'
     }
 

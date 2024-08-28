@@ -35,6 +35,8 @@ $(window).on("load", function () {
       new_value: text_value,
     };
 
+    console.log("Data =", data);
+
     // Requete pour la modif de la DB côté Flask
     $.ajax({
       url: "/update",
