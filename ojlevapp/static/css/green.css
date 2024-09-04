@@ -12,17 +12,17 @@ body.dark .header .navbar a.active,
 .header .navbar a.active,
 body.dark .header .navbar a:hover,
 .header .navbar a:hover {
-    color: #0dcebd;
+    color: #60a2e41f;
 } 
 
 .event-section .event-item-inner::before,
 .couple-section .social-links a i,
 .couple-section .couple img {
-    border-color: #0dcebd;
+    border-color: #60a2e41f;
 }
 
 .preloader .loader:before {
-    border-right-color: #0dcebd;
+    border-right-color: #60a2e41f;
 }
 
 .setting .s-toggle-btn,
@@ -33,7 +33,7 @@ body.dark .witness-section .filter-btn.active,
 .event-section,
 .couple-section .social-links a:hover i,
 .gallery-section .gallery_tag.active {
-    background-color: #0dcebd;
+    background-color: #60a2e41f;
 }
 
 .event-section .event-item-inner img,
