@@ -1,36 +1,36 @@
 
 
 const color = [
-    {
-        name: 'pink',
-        code: '#fb839e',
-        url: 'css/pink.css'
-    },
+  {
+    name: "pink",
+    code: "#fb839e",
+    url: "css/pink.css",
+  },
 
-    {
-        name: 'blue',
-        code: '#3e99f4',
-        url: 'css/blue.css'
-    },
+  {
+    name: "blue",
+    code: "#3e99f4",
+    url: "css/blue.css",
+  },
 
-    {
-        name: 'green',
-        code: '#0dcebd',
-        url: 'css/green.css'
-    },
+  {
+    name: "green",
+    code: "#60a2e41f",
+    url: "css/green.css",
+  },
 
-    {
-        name: 'red',
-        code: '#cc3a3b',
-        url: 'css/red.css'
-    },
+  {
+    name: "red",
+    code: "#cc3a3b",
+    url: "css/red.css",
+  },
 
-    {
-        name: 'yellow',
-        code: '#ff9801',
-        url: 'css/yellow.css'
-    }
-]
+  {
+    name: "yellow",
+    code: "#ff9801",
+    url: "css/yellow.css",
+  },
+];
 
 $(document).ready(function () {
     setColors();
