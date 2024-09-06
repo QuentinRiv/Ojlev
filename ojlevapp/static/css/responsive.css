@@ -78,6 +78,10 @@
 
 @media (max-width: 574px) {
 
+    .story-item .fa-heart{
+        top: -30px;
+    }
+
     .home-section .home-content h1 {
         font-size: 40px;
     }
