@@ -244,3 +244,16 @@ def folder_delete():
             return jsonify({'error': str(e)}), 409
 
     return jsonify({'message': "Folder successfully deleted!"}), 202
+
+@gallery_bp.route('/st_link', methods=['GET'])
+def submit_link_get():
+    return render_template('st_link.html')
+
+
+@gallery_bp.route('/st_link', methods=['POST'])
+def submit_link():
+    name = request.form['name']
+    url = request.form['url']
+    # Traiter les données reçues, par exemple, les enregistrer dans une base de données
+    print(f"Nom: {name}, URL: {url}")
+    return jsonify({"message": "Success"}), 200
