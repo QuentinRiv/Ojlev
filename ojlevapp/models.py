@@ -236,3 +236,13 @@ def update_date(mapper, connection, target):
     target.date = new_time.strftime("%d %b %Y %H:%M")
 # Attacher la fonction à l'événement before_update
 event.listen(Gallery, 'before_update', update_date)
+
+
+class ST_url(db.Model):
+    __tablename__ = 'st_url'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    username = db.Column(db.String(100))
+    url = db.Column(db.String(200))
+
+    def __str__(self):
+        return f"{self.url}"
