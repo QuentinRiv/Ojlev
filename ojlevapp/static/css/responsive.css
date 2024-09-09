@@ -12,6 +12,10 @@
 
 @media (max-width:920px){
 
+    .story-content .story-item i.fa-heart {
+            top: -30px;
+        }
+
     #menu-btn {
         display: initial;
     }
@@ -78,6 +82,10 @@
 
 @media (max-width: 574px) {
 
+    .story-content .story-item i.fa-heart {
+        top: -30px;
+    }
+
     .home-section .home-content h1 {
         font-size: 40px;
     }
@@ -89,6 +97,11 @@
 }
 
 @media (max-width: 767px) {
+
+    .story-content .story-item i.fa-heart {
+            top: -30px;
+        }
+
     .header .logo {
         padding: 8px 15px;
     }

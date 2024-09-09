@@ -25,7 +25,7 @@ def index():
     programs = Program.query.all()
     groomsmen = Witness.query.filter_by(side="Groomsman").all()
     bridesmaids = Witness.query.filter_by(side="Bridesmaid").all()
-    diapo = os.listdir('./ojlevapp/static/img/slides')
+    diapo = sorted(os.listdir('./ojlevapp/static/img/slides'))
     galleries = Gallery.query.all()
     folders = list(set([gallery.parent_folder for gallery in galleries]))
 

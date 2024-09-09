@@ -35,7 +35,7 @@
 
           <div class="logo">
             {% if connected %}
-            <a id="name_connected" href="index.html"  data-scroll-nav="0">{{ groom['first_name'][0] }} & {{ bride['first_name'][0] }}</a>
+            <a id="name_connected" href="index.html"  data-scroll-nav="0">{{ bride['first_name'][0] }} & {{ groom['first_name'][0] }}</a>
             {% else %}
             <a href="index.html"  data-scroll-nav="0">M & N</a>
             {% endif %}
@@ -87,7 +87,7 @@
         <div class="diapos">
           {% for path in diapo %}
           <div class="small_diapo_item item">
-            <img src={{"../static/img/slides/"+path}} class="diapo_img">
+            <img src={{"../static/img/slides/"+path}} class="diapo_img" loading="lazy">
             <input type="file" id="hiddenDiapoImageInput" style="display: none;" name="image">
             <div class="update_image" data-index={{loop.index0}}>
               <i class="fas fa-camera"></i>
@@ -129,7 +129,8 @@
                 <img
                   id="bride"
                   src="../static/img/couple/bride.png"
-                  alt="Click here to upload image"
+                  alt="Click here to upload image" 
+                  loading="lazy"
                 />
                 <div class="update_image" id="bride">
                   <i class="fas fa-camera"></i>
@@ -140,7 +141,7 @@
           </div>
           <div class="couple item" data-index="1">
             <div class="image-container">
-              <img id="groomImg" src="../static/img/couple/groom.png" alt="Click here to upload image" />
+              <img id="groomImg" src="../static/img/couple/groom.png" loading="lazy" alt="Click here to upload image" />
               <div class="update_image" id="groom">
                 <i class="fas fa-camera"></i>
               </div>
@@ -176,7 +177,8 @@
                 <div class="story-img">
                     <img
                     src={{"../static/img/story/"+story['image_name']}}
-                    alt="Click here to upload image"
+                    alt="Click here to upload image" 
+                    loading="lazy"
                   />
                   <input type="file" id="hiddenLoveImageInput" style="display: none;" name="image">
                   <div class="update_image">
@@ -218,7 +220,7 @@
                         <span name="date" class="editable">{{ programs[0]['date']}}</span>
                         <span name="time" class="editable">{{ programs[0]['time']}}</span>
                         <p name="description" class="editable">{{ programs[0]['description']}}</p>
-                        <img src="../static/img/icons/flower.svg" alt="Click here to upload image">
+                        <img src="../static/img/icons/flower.svg" loading="lazy" alt="Click here to upload image">
                     </div>
                 </div>
                 <!-- item end -->
@@ -229,7 +231,7 @@
                         <span name="date" class="editable">{{ programs[1]['date']}}</span>
                         <span name="time" class="editable">{{ programs[1]['time']}}</span>
                         <p name="description" class="editable">{{ programs[1]['description']}}</p>
-                        <img src="../static/img/icons/flower.svg" alt="Click here to upload image">
+                        <img src="../static/img/icons/flower.svg" loading="lazy" alt="Click here to upload image">
                     </div>
                 </div>
                 <!-- item end -->
@@ -259,7 +261,7 @@
           <div class="witness-item item" data-target="Groomsman" data-index={{groomsman['id']}}>
             <div class="witness-item-inner">
               <div class="witness-img">
-                <img src={{"../static/img/witness/groomsmen/groomsman_"+groomsman.id|string+".jpg"}} alt="Click here to upload image" class="updateable"
+                <img loading="lazy" src={{"../static/img/witness/groomsmen/groomsman_"+groomsman.id|string+".jpg"}} alt="Click here to upload image" class="updateable"
                  >
                 <div class="update_image">
                   <i class="fas fa-camera"></i>
@@ -281,7 +283,7 @@
           <div class="witness-item item" data-target="Bridesmaid" data-index={{bridesmaid['id']}}>
             <div class="witness-item-inner">
               <div class="witness-img">
-                  <img src={{"../static/img/witness/bridesmaids/bridesmaid_"+bridesmaid.id|string+".jpg"}} alt="Click here to upload image"
+                  <img loading="lazy" src={{"../static/img/witness/bridesmaids/bridesmaid_"+bridesmaid.id|string+".jpg"}} alt="Click here to upload image"
                   >
                   <div class="update_image">
                     <i class="fas fa-camera"></i>
@@ -330,7 +332,7 @@
           <!-- gallery item start -->
           <div class="gallery-item mix {{gallery.parent_folder}}">
             <div class="gallery-item-inner">
-              <img src={{"../static/img/thumb/"+gallery.parent_folder+"/"+gallery.image_name+"."+gallery.extension}} data-large={{"../static/img/gallery/"+gallery.parent_folder+"/"+gallery.image_name+"."+gallery.extension}} alt="couple gallery">
+              <img loading="lazy" src={{"../static/img/thumb/"+gallery.parent_folder+"/"+gallery.image_name+"."+gallery.extension}} data-large={{"../static/img/gallery/"+gallery.parent_folder+"/"+gallery.image_name+"."+gallery.extension}} alt="couple gallery">
             </div>
           </div>
           <!-- gallery item end -->
@@ -340,7 +342,7 @@
 
       <div class="row justify-content-center photo_gallery">
         <a href="/gallery" class="photo_library">
-          <img src="../static/img/morephoto.svg" alt="">
+          <img src="../static/img/morephoto.svg" loading="lazy" alt="">
           <p>Manage the photo gallery</p>
         </a>
       </div>
@@ -352,7 +354,7 @@
       <div class="gp-container">
         <div class="gp-counter"></div>
         <div class="gp-close">&times;</div>
-        <img src="../static/img/gallery/large/2.jpg" class="gp-img" alt="gallery img">
+        <img src="../static/img/gallery/large/2.jpg" loading="lazy" class="gp-img" alt="gallery img">
         <div class="gp-controls">
           <div class="prev">
             <i class="fas fa-angle-left"></i>
@@ -447,7 +449,7 @@
         <div class="row">
           <div class="footer-content">
             <div class="couple-name">
-              <img src="../static/img/flower-circle.png" alt="Wedding couple">
+              <img src="../static/img/flower-circle.png" loading="lazy" alt="Wedding couple">
               <h2>
                 {{ bride['first_name'] }}
                 <span>&</span>
