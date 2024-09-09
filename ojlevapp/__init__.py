@@ -1,6 +1,7 @@
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_migrate import Migrate
 
 # init SQLAlchemy so we can use it later in our models
 db = SQLAlchemy()
@@ -12,6 +13,7 @@ def create_app():
     app.config.from_pyfile('config.py')
 
     db.init_app(app)
+    migrate = Migrate(app, db)
 
     from .views import bp
     app.register_blueprint(bp)
