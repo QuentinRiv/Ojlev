@@ -20,3 +20,6 @@ app.log
 # Ignorer les fichiers générés par des tests
 .coverage
 pytest_cache/
+
+# Autre
+*.pyc
