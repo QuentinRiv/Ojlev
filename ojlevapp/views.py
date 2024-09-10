@@ -218,3 +218,31 @@ def remove_lastimage():
 def gallery():
     return render_template('souvenirs.html')
 
+@bp.route('/empty_db', methods=['GET'])
+@login_required
+def empty_db():
+    table_name = request.args.get('table')
+    print("Table :", table_name)
+    if not table_name:
+        flash('Le paramètre "table" est requis', 'danger')
+        return redirect(url_for('main.index'))
+
+    try:
+        # Connexion à la base de données SQLite (à adapter selon votre cas)
+        conn = sqlite3.connect('./data/app.db')
+        cursor = conn.cursor()
+
+        # Vider le contenu de la table spécifiée
+        cursor.execute(f"DELETE FROM {table_name}")
+
+        # Commit pour valider les changements
+        conn.commit()
+
+    except sqlite3.Error as e:
+        flash(f'Erreur lors de la récupération des données: {e}', 'danger')
+        return redirect(url_for('main.index'))
+    finally:
+        conn.close()
+
+    # Rendre la page HTML avec les données récupérées
+    return "Table emptied", 202
