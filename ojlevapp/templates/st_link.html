@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire Nom et URL</title>
+    
+    <!-- Import jQuery depuis le CDN -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- CSS de base -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            width: 300px;
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], input[type="url"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Soumettre un lien</h2>
+        <form id="linkForm">
+            <div class="form-group">
+                <label for="name">Nom</label>
+                <input type="text" id="name" name="name" placeholder="Entrez votre nom" required>
+            </div>
+            <div class="form-group">
+                <label for="url">URL</label>
+                <input type="url" id="url" name="url" placeholder="Entrez un lien URL" required>
+            </div>
+            <button type="submit" class="btn-submit">Envoyer</button>
+        </form>
+    </div>
+
+    <!-- Script jQuery pour gérer la soumission du formulaire -->
+    <script>
+        $(document).ready(function() {
+            $('#linkForm').on('submit', function(event) {
+                event.preventDefault(); // Empêche la soumission classique du formulaire
+
+                // Récupérer les valeurs des champs
+                var name = $('#name').val();
+                var url = $('#url').val();
+
+                // Envoyer les données avec une requête POST AJAX
+                $.ajax({
+                    type: 'POST',
+                    url: '/st_link',
+                    data: {
+                        name: name,
+                        url: url
+                    },
+                    success: function(response) {
+                        // Si la requête POST réussit, montrer une alerte et rediriger vers '/'
+                        alert('Lien soumis avec succès !');
+                        window.location.href = '/'; // Redirection vers la page d'accueil
+                    },
+                    error: function(xhr, status, error) {
+                        // En cas d'erreur
+                        alert('Erreur lors de la soumission du lien.');
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
