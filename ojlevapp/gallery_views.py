@@ -1,7 +1,7 @@
 from flask import render_template, request
 from flask import Blueprint, jsonify
 import os
-from .models import Gallery
+from .models import Gallery, ST_url
 from . import db
 from .generation import *
 from .controller import *
@@ -252,8 +252,30 @@ def submit_link_get():
 
 @gallery_bp.route('/st_link', methods=['POST'])
 def submit_link():
-    name = request.form['name']
-    url = request.form['url']
-    # Traiter les données reçues, par exemple, les enregistrer dans une base de données
-    print(f"Nom: {name}, URL: {url}")
-    return jsonify({"message": "Success"}), 200
+    # Récupération des données du formulaire
+    username = request.form.get('name')
+    url = request.form.get('url')
+
+    # Vérification des champs obligatoires
+    if not username or not url:
+        return jsonify({"error": "Les champs 'name' et 'url' sont obligatoires."}), 400
+
+    # Validation basique de l'URL (ajustable selon les besoins)
+    if not url.startswith('http://') and not url.startswith('https://'):
+        return jsonify({"error": "L'URL doit commencer par 'http://' ou 'https://'."}), 400
+
+    try:
+        # Créer une nouvelle instance de ST_url
+        new_url_entry = ST_url(username=username, url=url)
+        
+        # Ajouter à la session et sauvegarder dans la base de données
+        db.session.add(new_url_entry)
+        db.session.commit()
+
+        # Retourner une réponse JSON de succès
+        return jsonify({"message": "Lien ajouté avec succès !"}), 200
+
+    except Exception as e:
+        # En cas d'erreur (par exemple problème de base de données)
+        db.session.rollback()  # Rétablir les changements en cas d'échec
+        return jsonify({"error": f"Une erreur s'est produite : {str(e)}"}), 500
