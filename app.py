@@ -2,15 +2,15 @@
 import logging
 from dotenv import load_dotenv
 load_dotenv()  # Cela charge les variables d'environnement depuis le fichier .env
-from flask_compress import Compress
+# from flask_compress import Compress
 
 from ojlevapp import create_app
 
 app = create_app()
 # app.debug = True
 
-compress = Compress()
-compress.init_app(app)
+# compress = Compress()
+# compress.init_app(app)
 app.config['COMPRESS_LEVEL'] = 6  # Niveau de compression de 1 (faible) à 9 (élevé)
 app.config['COMPRESS_MIN_SIZE'] = 500  # Ne pas compresser les fichiers de moins de 500 octets
 
