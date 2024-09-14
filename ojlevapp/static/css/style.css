@@ -103,11 +103,11 @@ body {
 }
 
 .btn-2 {
-    background-color: bisque;
+    background-color: #ccc;
     padding: 15px;
     border-radius: 10px;
     font-weight: 600;
-    color: #111;
+    color: #222;
 }
 
 /* preloader */
